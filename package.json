@@ -1,0 +1,17 @@
+{
+  "name": "elements",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "typedoc": "^0.13.0",
+    "typescript": "^3.2.2"
+  },
+  "scripts": {
+    "test": "test",
+    "doc": "typedoc --options typedoc.json src/"
+  },
+  "author": "Ty Brockhoeft",
+  "license": "ISC"
+}

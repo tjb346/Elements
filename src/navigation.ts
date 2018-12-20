@@ -1,6 +1,9 @@
 import {CustomElement} from "./element";
 
-
+/**
+ * Router element that contains the html to be shown when the route matches the name
+ * of this element.
+ */
 export class Route extends CustomElement {
     private _name : string | null = null;
     private _title : string | null = null;
@@ -95,6 +98,9 @@ export class Route extends CustomElement {
         shadowRoot.appendChild(container);
     }
 
+    /**
+     * Shows the route.
+     */
     show(){
         this.style.display = 'block';
     }
@@ -143,7 +149,7 @@ export abstract class LazyRoute extends Route {
         }
     }
 
-    _lazyLoad(){
+    private _lazyLoad(){
         let slot = document.createElement('slot');
         this._container.appendChild(slot);
 
@@ -171,6 +177,10 @@ export abstract class LazyRoute extends Route {
     abstract renderResponse(response : Response) : void;
 }
 
+/**
+ * A container for [[ Route ]] elements that creates a navigation bar to
+ * navigate the routes it contains.
+ */
 export class Navigation extends Route {
     private _nav : HTMLElement;
     private _list : HTMLElement;

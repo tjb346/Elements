@@ -2,7 +2,7 @@
   "mode": "modules",
   "out": "./docs",
   "name": "elements",
-  "theme": "default",
+  "theme": "minimal",
   "ignoreCompilerErrors": "true",
   "experimentalDecorators": "true",
   "emitDecoratorMetadata": "true",
@@ -12,5 +12,7 @@
   "stripInternal": "true",
   "suppressExcessPropertyErrors": "true",
   "suppressImplicitAnyIndexErrors": "true",
-  "module": "commonjs"
+  "module": "commonjs",
+  "excludeExternals": "true",
+  "excludePrivate": "true"
 }

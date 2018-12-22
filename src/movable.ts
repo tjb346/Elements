@@ -1,4 +1,4 @@
-import {CustomElement} from "./element";
+import {CustomElement} from "./element.js";
 
 
 interface Vector {x: number; y: number}
@@ -35,18 +35,18 @@ export class Movable extends CustomElement {
     this.position = {x: 0, y: 0};
   }
 
-  get position(){
+  get position() : Vector {
     return Object.assign({}, this._position); // Make a copy so it doesn't get modified;
   }
 
   set position(value: Vector){
     let oldPosition = this._position;
     this._position = {
-      x: Number(value.x || 0),
-      y: Number(value.y || 0)
+      x: value.x || 0,
+      y: value.y || 0
     };
-    this.style.left = Math.round(this._position.x).toString();
-    this.style.top = Math.round(this._position.y).toString();
+    this.style.left = `${Math.round(this._position.x).toString()}px`;
+    this.style.top = `${Math.round(this._position.y).toString()}px`;
 
     let time = new Date().getTime();
     if (this._lastPositionUpdateTime !== null){
@@ -57,24 +57,6 @@ export class Movable extends CustomElement {
       };
     }
     this._lastPositionUpdateTime = time;
-  }
-
-  center(){
-    this.style.position = 'fixed';
-    this.style.top = '50%';
-    this.style.left = '50%';
-    this.style.width = null;
-    this.style.height = null;
-    this.style.transform = 'translate(-50%, -50%)';
-  }
-
-  expand(){
-    this.style.position = 'fixed';
-    this.style.transform = null;
-    this.style.top = '0';
-    this.style.left = '0';
-    this.style.width = '100%';
-    this.style.height = '100%';
   }
 
   get frictionForce(){
@@ -150,7 +132,7 @@ export class Movable extends CustomElement {
   }
 }
 
-export class Draggable extends Movable {
+export class Grabbable extends Movable {
   constructor(){
     super();
 
@@ -168,6 +150,7 @@ export class Draggable extends Movable {
         x: scrollLeft + event.clientX,
         y: scrollTop + event.clientY
       };
+      this.velocity = {x: 0, y: 0};
     };
     document.onmouseup = this.stopDrag.bind(this);
   }

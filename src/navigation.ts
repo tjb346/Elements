@@ -1,4 +1,4 @@
-import {CustomElement} from "./element";
+import {CustomElement} from "./element.js";
 
 /**
  * Router element that contains the html to be shown when the route matches the name

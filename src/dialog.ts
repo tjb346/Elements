@@ -209,7 +209,6 @@ export class Dialog extends Grabbable {
     if (value !== this.visible){
       if (value){
         this.setAttribute('visible', "true");
-        console.log("SET");
         let event = new Event(Dialog.EVENT_OPENED);
         this.dispatchEvent(event);
       } else {

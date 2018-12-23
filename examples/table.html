@@ -11,7 +11,7 @@
         }
     </style>
     <h1>Single Select Table</h1>
-    <selectable-table>
+    <selectable-table id="single">
         <table-header>
             <table-data>Item Name</table-data>
             <table-data>Price ($)</table-data>
@@ -50,7 +50,7 @@
         </table-row>
     </selectable-table>
     <h1>Multi Select Table</h1>
-    <selectable-table select-multiple>
+    <selectable-table id="multi" select-multiple>
         <table-header>
             <table-data>Item Name</table-data>
             <table-data>Price ($)</table-data>
@@ -88,6 +88,34 @@
             <table-data>1.25</table-data>
         </table-row>
     </selectable-table>
+
     <script type="module" src="../lib/table.js"></script>
+    <script type="module">
+        // Create a sample context menu that displays the number of rows selected.
+        import {Dialog} from "../lib/dialog.js";
+
+        let multi = document.getElementById("multi");
+        multi.oncontextmenu = (event) => {
+          let selectedRows = multi.selectedRows;
+          if (selectedRows.length > 0){
+            event.preventDefault();
+
+            let menu = document.createElement('base-dialog');
+
+            let div = document.createElement('div');
+            div.innerText = `${selectedRows.length} rows selected`;
+
+            menu.appendChild(div);
+            menu.addEventListener(Dialog.EVENT_CLOSED, () => {
+              document.body.removeChild(menu);
+            });
+            document.body.appendChild(menu);
+
+            menu.position = {x: event.pageX, y: event.pageY};
+            menu.setAttribute("name", "Sample Context Menu");
+            menu.visible = true;
+          }
+        };
+    </script>
 </body>
 </html>

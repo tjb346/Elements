@@ -440,7 +440,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   // getters
 
   static get observedAttributes() {
-    return ['selectMultiple'];
+    return ['select-multiple'];
   }
 
 
@@ -560,6 +560,11 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   get mainHeader() : Header | null {
     return this.querySelector('table-header');
+  }
+
+  updateAttributes(attributes: { [p: string]: string | null }): void {
+    let multiSelect = attributes['select-multiple'];
+    this.selectMultiple = multiSelect === null;
   }
 
   render(shadowRoot : ShadowRoot){

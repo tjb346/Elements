@@ -4,25 +4,27 @@ import {CustomElement} from "./element.js";
 interface Vector {x: number; y: number}
 
 
+/**
+ An element who's position can be changed.
+ */
 export class Movable extends CustomElement {
   private _position: Vector = {x: 0, y: 0};
   private _velocity: Vector = {x: 0, y: 0};
-  private _motionTimeout: number | null = null;
-  private _lastPositionUpdateTime: number | null = null;
+  private motionTimeout: number | null = null;
+  private lastPositionUpdateTime: number | null = null;
 
-  constructor(){
-    super();
-  }
-
-  static get frictionCoef(){
-    return 100;
-  }
+  /**
+   Affects how fast the element will decelerate when in motion.
+   */
+  protected frictionCoef = 100;
 
   /**
    Time in seconds between position updates from velocity vector.
    */
-  static get timeStep(){
-    return .010;
+  protected timeStep = .010;
+
+  constructor(){
+    super();
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -31,10 +33,13 @@ export class Movable extends CustomElement {
   connectedCallback() {
     super.connectedCallback();
     this.style.position = 'absolute';
-    this._lastPositionUpdateTime = null;
+    this.lastPositionUpdateTime = null;
     this.position = {x: 0, y: 0};
   }
 
+  /**
+   The current location of the upper left corner of the element to its closes relatively positioned ancestor in pixels.
+   */
   get position() : Vector {
     return Object.assign({}, this._position); // Make a copy so it doesn't get modified;
   }
@@ -49,14 +54,14 @@ export class Movable extends CustomElement {
     this.style.top = `${Math.round(this._position.y).toString()}px`;
 
     let time = new Date().getTime();
-    if (this._lastPositionUpdateTime !== null){
-      let deltaT = (time - this._lastPositionUpdateTime) / 1000;
+    if (this.lastPositionUpdateTime !== null){
+      let deltaT = (time - this.lastPositionUpdateTime) / 1000;
       this.velocity = {
         x: (this._position.x - oldPosition.x) / deltaT,
         y: (this._position.y - oldPosition.y) / deltaT
       };
     }
-    this._lastPositionUpdateTime = time;
+    this.lastPositionUpdateTime = time;
   }
 
   get frictionForce(){
@@ -64,13 +69,13 @@ export class Movable extends CustomElement {
     let xDir = Math.sign(vel.x) || 0;
     let yDir = Math.sign(vel.y) || 0;
     return {
-      x: -1 * xDir * (this.constructor as typeof Movable).frictionCoef,
-      y: -1 * yDir * (this.constructor as typeof Movable).frictionCoef
+      x: -1 * xDir * this.frictionCoef,
+      y: -1 * yDir * this.frictionCoef
     }
   }
 
   /**
-   Vector [x motion, y motion] in pixels per second.
+   The current motion of the element in pixels per second.
    */
   get velocity(){
     return this._velocity || {
@@ -80,10 +85,10 @@ export class Movable extends CustomElement {
   }
 
   set velocity(value) {
-    if (this._motionTimeout){
-      clearTimeout(this._motionTimeout);
+    if (this.motionTimeout){
+      clearTimeout(this.motionTimeout);
     }
-    this._motionTimeout = null;
+    this.motionTimeout = null;
 
     let x = value.x;
     let y = value.y;
@@ -93,8 +98,8 @@ export class Movable extends CustomElement {
       if (this.speed < 10) {
         this.velocity = {x: 0, y: 0};
       } else {
-        const step = (this.constructor as typeof Movable).timeStep;
-        this._motionTimeout = setTimeout(() => {
+        const step = this.timeStep;
+        this.motionTimeout = setTimeout(() => {
           // Update position due to velocity
           let currentPosition = this.position;
           this.position = {
@@ -132,44 +137,75 @@ export class Movable extends CustomElement {
   }
 }
 
+
+/**
+ An element who's position can be changed by clicking and dragging.
+ */
 export class Grabbable extends Movable {
+  private startPosition : Vector = {x: 0, y: 0};
+  private mouseStartPosition : Vector = {x: 0, y: 0};
+  private yMousePosition : number = 0;
+
+  protected noPropagate : boolean = false;
+
   constructor(){
     super();
 
-    this.onmousedown = (event) => {
+    this.onmousedown = (event : MouseEvent) => {
       event.preventDefault();
+      if (this.noPropagate){
+        event.stopImmediatePropagation();
+      }
+
+      this.startPosition = this.position;
+      this.mouseStartPosition = {x: event.clientX, y: event.clientY};
+
       this.startDrag();
     };
   }
 
-  startDrag() {
-    document.onmousemove = (event) => {
-      let scrollLeft = document.documentElement.scrollLeft;
-      let scrollTop = document.documentElement.scrollTop;
+  private startDrag() {
+    document.onmousemove = (event : MouseEvent) => {
+      if (this.noPropagate){
+        event.stopImmediatePropagation();
+      }
+      let xMovement = event.clientX - this.mouseStartPosition.x;
+      let yMovement = event.clientY - this.mouseStartPosition.y;
       this.position = {
-        x: scrollLeft + event.clientX,
-        y: scrollTop + event.clientY
+        x: this.startPosition.x + xMovement,
+        y: this.startPosition.y + yMovement
       };
       this.velocity = {x: 0, y: 0};
     };
     document.onmouseup = this.stopDrag.bind(this);
   }
 
-  stopDrag() {
+  private stopDrag(event : MouseEvent) {
+    if (this.noPropagate){
+      event.stopImmediatePropagation();
+    }
     document.onmousemove = null;
     document.onmouseup = null;
   }
 }
 
 interface TouchData {
-  [key : string] : Vector;
   coords: Vector;
   elementPosition: Vector;
 }
 
+
+/**
+ An element who's position can be changed using the scroll wheel of the mouse.
+ */
 export class Scrollable extends Movable {
-  private _touchStartPosition : {[key: string] :  TouchData} = {};
-  private _speed = 0;
+  private touchStartPosition : {[key: string] :  TouchData} = {};
+  private static defaultScrollSpeed = 1;
+
+  /**
+   A multiplier for the rate the element moves when scrolled. Can be set with "scroll-speed" attribute .
+   */
+  protected scrollSpeed = Scrollable.defaultScrollSpeed;
 
   constructor() {
     super();
@@ -182,7 +218,7 @@ export class Scrollable extends Movable {
 
     this.ontouchstart = (event : TouchEvent) => {
       for (let touch of event.targetTouches){
-        this._touchStartPosition[touch.identifier] = {
+        this.touchStartPosition[touch.identifier] = {
           coords: {x: touch.clientX, y: touch.clientY},
           elementPosition: this.position};
       }
@@ -190,7 +226,7 @@ export class Scrollable extends Movable {
 
     this.ontouchmove = (event : TouchEvent) => {
       for (let touch of event.targetTouches){
-        let startData = this._touchStartPosition[touch.identifier];
+        let startData = this.touchStartPosition[touch.identifier];
         if (startData){
           let deltaX = touch.clientX - startData.coords.x;
           let deltaY = touch.clientY - startData.coords.y;
@@ -201,20 +237,21 @@ export class Scrollable extends Movable {
 
     this.ontouchend = (event : TouchEvent) => {
       for (let touch of event.targetTouches){
-        delete this._touchStartPosition[touch.identifier];
+        delete this.touchStartPosition[touch.identifier];
       }
     };
   }
 
   static get observedAttributes() {
-    return ['scrollSpeed'];
+    return ['scroll-speed'];
   }
 
-  get scrollSpeed(){
-    return this._speed || 1;
-  }
-
-  set scrollSpeed(value){
-    this._speed = Number(value);
+  updateAttributes(attributes: { [p: string]: string | null }): void {
+    let scrollSpeed = attributes['scroll-speed'];
+    if (scrollSpeed === null) {
+      this.scrollSpeed = Scrollable.defaultScrollSpeed;
+    } else {
+      this.scrollSpeed = Number.parseFloat(scrollSpeed);
+    }
   }
 }

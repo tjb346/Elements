@@ -15,12 +15,6 @@ export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(Ele
             this.addEventListener("drop", this.handleDrop.bind(this));
         }
 
-        get template(): string {
-            return `
-            <slot></slot>
-        `;
-        }
-
         static get dragOverClass(){
             return 'dragover';
         }

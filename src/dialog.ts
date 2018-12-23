@@ -2,18 +2,18 @@ import {Grabbable} from "./movable.js";
 
 
 export class Dialog extends Grabbable {
-  private _parent : Dialog | null = null;
-  private _children : Set<Dialog> = new Set();
-  private readonly _nameElement : HTMLElement;
-  private readonly _headerElement : HTMLElement;
-  private readonly _containerElement : HTMLElement;
-  private readonly _clickListener : (event : MouseEvent) => void;
+  private _parentDialog : Dialog | null = null;
+  private readonly nameElement : HTMLElement;
+  private readonly headerElement : HTMLElement;
+  private readonly containerElement : HTMLElement;
+  private readonly documentClickListener : (event : MouseEvent) => void;
 
   private readonly deleteButtonClass = 'delete';
   private readonly expandButtonClass = 'expand';
   private readonly nameClass = 'name';
   private readonly headerClass = 'header';
   private readonly containerClass = 'container';
+  protected readonly noPropagate = true; // Don't let clicks effect other dialogs.
 
   // Event callbacks
   public onShow : ((dialog: Dialog) => void) | null = null;
@@ -35,14 +35,14 @@ export class Dialog extends Grabbable {
 
     // Parent is a dialog instance. This dialog will close when parent closes.
     // It won't close when parent is clicked.
-    this._nameElement = document.createElement('span');
-    this._nameElement.className = this.nameClass;
+    this.nameElement = document.createElement('span');
+    this.nameElement.className = this.nameClass;
 
-    this._headerElement = document.createElement('div');
-    this._headerElement.className = this.headerClass;
+    this.headerElement = document.createElement('div');
+    this.headerElement.className = this.headerClass;
 
-    this._containerElement = document.createElement('div');
-    this._containerElement.className = this.containerClass;
+    this.containerElement = document.createElement('div');
+    this.containerElement.className = this.containerClass;
 
     let expandButton = document.createElement('button');
     expandButton.type = 'button';
@@ -70,33 +70,25 @@ export class Dialog extends Grabbable {
       event.preventDefault();
       this.visible = false;
     };
-    this._headerElement.appendChild(this._nameElement);
-    this._headerElement.appendChild(deleteButton);
-    this._headerElement.appendChild(expandButton);
+    this.headerElement.appendChild(this.nameElement);
+    this.headerElement.appendChild(deleteButton);
+    this.headerElement.appendChild(expandButton);
+    // this.onclick = (event) => {
+    //   console.log("STOP");
+    //   // Don't let clicks effect other dialogs.
+    //   event.stopImmediatePropagation();
+    // };
 
     let slot = document.createElement('slot');
-    this._containerElement.appendChild(slot);
+    this.containerElement.appendChild(slot);
 
-    this._clickListener = this.clickListener.bind(this);
+    this.documentClickListener = (event) => {
+      this.closeOnOutsideClick(event);
+    }
   }
 
   static get observedAttributes(): string[] {
     return ['name', 'visible', 'expanded'];
-  }
-
-  get childDialogs(){
-    return this._children;
-  }
-
-  get flatChildDialogs(){
-      let childSet = new Set();
-      for (let child of this.childDialogs){
-          childSet.add(child);
-          for (let flatChildren of child.flatChildDialogs){
-              childSet.add(flatChildren);
-          }
-      }
-      return childSet;
   }
 
   get css(){
@@ -131,7 +123,6 @@ export class Dialog extends Grabbable {
       }
     
       :host([expanded]) {
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -139,17 +130,21 @@ export class Dialog extends Grabbable {
       }
       
       .${this.headerClass} {
+        display: flex;
         box-sizing: border-box;
         height: var(--dialog-header-height);
         padding-left: 4px;
         background-color: var(--dialog-header-background-color);
         color: var(--dialog-header-text-color);
+        white-space: nowrap;
         cursor: move;
       }
       
       .${this.nameClass} {
+        flex: 1;
         line-height: var(--dialog-header-height);
         margin-left: 4px;
+        margin-right: 4px;
         font-size: 14px;
       }
       
@@ -194,7 +189,7 @@ export class Dialog extends Grabbable {
   }
 
   get name() : string {
-    return this._nameElement.innerText;
+    return this.nameElement.innerText;
   }
 
   /**
@@ -202,18 +197,7 @@ export class Dialog extends Grabbable {
    * @param {string} value
    */
   set name(value : string){
-    this._nameElement.innerText = value;
-  }
-
-  set parent(value : Dialog | null){
-    if (value === null){
-      if (this._parent){
-        this._parent.childDialogs.delete(this);
-      }
-      this._parent = null;
-    } else {
-      value.childDialogs.add(this);
-    }
+    this.nameElement.innerText = value;
   }
 
   get visible() : boolean {
@@ -225,12 +209,11 @@ export class Dialog extends Grabbable {
     if (value !== this.visible){
       if (value){
         this.setAttribute('visible', "true");
-        document.addEventListener('click', this._clickListener);
+        console.log("SET");
         let event = new Event(Dialog.EVENT_OPENED);
         this.dispatchEvent(event);
       } else {
         this.removeAttribute('visible');
-        document.removeEventListener('click', this._clickListener);
         let event = new Event(Dialog.EVENT_CLOSED);
         this.dispatchEvent(event);
       }
@@ -261,11 +244,9 @@ export class Dialog extends Grabbable {
     if (value !== this.expanded){
       if (value){
         this.setAttribute('expanded', "true");
-        this.style.position = 'fixed';
         this.position = {x: 0, y: 0};
       } else {
         this.removeAttribute('expanded');
-        this.style.position = 'absolute';
       }
     }
   }
@@ -281,32 +262,37 @@ export class Dialog extends Grabbable {
     }
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.style.position = 'fixed';
+    document.addEventListener('click', this.documentClickListener);
+  }
+
+  disconnectedCallback(){
+    document.removeEventListener('click', this.documentClickListener);
+  }
+
   render(shadowRoot : ShadowRoot){
     super.render(shadowRoot);
 
-    shadowRoot.appendChild(this._headerElement);
-    shadowRoot.appendChild(this._containerElement);
+    shadowRoot.appendChild(this.headerElement);
+    shadowRoot.appendChild(this.containerElement);
   }
 
   remove(){
-    for (let child of this._children) {
-      child.remove();
-    }
-
     if (this.onRemove){
       this.onRemove(this);
     }
     if (this.parentElement) {
       this.parentElement.removeChild(this);
     }
-    document.removeEventListener('click', this._clickListener);
+    document.removeEventListener('click', this.documentClickListener);
   }
 
   /**
-   *  Listener to close dialog when clicked outside. Checks if click is in
-   *  dialog or one of one of its child dialogs and if not closes.
+   *  Checks if click is in dialog or one of one of its child dialogs and if not closes.
    */
-  private clickListener(event : MouseEvent) {
+  private closeOnOutsideClick(event : MouseEvent) {
     if (!event.defaultPrevented){
       let targets : Set<Element> = new Set();
       let target : Element | null = event.target as Element;
@@ -317,7 +303,7 @@ export class Dialog extends Grabbable {
 
       let isThis = targets.has(this);
       let isChild = false;
-      for (let child of this.flatChildDialogs){
+      for (let child of this.flatChildren(Dialog)){
         if (targets.has(child)){
           isChild = true;
         }

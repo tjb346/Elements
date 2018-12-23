@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Example</title>
+</head>
+<body>
+    <page-nav>
+        <page-route name="home">
+            <h1>Home</h1>
+            <p>This is the home page</p>
+        </page-route>
+        <page-route name="about">
+            <h1>About</h1>
+            <p>This is an example site</p>
+        </page-route>
+        <lazy-route name="lazy">
+            <h1>Lazy</h1>
+            <template>
+                <p>This content is lazy loaded</p>
+            </template>
+        </lazy-route>
+    </page-nav>
+    <script type="module" src="../lib/navigation.js"></script>
+</body>
+</html>

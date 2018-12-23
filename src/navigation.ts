@@ -7,6 +7,20 @@ import {CustomElement} from "./element.js";
 export class Route extends CustomElement {
     private _name : string | null = null;
     private _title : string | null = null;
+    protected containerId = 'container';
+    protected homeName = 'home';
+    protected defaultName = this.homeName;
+    protected defaultTitle = 'Home';
+
+    /**
+     * @event
+     */
+    static EVENT_NAME_CHANGE = 'namechange';
+
+    /**
+     * @event
+     */
+    static EVENT_TITLE_CHANGE = 'titlechange';
 
     constructor() {
         super();
@@ -22,18 +36,6 @@ export class Route extends CustomElement {
         return ['name', 'title'];
     }
 
-    static get defaultName(){
-        return this.homeName;
-    }
-
-    static get homeName(){
-        return 'home';
-    }
-
-    static get defaultTitle(){
-        return 'Home';
-    }
-
     updateAttributes(attributes: { [p: string]: string | null }): void {
         if (attributes.name){
             this.name = attributes.name;
@@ -44,12 +46,12 @@ export class Route extends CustomElement {
     }
 
     get name(){
-        return this._name || (this.constructor as typeof Route).defaultName;
+        return this._name || this.defaultName;
     }
 
     set name(value : string) {
         this._name = value;
-        this.dispatchEvent(new CustomEvent('namechange', {detail: this.name}));
+        this.dispatchEvent(new CustomEvent(Route.EVENT_NAME_CHANGE, {detail: this.name}));
     }
 
     get title(){
@@ -61,7 +63,7 @@ export class Route extends CustomElement {
             return this._name.charAt(0).toUpperCase() + this._name.slice(1);
         }
 
-        return (this.constructor as typeof Route).defaultTitle;
+        return this.defaultTitle;
     }
 
     set title(value : string){
@@ -71,7 +73,7 @@ export class Route extends CustomElement {
         } else {
             this._title = null;
         }
-        this.dispatchEvent(new CustomEvent('titlechange', {detail: this.title}));
+        this.dispatchEvent(new CustomEvent(Route.EVENT_TITLE_CHANGE, {detail: this.title}));
     }
 
     get path(){
@@ -92,7 +94,9 @@ export class Route extends CustomElement {
     }
 
     render(shadowRoot : ShadowRoot){
+        super.render(shadowRoot);
         let container = document.createElement('div');
+        container.id = this.containerId;
         let slot = document.createElement('slot');
         container.appendChild(slot);
         shadowRoot.appendChild(container);
@@ -111,7 +115,7 @@ export class Route extends CustomElement {
 
     updateState(){
         if (window.location.pathname.startsWith(this.path) ||
-            (window.location.pathname === '/' && this.path === (this.constructor as typeof Route).homeName)){
+            (window.location.pathname === '/' && this.path === this.homeName)){
             this.show();
         } else {
             this.hide();
@@ -182,19 +186,16 @@ export abstract class LazyRoute extends Route {
  * navigate the routes it contains.
  */
 export class Navigation extends Route {
-    private _nav : HTMLElement;
-    private _list : HTMLElement;
+    private nav : HTMLElement;
+    private list : HTMLElement;
+    protected defaultName = '';
 
     constructor(){
         super();
 
-        this._nav = document.createElement('nav');
-        this._list = document.createElement('ul');
-        this._nav.appendChild(this._list);
-    }
-
-    static get defaultName(){
-        return '';
+        this.nav = document.createElement('nav');
+        this.list = document.createElement('ul');
+        this.nav.appendChild(this.list);
     }
 
     get css(){
@@ -204,7 +205,7 @@ export class Navigation extends Route {
                 width: 100%;
             }
             
-            #container {
+            #${this.containerId} {
                 display:inline-block;
                 margin: 0;
                 width: 100%;
@@ -243,16 +244,8 @@ export class Navigation extends Route {
     }
 
     render(shadowRoot : ShadowRoot){
+        shadowRoot.appendChild(this.nav);
         super.render(shadowRoot);
-
-        let slot = document.createElement('slot');
-
-        let childContainer = document.createElement('div');
-        childContainer.id = 'container';
-        childContainer.appendChild(slot);
-
-        shadowRoot.appendChild(this._nav);
-        shadowRoot.appendChild(childContainer);
     }
 
     addNewRoute(routeElement : Route){
@@ -275,15 +268,15 @@ export class Navigation extends Route {
                     }
                 }
             };
-            routeElement.addEventListener('titlechange', ((event : CustomEvent) => {
+            routeElement.addEventListener(Route.EVENT_TITLE_CHANGE, ((event : CustomEvent) => {
                 a.innerText = event.detail;
             }) as EventListener );
             li.appendChild(a);
-            this._list.appendChild(li);
+            this.list.appendChild(li);
         }
     }
 }
 
-customElements.define('custom-route', Route);
+customElements.define('page-route', Route);
 customElements.define('lazy-route', LazyRoute);
-customElements.define('custom-nav', Navigation);
+customElements.define('page-nav', Navigation);

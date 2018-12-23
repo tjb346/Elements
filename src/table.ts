@@ -564,7 +564,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
     let multiSelect = attributes['select-multiple'];
-    this.selectMultiple = multiSelect === null;
+    this.selectMultiple = multiSelect !== null;
   }
 
   render(shadowRoot : ShadowRoot){

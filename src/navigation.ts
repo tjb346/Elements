@@ -8,7 +8,7 @@ export class Route extends CustomElement {
     private _name : string | null = null;
     private _title : string | null = null;
     protected containerId = 'container';
-    protected homeName = 'home';
+    protected homeName = '';
     protected defaultName = this.homeName;
     protected defaultTitle = 'Home';
 
@@ -22,6 +22,16 @@ export class Route extends CustomElement {
      */
     static EVENT_TITLE_CHANGE = 'titlechange';
 
+    /**
+     * @event
+     */
+    static EVENT_SHOWN = 'show';
+
+    /**
+     * @event
+     */
+    static EVENT_HIDDEN = 'hidden';
+
     constructor() {
         super();
 
@@ -34,6 +44,10 @@ export class Route extends CustomElement {
 
     static get observedAttributes() {
         return ['name', 'title'];
+    }
+
+    static currentPath() : string[] {
+        return window.location.pathname.substring(1).split('/');
     }
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -76,14 +90,33 @@ export class Route extends CustomElement {
         this.dispatchEvent(new CustomEvent(Route.EVENT_TITLE_CHANGE, {detail: this.title}));
     }
 
-    get path(){
-        let element : HTMLElement | null = this;
-        let path = [];
-        while (element instanceof Route){
-            path.unshift(element.name);
+    get path() : string[] {
+        let path : string[];
+        if (this.isRoot){
+            path = rootPath;
+            if (path[path.length - 1] === "") {
+                path = path.slice(0, path.length - 1);
+            }
+        } else {
+            path =  [this.name];
+            let parent = this.parentElement;
+            if (parent instanceof Route){
+                path = parent.path.concat(path);
+            }
+        }
+
+        return path;
+    }
+
+    get isRoot() : boolean{
+        let element : HTMLElement | null = this.parentElement;
+        while (element !== null){
+            if (element instanceof Route){
+                return false;
+            }
             element = element.parentElement;
         }
-        return path.join('/');
+        return true;
     }
 
     connectedCallback() {
@@ -107,15 +140,32 @@ export class Route extends CustomElement {
      */
     show(){
         this.style.display = 'block';
+        this.dispatchEvent(new Event(Route.EVENT_SHOWN));
     }
 
     hide(){
         this.style.display = 'none';
+        this.dispatchEvent(new Event(Route.EVENT_HIDDEN));
+    }
+
+    private matchesCurrentLocation(){
+        let routePath = this.path;
+        let currentPath = Route.currentPath();
+        let segmentIndex = 0;
+        let match = true;
+        while (routePath.length > segmentIndex){
+            let route = routePath[segmentIndex];
+            let segmentName = currentPath[segmentIndex];
+            if (route !== segmentName){
+                match = false;
+            }
+            segmentIndex ++;
+        }
+        return match;
     }
 
     updateState(){
-        if (window.location.pathname.startsWith(this.path) ||
-            (window.location.pathname === '/' && this.path === this.homeName)){
+        if (this.matchesCurrentLocation()){
             this.show();
         } else {
             this.hide();
@@ -187,14 +237,33 @@ export abstract class LazyRoute extends Route {
  */
 export class Navigation extends Route {
     private nav : HTMLElement;
+    private menuButton : HTMLElement;
     private list : HTMLElement;
     protected defaultName = '';
+    protected openedClass = 'opened';
 
     constructor(){
         super();
 
         this.nav = document.createElement('nav');
+        this.nav.onclick = (event : MouseEvent) => {
+            event.stopPropagation();  // to prevent clicks inside from closing menu
+        };
         this.list = document.createElement('ul');
+        this.menuButton = document.createElement('button');
+        this.menuButton.innerText = '\u2630';
+        this.menuButton.onclick = (event : MouseEvent) => {
+            // Toggle open and close menu
+            if (this.list.classList.contains(this.openedClass)){
+                this.list.classList.remove(this.openedClass);
+            } else {
+                this.list.classList.add(this.openedClass);
+            }
+        };
+        document.addEventListener('click', (event : MouseEvent) => {
+            this.list.classList.remove(this.openedClass); // close menu when click outside nav
+        });
+        this.nav.appendChild(this.menuButton);
         this.nav.appendChild(this.list);
     }
 
@@ -202,6 +271,15 @@ export class Navigation extends Route {
         // language=CSS
         return `            
             :host {
+                --nav-height: 50px;
+                --nav-background-color: black;
+                --nav-text-color: white;
+                --nav-link-color: inherit;
+                --nav-link-hover-color: grey;
+                --nav-container-background: white;
+                --nav-collapse-size: 600px;
+                 
+                position: relative;
                 width: 100%;
             }
             
@@ -209,17 +287,32 @@ export class Navigation extends Route {
                 display:inline-block;
                 margin: 0;
                 width: 100%;
-                color: #ac072b;
-                background-color: #f5e3e7;
+                background-color: var(--nav-container-background);
             }
             
             nav {
-                height: 50px;
+                height: var(--nav-height);
+                color: var(--nav-text-color);
+                background-color: var(--nav-background-color);
+            }
+            
+            nav button {
+                display: none;
+                float: left;
+                padding: 0 0 0 10px;
+                border: 0;
+                line-height: var(--nav-height);
+                font-size: calc(var(--nav-height) - 20px);
+                color: var(--nav-text-color);
+                background-color: transparent;
+                cursor: pointer;
             }
             
             nav ul {
+              margin: 0;
+              padding: 0;
               float: right;
-              line-height: 2;
+              line-height: var(--nav-height);
             }
             
             nav li {
@@ -230,6 +323,39 @@ export class Navigation extends Route {
             
             a {
                 text-decoration: none;
+                color: var(--nav-link-color);
+            }
+            
+            a:hover {
+                color: var(--nav-link-hover-color);
+            }
+            
+            @media screen and (max-width: 600px) {
+                nav button {
+                    display: block;
+                }
+            
+                nav ul {
+                    position: absolute;
+                    top: var(--nav-height);
+                    left: 0;
+                    padding: 10px;
+                    display: none;
+                    float: left;
+                    line-height: normal;
+                    background-color: var(--nav-background-color);
+                    z-index: 9999;
+                }
+                
+                nav ul.${this.openedClass} {
+                    display: block;
+                }
+            
+                nav li {
+                    display: block;
+                    padding: 15px;
+                    margin: 0;
+                }
             }
         `;
     }
@@ -254,14 +380,12 @@ export class Navigation extends Route {
 
             let li = document.createElement('li');
             let a = document.createElement('a');
-            let path = routeElement.path;
-            let title = routeElement.title;
-            a.innerText = title;
-            a.href = path;
+            a.innerText = routeElement.title;
+            a.href = routeElement.path.join('/');
             a.onclick = (event) => {
                 event.preventDefault();
 
-                window.history.pushState({}, title, path);
+                window.history.pushState({}, routeElement.title, '/' + routeElement.path.join('/'));
                 for (let child of this.children){
                     if (child instanceof Route) {
                         child.updateState();
@@ -276,6 +400,8 @@ export class Navigation extends Route {
         }
     }
 }
+
+const rootPath = Route.currentPath();
 
 customElements.define('page-route', Route);
 customElements.define('lazy-route', LazyRoute);

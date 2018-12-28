@@ -1,0 +1,8 @@
+#tests
+**/__tests__/
+
+#docs
+docs/
+
+#ci
+.circleci

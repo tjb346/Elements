@@ -2,9 +2,10 @@
 
 export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(ElementClass : T) {
     abstract class Droppable extends ElementClass {
-        private dragOverActions : (() => void)[] = []; // Actions to happen after dragover for dragOverDelay
-        private dragOverDelay = 2000;
-        private timeOuts : number[] = [];
+        // Have to make the below public instead of private due to https://github.com/Microsoft/TypeScript/issues/24226
+        public dragOverActions : (() => void)[] = []; // Actions to happen after dragover for dragOverDelay
+        public dragOverDelay = 2000;
+        public timeOuts : number[] = [];
 
         protected constructor(...args: any[]) {
             super(...args);

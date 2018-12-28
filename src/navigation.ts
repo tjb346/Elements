@@ -376,7 +376,7 @@ export class Navigation extends Route {
             a.onclick = (event) => {
                 event.preventDefault();
 
-                window.history.pushState({}, routeElement.title, '/' + routeElement.path.join('/'));
+                window.history.pushState({}, routeElement.title, routeElement.path.join('/'));
                 for (let child of this.children){
                     if (child instanceof Route) {
                         child.updateState();

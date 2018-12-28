@@ -1,7 +1,7 @@
 import {Dialog} from "./dialog.js";
 import {CustomElement} from "./element.js";
 import {Grabbable, Scrollable} from "./movable.js";
-import {compareDateStrings, compareNumbers, compareStrings} from "../utils.js";
+// import {compareDateStrings, compareNumbers, compareStrings} from "../utils.js";
 import {DraggableMixin, DroppableMixin} from "./draggable.js";
 
 class TableBody extends Scrollable {
@@ -513,24 +513,24 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get visibleColumnsDialog(){
-    let header = this.mainHeader;
-    if (header !== null){
-      for (let column of header.allColumns){
-        let div = document.createElement('div');
-        let columnLabel = document.createElement('span');
-        let columnCheckbox = document.createElement('input');
-        columnCheckbox.type = 'checkbox';
-        columnCheckbox.checked = column.visible;
-        columnLabel.innerText = column.name;
-        columnCheckbox.onchange = () => {
-          column.visible = columnCheckbox.checked;
-        };
-        div.appendChild(columnLabel);
-        div.appendChild(columnCheckbox);
-        this.columnsDialog.appendChild(div);
-      }
-    }
-
+    // let header = this.mainHeader;
+    // if (header !== null){
+    //   for (let column of header.allColumns){
+    //     let div = document.createElement('div');
+    //     let columnLabel = document.createElement('span');
+    //     let columnCheckbox = document.createElement('input');
+    //     columnCheckbox.type = 'checkbox';
+    //     columnCheckbox.checked = column.visible;
+    //     columnLabel.innerText = column.name;
+    //     columnCheckbox.onchange = () => {
+    //       column.visible = columnCheckbox.checked;
+    //     };
+    //     div.appendChild(columnLabel);
+    //     div.appendChild(columnCheckbox);
+    //     this.columnsDialog.appendChild(div);
+    //   }
+    // }
+    //
     return this.columnsDialog;
   }
 

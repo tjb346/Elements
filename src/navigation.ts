@@ -91,13 +91,11 @@ export class Route extends CustomElement {
     }
 
     get path() : string[] {
-        let path : string[];
-        path =  [this.name];
+        let path =  this.name.split('/');
         let parent = this.parentElement;
         if (parent instanceof Route){
             path = parent.path.concat(path);
         }
-
         return path;
     }
 
@@ -117,6 +115,7 @@ export class Route extends CustomElement {
         if (this.parentElement instanceof Navigation){
             this.parentElement.addNewRoute(this);
         }
+        this.updateState();
     }
 
     render(shadowRoot : ShadowRoot){
@@ -149,7 +148,7 @@ export class Route extends CustomElement {
         while (routePath.length > segmentIndex){
             let route = routePath[segmentIndex];
             let segmentName = currentPath[segmentIndex];
-            if (route !== segmentName){
+            if ((route !== segmentName) || (route === "" && segmentName === undefined){
                 match = false;
             }
             segmentIndex ++;
@@ -358,6 +357,7 @@ export class Navigation extends Route {
         for (let child of this.children){
             if (child instanceof Route){
                 this.addNewRoute(child);
+                child.updateState();
             }
         }
     }
@@ -369,8 +369,6 @@ export class Navigation extends Route {
 
     addNewRoute(routeElement : Route){
         if (routeElement instanceof Route) {
-            routeElement.updateState();
-
             let li = document.createElement('li');
             let a = document.createElement('a');
             a.innerText = routeElement.title;

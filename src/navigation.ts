@@ -47,7 +47,7 @@ export class Route extends CustomElement {
     }
 
     static currentPath() : string[] {
-        return window.location.pathname.substring(1).split('/');
+        return window.location.pathname.split('/');
     }
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -148,7 +148,7 @@ export class Route extends CustomElement {
         while (routePath.length > segmentIndex){
             let route = routePath[segmentIndex];
             let segmentName = currentPath[segmentIndex];
-            if ((route !== segmentName) || (route === "" && segmentName === undefined){
+            if ((route !== segmentName) || (route === "" && segmentName === undefined)){
                 match = false;
             }
             segmentIndex ++;

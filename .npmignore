@@ -3,6 +3,10 @@
 
 #docs
 docs/
+typedoc.json
 
 #ci
 .circleci
+
+#examples
+examples/

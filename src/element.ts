@@ -1,9 +1,13 @@
 
-
+/**
+ * Basic element class with some utilities to help extend HTMLElement.
+ */
 export abstract class CustomElement extends HTMLElement {
   /**
-   * Basic element class with some utilities to help extend HTMLElement.
+   * Is this element connected to the DOM
    */
+  public connected : boolean = false;
+
   protected constructor(){
     super();
 
@@ -25,11 +29,18 @@ export abstract class CustomElement extends HTMLElement {
   }
 
   connectedCallback(){
+    this.connected = true;
     this.refresh();
   }
 
+  disconnectedCallback(){
+    this.connected = false;
+  }
+
   attributeChangedCallback(name : string, oldValue : string | null, newValue : any) {
-    this.refresh();
+    if (this.connected){
+      this.refresh();
+    }
   }
 
   /**

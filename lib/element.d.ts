@@ -1,12 +1,17 @@
+/**
+ * Basic element class with some utilities to help extend HTMLElement.
+ */
 export declare abstract class CustomElement extends HTMLElement {
     /**
-     * Basic element class with some utilities to help extend HTMLElement.
+     * Is this element connected to the DOM
      */
+    connected: boolean;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string | null;
     readonly template: string | HTMLTemplateElement | null;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
     /**
      * Update the properties on this element from those set on the attributes.

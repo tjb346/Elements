@@ -1,6 +1,7 @@
+import {CustomElement} from "./element";
 
 
-export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(ElementClass : T) {
+export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(ElementClass : T) {
     abstract class Droppable extends ElementClass {
         // Have to make the below public instead of private due to https://github.com/Microsoft/TypeScript/issues/24226
         public dragOverActions : (() => void)[] = []; // Actions to happen after dragover for dragOverDelay
@@ -101,12 +102,11 @@ export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(Ele
     return Droppable;
 }
 
-export function DraggableMixin<T extends new(...args: any[]) => HTMLElement>(ElementClass : T) {
-    class Draggable extends ElementClass {
+export function DraggableMixin<T extends new(...args: any[]) => CustomElement>(ElementClass : T) {
+    abstract class Draggable extends ElementClass {
         protected constructor(...args: any[]) {
             super(...args);
 
-            this.draggable = true;
             this.addEventListener('dragstart', this.handleDragStart.bind(this));
             this.addEventListener('dragend', this.handleDragEnd.bind(this));
         }
@@ -116,6 +116,11 @@ export function DraggableMixin<T extends new(...args: any[]) => HTMLElement>(Ele
          */
         static get draggingClass(){
             return 'dragging';
+        }
+
+        connectedCallback(){
+            super.connectedCallback();
+            this.draggable = true;
         }
 
         /**

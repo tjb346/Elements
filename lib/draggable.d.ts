@@ -1,4 +1,5 @@
-export declare function DroppableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
+import { CustomElement } from "./element";
+export declare function DroppableMixin<T extends new (...args: any[]) => CustomElement>(ElementClass: T): {
     new (...args: any[]): {
         dragOverActions: (() => void)[];
         dragOverDelay: number;
@@ -32,6 +33,26 @@ export declare function DroppableMixin<T extends new (...args: any[]) => HTMLEle
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts(): void;
+        connected: boolean;
+        readonly css: string | null;
+        readonly template: string | HTMLTemplateElement | null;
+        connectedCallback(): void;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
+        updateAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
+        removeShadowChildren(): void;
+        removeChildren(): void;
+        appendShadowChild(element: Element): void;
+        appendShadowChildren(elements: Element[] | NodeList): void;
+        appendChildren(elements: Element[] | NodeList): void;
+        /**
+         * Called when drop event triggered.
+         */
+        flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
+        refresh(): void;
+        render(shadowRoot: ShadowRoot): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -290,8 +311,9 @@ export declare function DroppableMixin<T extends new (...args: any[]) => HTMLEle
     readonly dragOverClass: string;
     readonly pendingActionClass: string;
 } & T;
-export declare function DraggableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
+export declare function DraggableMixin<T extends new (...args: any[]) => CustomElement>(ElementClass: T): {
     new (...args: any[]): {
+        connectedCallback(): void;
         /**
          * Called when dragstart event is fired.
          */
@@ -300,6 +322,25 @@ export declare function DraggableMixin<T extends new (...args: any[]) => HTMLEle
          * Called when dragend event is fired.
          */
         handleDragEnd(event: DragEvent): void;
+        connected: boolean;
+        readonly css: string | null;
+        readonly template: string | HTMLTemplateElement | null;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
+        updateAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
+        removeShadowChildren(): void;
+        removeChildren(): void;
+        appendShadowChild(element: Element): void;
+        appendShadowChildren(elements: Element[] | NodeList): void;
+        appendChildren(elements: Element[] | NodeList): void;
+        /**
+         * Called when drop event triggered.
+         */
+        flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
+        refresh(): void;
+        render(shadowRoot: ShadowRoot): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;

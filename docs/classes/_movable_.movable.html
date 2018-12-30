@@ -1016,6 +1016,9 @@ img { max-width: 100%; }
 					<a href="_movable_.movable.html#clientwidth" class="tsd-kind-icon">client<wbr>Width</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a href="_movable_.movable.html#connected" class="tsd-kind-icon">connected</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a href="_movable_.movable.html#contenteditable" class="tsd-kind-icon">content<wbr>Editable</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -1511,6 +1514,9 @@ img { max-width: 100%; }
 					<a href="_movable_.movable.html#contains" class="tsd-kind-icon">contains</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a href="_movable_.movable.html#disconnectedcallback" class="tsd-kind-icon">disconnected<wbr>Callback</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a href="_movable_.movable.html#dispatchevent" class="tsd-kind-icon">dispatch<wbr>Event</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
@@ -1782,6 +1788,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#clientleft" class="tsd-kind-icon">client<wbr>Left</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#clienttop" class="tsd-kind-icon">client<wbr>Top</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#clientwidth" class="tsd-kind-icon">client<wbr>Width</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#connected" class="tsd-kind-icon">connected</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#contenteditable" class="tsd-kind-icon">content<wbr>Editable</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#dataset" class="tsd-kind-icon">dataset</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#dir" class="tsd-kind-icon">dir</a></li>
@@ -1957,6 +1964,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#comparedocumentposition" class="tsd-kind-icon">compare<wbr>Document<wbr>Position</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_movable_.movable.html#connectedcallback" class="tsd-kind-icon">connected<wbr>Callback</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#contains" class="tsd-kind-icon">contains</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#disconnectedcallback" class="tsd-kind-icon">disconnected<wbr>Callback</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#dispatchevent" class="tsd-kind-icon">dispatch<wbr>Event</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_movable_.movable.html#flatchildren" class="tsd-kind-icon">flat<wbr>Children</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_movable_.movable.html#focus" class="tsd-kind-icon">focus</a></li>
@@ -2036,7 +2044,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#constructor">constructor</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L24">movable.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L24">movable.ts:24</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="_movable_.movable.html" class="tsd-signature-type">Movable</a></h4>
@@ -2438,6 +2446,22 @@ img { max-width: 100%; }
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<a name="connected" class="tsd-anchor"></a>
+				<h3>connected</h3>
+				<div class="tsd-signature tsd-kind-icon">connected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+				<aside class="tsd-sources">
+					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#connected">connected</a></p>
+					<ul>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L9">element.ts:9</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Is this element connected to the DOM</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 				<a name="contenteditable" class="tsd-anchor"></a>
 				<h3>content<wbr>Editable</h3>
 				<div class="tsd-signature tsd-kind-icon">content<wbr>Editable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -2519,7 +2543,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">friction<wbr>Coef<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L19">movable.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L19">movable.ts:19</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4529,7 +4553,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">time<wbr>Step<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.01</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L24">movable.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L24">movable.ts:24</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4570,7 +4594,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#css">css</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L19">element.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L23">element.ts:23</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4580,7 +4604,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">friction<wbr>Force<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L67">movable.ts:67</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L67">movable.ts:67</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4590,8 +4614,8 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L43">movable.ts:43</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L47">movable.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L43">movable.ts:43</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L47">movable.ts:47</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4606,7 +4630,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">speed<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L134">movable.ts:134</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L134">movable.ts:134</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4617,7 +4641,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#template">template</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L23">element.ts:23</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L27">element.ts:27</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4627,8 +4651,8 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">velocity<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L80">movable.ts:80</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L87">movable.ts:87</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L80">movable.ts:80</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L87">movable.ts:87</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4644,7 +4668,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#observedattributes">observedAttributes</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L15">element.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L19">element.ts:19</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4863,7 +4887,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendchildren">appendChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L85">element.ts:85</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L96">element.ts:96</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4892,7 +4916,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendshadowchild">appendShadowChild</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L63">element.ts:63</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L74">element.ts:74</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4921,7 +4945,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendshadowchildren">appendShadowChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L72">element.ts:72</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L83">element.ts:83</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4979,7 +5003,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#attributechangedcallback">attributeChangedCallback</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L31">element.ts:31</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L40">element.ts:40</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -5211,7 +5235,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#connectedcallback">connectedCallback</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L33">movable.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L33">movable.ts:33</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -5244,6 +5268,24 @@ img { max-width: 100%; }
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<a name="disconnectedcallback" class="tsd-anchor"></a>
+				<h3>disconnected<wbr>Callback</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<li class="tsd-signature tsd-kind-icon">disconnected<wbr>Callback<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#disconnectedcallback">disconnectedCallback</a></p>
+							<ul>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L36">element.ts:36</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -5288,7 +5330,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#flatchildren">flatChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L96">element.ts:96</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L107">element.ts:107</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6392,7 +6434,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#refresh">refresh</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L113">element.ts:113</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L124">element.ts:124</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6577,7 +6619,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#removechildren">removeChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L54">element.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L65">element.ts:65</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6681,7 +6723,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#removeshadowchildren">removeShadowChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L43">element.ts:43</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L54">element.ts:54</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6704,7 +6746,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#render">render</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/element.ts#L131">element.ts:131</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/element.ts#L142">element.ts:142</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -7155,7 +7197,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#updateattributes">updateAttributes</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/80c60a4/src/movable.ts#L30">movable.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/128e128/src/movable.ts#L30">movable.ts:30</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

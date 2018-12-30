@@ -28,11 +28,31 @@ declare class BaseRow extends TableElement {
 export declare class Header extends BaseRow {
     constructor();
     readonly css: string;
+    connectedCallback(): void;
 }
 declare const Row_base: {
     new (...args: any[]): {
+        connectedCallback(): void; /**
+         * An row element for use with [[Table]]. Should be a direct child of [[Table]].
+         */
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
+        connected: boolean;
+        readonly css: string | null;
+        readonly template: string | HTMLTemplateElement | null;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
+        updateAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
+        removeShadowChildren(): void;
+        removeChildren(): void;
+        appendShadowChild(element: Element): void;
+        appendShadowChildren(elements: Element[] | NodeList): void;
+        appendChildren(elements: Element[] | NodeList): void;
+        flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
+        refresh(): void;
+        render(shadowRoot: ShadowRoot): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -302,6 +322,23 @@ declare const Row_base: {
         handleDrop(event: Event): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
+        connected: boolean;
+        readonly css: string | null;
+        readonly template: string | HTMLTemplateElement | null;
+        connectedCallback(): void;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
+        updateAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
+        removeShadowChildren(): void;
+        removeChildren(): void;
+        appendShadowChild(element: Element): void;
+        appendShadowChildren(elements: Element[] | NodeList): void;
+        appendChildren(elements: Element[] | NodeList): void;
+        flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
+        refresh(): void;
+        render(shadowRoot: ShadowRoot): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -603,6 +640,23 @@ declare const Table_base: {
         handleDrop(event: Event): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
+        connected: boolean;
+        readonly css: string | null;
+        readonly template: string | HTMLTemplateElement | null;
+        connectedCallback(): void;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
+        updateAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
+        removeShadowChildren(): void;
+        removeChildren(): void;
+        appendShadowChild(element: Element): void;
+        appendShadowChildren(elements: Element[] | NodeList): void;
+        appendChildren(elements: Element[] | NodeList): void;
+        flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
+        refresh(): void;
+        render(shadowRoot: ShadowRoot): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;

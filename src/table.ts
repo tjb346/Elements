@@ -134,7 +134,6 @@ class BaseRow extends TableElement {
 export class Header extends BaseRow {
   constructor(){
     super();
-    this.setAttribute('slot', Table.HEADER_SLOT_NAME);
 
     this.onclick = (event) => {
       let target = event.target;
@@ -170,6 +169,11 @@ export class Header extends BaseRow {
             font-weight: bold;
         }
      `;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute('slot', Table.HEADER_SLOT_NAME);
   }
 }
 

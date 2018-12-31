@@ -508,8 +508,17 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     }
   }
 
-  get allRows() : Row[] {
+  get rows() : Row[] {
     return this.flatChildren(Row);
+  }
+
+  set rows(value : Row[]) {
+    for (let row of this.rows){
+      this.removeChild(row);
+    }
+    for (let row of value){
+      this.appendChild(row);
+    }
   }
 
   get showHidden(){
@@ -607,7 +616,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   private sort(){
     let frag = document.createDocumentFragment();
-    let rows = this.allRows;
+    let rows = this.rows;
 
     // Create array of arrays that have form [column index, sort order] for each column in sort stack.
     let sortData : SortData[] = [];
@@ -674,7 +683,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     // Selects the rows between the previously selected rows and the toggled row if
     // includeBetween and selectMultiple are true.
     if (selectMultiple && includeBetween && oldRows.size > 0){
-      let children = this.allRows;
+      let children = this.rows;
       let sliceIndex = children.indexOf(rowElement);
       let sectionIndex = children.indexOf(rowElement);
       for (let row of oldRows){

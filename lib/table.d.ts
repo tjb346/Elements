@@ -932,7 +932,7 @@ export declare class Table extends Table_base {
     readonly css: string;
     readonly selectedData: Set<any>;
     selectedRows: Row[];
-    readonly allRows: Row[];
+    rows: Row[];
     showHidden: boolean;
     readonly visibleColumnsDialog: Dialog;
     /**

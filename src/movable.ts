@@ -152,7 +152,6 @@ export class Grabbable extends Movable {
     super();
 
     this.onmousedown = (event : MouseEvent) => {
-      event.preventDefault();
       if (this.noPropagate){
         event.stopImmediatePropagation();
       }

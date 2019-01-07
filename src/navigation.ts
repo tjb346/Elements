@@ -190,19 +190,27 @@ export abstract class LazyRoute extends Route {
     show(){
         super.show();
 
-        if (!this.loaded){
-            this._lazyLoad();
+        if (!this.loaded) {
+            if (document.readyState === "loading") {
+                document.addEventListener('readystatechange', (event : Event) => {
+                    this.show();
+                });
+            } else {
+                this.lazyLoad();
+            }
         }
     }
 
-    private _lazyLoad(){
+    private lazyLoad(){
         let slot = document.createElement('slot');
         this._container.appendChild(slot);
 
         let templates = this.querySelectorAll('template');
         for (let template of templates){
             let clone = document.importNode(template.content, true);
-            this.appendChild(clone);
+            if (template.parentElement !== null) {
+                template.parentElement.replaceChild(clone, template);
+            }
         }
 
         if (this.url){

@@ -54,7 +54,7 @@ export declare abstract class LazyRoute extends Route {
     readonly loaded: ChildNode | null;
     render(shadowRoot: ShadowRoot): void;
     show(): void;
-    private _lazyLoad;
+    private lazyLoad;
     /**
      * Render the element shadow dom from the data given in the response.
      * @param response The http response from the url.

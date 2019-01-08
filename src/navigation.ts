@@ -8,8 +8,7 @@ export class Route extends CustomElement {
     private _name : string | null = null;
     private _title : string | null = null;
     protected containerId = 'container';
-    protected homeName = '';
-    protected defaultName = this.homeName;
+    protected rootRoute = Route.currentRoute();
     protected defaultTitle = 'Home';
 
     /**
@@ -40,14 +39,25 @@ export class Route extends CustomElement {
 
             this.updateState();
         });
+
+        document.addEventListener(RouterLink.EVENT_ROUTE_CHANGE, ((event : CustomEvent)  => {
+            this.updateState();
+        }) as EventListener );
     }
 
     static get observedAttributes() {
         return ['name', 'title'];
     }
 
+    static currentRoute() : string {
+        if (window.location.pathname[window.location.pathname.length - 1] === '/'){
+            return window.location.pathname.slice(0, window.location.pathname.length - 1);
+        }
+        return window.location.pathname;
+    }
+
     static currentPath() : string[] {
-        return window.location.pathname.split('/');
+        return Route.currentRoute().split('/');
     }
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -56,6 +66,14 @@ export class Route extends CustomElement {
         }
         if (attributes.title){
             this.title = attributes.title;
+        }
+    }
+
+    get defaultName() : string {
+        if (this.isRoot){
+            return this.rootRoute;
+        } else {
+            return "";
         }
     }
 
@@ -112,9 +130,6 @@ export class Route extends CustomElement {
 
     connectedCallback() {
         super.connectedCallback();
-        if (this.parentElement instanceof Navigation){
-            this.parentElement.addNewRoute(this);
-        }
         this.updateState();
     }
 
@@ -148,7 +163,7 @@ export class Route extends CustomElement {
         while (routePath.length > segmentIndex){
             let route = routePath[segmentIndex];
             let segmentName = currentPath[segmentIndex];
-            if ((route !== segmentName) || (route === "" && segmentName === undefined)){
+            if ((route !== segmentName) && !(route === "" && segmentName === undefined)){
                 match = false;
             }
             segmentIndex ++;
@@ -231,177 +246,69 @@ export abstract class LazyRoute extends Route {
     abstract renderResponse(response : Response) : void;
 }
 
-/**
- * A container for [[ Route ]] elements that creates a navigation bar to
- * navigate the routes it contains.
- */
-export class Navigation extends Route {
-    private nav : HTMLElement;
-    private menuButton : HTMLElement;
-    private list : HTMLElement;
-    protected defaultName = '';
-    protected openedClass = 'opened';
+export class RouterLink extends CustomElement {
+    private route : string = window.location.pathname;
+    /**
+     * @event
+     */
+    static EVENT_ROUTE_CHANGE = 'route-change';
 
-    constructor(){
+    constructor() {
         super();
 
-        this.nav = document.createElement('nav');
-        this.nav.onclick = (event : MouseEvent) => {
-            event.stopPropagation();  // to prevent clicks inside from closing menu
+        this.onclick = (event) => {
+            let a = document.createElement('a');
+            a.href = this.route;
+            window.history.pushState({}, "", a.href);
+
+            let customEvent = new CustomEvent(RouterLink.EVENT_ROUTE_CHANGE, {detail: a.href});
+            document.dispatchEvent(customEvent);
         };
-        this.list = document.createElement('ul');
-        this.menuButton = document.createElement('button');
-        this.menuButton.innerText = '\u2630';
-        this.menuButton.onclick = (event : MouseEvent) => {
-            // Toggle open and close menu
-            if (this.list.classList.contains(this.openedClass)){
-                this.list.classList.remove(this.openedClass);
-            } else {
-                this.list.classList.add(this.openedClass);
-            }
-        };
-        document.addEventListener('click', (event : MouseEvent) => {
-            this.list.classList.remove(this.openedClass); // close menu when click outside nav
-        });
-        this.nav.appendChild(this.menuButton);
-        this.nav.appendChild(this.list);
     }
 
-    get css(){
+    static get observedAttributes() {
+        return ['route'];
+    }
+
+    get css() {
         // language=CSS
-        return `            
+        return `
             :host {
-                --nav-height: 50px;
-                --nav-background-color: black;
-                --nav-text-color: white;
-                --nav-link-color: inherit;
-                --nav-link-hover-color: grey;
-                --nav-container-background: white;
-                --nav-collapse-size: 600px;
-                 
-                position: relative;
-                width: 100%;
-            }
-            
-            #${this.containerId} {
-                display:inline-block;
-                margin: 0;
-                width: 100%;
-                background-color: var(--nav-container-background);
-            }
-            
-            nav {
-                height: var(--nav-height);
-                color: var(--nav-text-color);
-                background-color: var(--nav-background-color);
-            }
-            
-            nav button {
-                display: none;
-                float: left;
-                padding: 0 0 0 10px;
-                border: 0;
-                line-height: var(--nav-height);
-                font-size: calc(var(--nav-height) - 20px);
-                color: var(--nav-text-color);
-                background-color: transparent;
-                cursor: pointer;
-            }
-            
-            nav ul {
-              margin: 0;
-              padding: 0;
-              float: right;
-              line-height: var(--nav-height);
-            }
-            
-            nav li {
-                display: inline;
-                list-style: none;
-                margin-right: 20px;
-            }
-            
-            a {
-                text-decoration: none;
-                color: var(--nav-link-color);
-            }
-            
-            a:hover {
-                color: var(--nav-link-hover-color);
-            }
-            
-            @media screen and (max-width: 600px) {
-                nav button {
-                    display: block;
-                }
-            
-                nav ul {
-                    position: absolute;
-                    top: var(--nav-height);
-                    left: 0;
-                    padding: 10px;
-                    display: none;
-                    float: left;
-                    line-height: normal;
-                    background-color: var(--nav-background-color);
-                    z-index: 9999;
-                }
+                --link-color: inherit;
+                --link-hover-color: grey;
                 
-                nav ul.${this.openedClass} {
-                    display: block;
-                }
-            
-                nav li {
-                    display: block;
-                    padding: 15px;
-                    margin: 0;
-                }
+                cursor: pointer;
+                text-decoration: underline;
+                color: var(--link-color);
             }
+            
+            :host(:hover) {
+                color: var(--link-hover-color);
+            }
+
         `;
     }
 
-    connectedCallback() {
-        super.connectedCallback();
-        for (let child of this.children){
-            if (child instanceof Route){
-                this.addNewRoute(child);
-                child.updateState();
+    updateAttributes(attributes: { [p: string]: string | null }): void {
+        if (attributes.route !== null) {
+            if (attributes.route.trim() === ""){
+                this.route = window.location.pathname;
+            } else {
+                this.route = attributes.route;
             }
+        } else {
+            this.route = window.location.pathname;
         }
     }
 
-    render(shadowRoot : ShadowRoot){
-        shadowRoot.appendChild(this.nav);
+
+    render(shadowRoot: ShadowRoot) {
         super.render(shadowRoot);
-    }
-
-    addNewRoute(routeElement : Route){
-        if (routeElement instanceof Route) {
-            let li = document.createElement('li');
-            let a = document.createElement('a');
-            a.innerText = routeElement.title;
-            a.href = routeElement.path.join('/');
-            a.onclick = (event) => {
-                event.preventDefault();
-
-                window.history.pushState({}, routeElement.title, routeElement.path.join('/'));
-                for (let child of this.children){
-                    if (child instanceof Route) {
-                        child.updateState();
-                    }
-                }
-            };
-            routeElement.addEventListener(Route.EVENT_TITLE_CHANGE, ((event : CustomEvent) => {
-                a.innerText = event.detail;
-            }) as EventListener );
-            li.appendChild(a);
-            this.list.appendChild(li);
-        }
+        let slot = document.createElement('slot');
+        shadowRoot.appendChild(slot);
     }
 }
 
-const rootPath = Route.currentPath();
-
 customElements.define('page-route', Route);
 customElements.define('lazy-route', LazyRoute);
-customElements.define('page-nav', Navigation);
+customElements.define('router-link', RouterLink);

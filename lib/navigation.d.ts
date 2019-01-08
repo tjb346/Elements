@@ -7,8 +7,7 @@ export declare class Route extends CustomElement {
     private _name;
     private _title;
     protected containerId: string;
-    protected homeName: string;
-    protected defaultName: string;
+    protected rootRoute: string;
     protected defaultTitle: string;
     /**
      * @event
@@ -28,10 +27,12 @@ export declare class Route extends CustomElement {
     static EVENT_HIDDEN: string;
     constructor();
     static readonly observedAttributes: string[];
+    static currentRoute(): string;
     static currentPath(): string[];
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
+    readonly defaultName: string;
     name: string;
     title: string;
     readonly path: string[];
@@ -61,19 +62,17 @@ export declare abstract class LazyRoute extends Route {
      */
     abstract renderResponse(response: Response): void;
 }
-/**
- * A container for [[ Route ]] elements that creates a navigation bar to
- * navigate the routes it contains.
- */
-export declare class Navigation extends Route {
-    private nav;
-    private menuButton;
-    private list;
-    protected defaultName: string;
-    protected openedClass: string;
+export declare class RouterLink extends CustomElement {
+    private route;
+    /**
+     * @event
+     */
+    static EVENT_ROUTE_CHANGE: string;
     constructor();
+    static readonly observedAttributes: string[];
     readonly css: string;
-    connectedCallback(): void;
+    updateAttributes(attributes: {
+        [p: string]: string | null;
+    }): void;
     render(shadowRoot: ShadowRoot): void;
-    addNewRoute(routeElement: Route): void;
 }

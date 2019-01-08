@@ -7,9 +7,30 @@
     <script type="module" src="../lib/navigation.js"></script>
     <script type="module" src="../lib/table.js"></script>
     <script type="module" src="../lib/dialog.js"></script>
+    <script type="module" src="../lib/menu.js"></script>
+    <style>
+        nav {
+            height: 50px;
+            background-color: black;
+        }
+
+        collapse-menu {
+            color: white;
+            line-height: 50px;
+            float: right;
+        }
+    </style>
 </head>
 <body>
-    <page-nav name="/Elements/examples">
+    <nav>
+        <collapse-menu>
+            <router-link route="">Home</router-link>
+            <router-link route="table">Table</router-link>
+            <router-link route="dialog">Dialog</router-link>
+            <router-link route="lazy">Lazy</router-link>
+        </collapse-menu>
+    </nav>
+    <page-route>
         <page-route>
             <h1>Home</h1>
             <p>Here are some examples of the elements. Navigation on this page is done using the page-nav element.</p>
@@ -157,6 +178,6 @@
                 <p>This content is lazy loaded</p>
             </template>
         </lazy-route>
-    </page-nav>
+    </page-route>
 </body>
 </html>

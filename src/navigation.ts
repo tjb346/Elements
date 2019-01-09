@@ -127,11 +127,9 @@ export class Route extends CustomElement {
         let currentPath = Route.currentPath();
         let segmentIndex = 0;
         let match = true;
-        console.log("START", routePath, currentPath);
         while (routePath.length > segmentIndex){
             let route = routePath[segmentIndex];
             let segmentName = currentPath[segmentIndex];
-            console.log("THIS", route, segmentName);
             if ((route !== segmentName) && !(route === "" && segmentName === undefined)){
                 match = false;
             }

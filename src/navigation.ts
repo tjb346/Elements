@@ -5,11 +5,8 @@ import {CustomElement} from "./element.js";
  * of this element.
  */
 export class Route extends CustomElement {
-    private _name : string | null = null;
-    private _title : string | null = null;
+    private localPath : string[] = [""];
     protected containerId = 'container';
-    protected rootRoute = Route.currentRoute();
-    protected defaultTitle = 'Home';
 
     /**
      * @event
@@ -69,48 +66,18 @@ export class Route extends CustomElement {
         }
     }
 
-    get defaultName() : string {
-        if (this.isRoot){
-            return this.rootRoute;
-        } else {
-            return "";
-        }
-    }
-
-    get name(){
-        return this._name || this.defaultName;
+    get name() : string {
+        return this.localPath.join('/');
     }
 
     set name(value : string) {
-        this._name = value;
+        this.localPath = value.split('/');
         this.dispatchEvent(new CustomEvent(Route.EVENT_NAME_CHANGE, {detail: this.name}));
     }
 
-    get title(){
-        if (this._title) {
-            return this._title;
-        }
-
-        if (this._name && this.name.length > 1){
-            return this._name.charAt(0).toUpperCase() + this._name.slice(1);
-        }
-
-        return this.defaultTitle;
-    }
-
-    set title(value : string){
-        if (value){
-            value = value.toString();
-            this._title = value.charAt(0).toUpperCase() + value.slice(1);
-        } else {
-            this._title = null;
-        }
-        this.dispatchEvent(new CustomEvent(Route.EVENT_TITLE_CHANGE, {detail: this.title}));
-    }
-
     get path() : string[] {
-        let path =  this.name.split('/');
         let parent = this.parentElement;
+        let path = this.localPath;
         if (parent instanceof Route){
             path = parent.path.concat(path);
         }
@@ -160,9 +127,11 @@ export class Route extends CustomElement {
         let currentPath = Route.currentPath();
         let segmentIndex = 0;
         let match = true;
+        console.log("START", routePath, currentPath);
         while (routePath.length > segmentIndex){
             let route = routePath[segmentIndex];
             let segmentName = currentPath[segmentIndex];
+            console.log("THIS", route, segmentName);
             if ((route !== segmentName) && !(route === "" && segmentName === undefined)){
                 match = false;
             }

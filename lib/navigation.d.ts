@@ -4,11 +4,8 @@ import { CustomElement } from "./element.js";
  * of this element.
  */
 export declare class Route extends CustomElement {
-    private _name;
-    private _title;
+    private localPath;
     protected containerId: string;
-    protected rootRoute: string;
-    protected defaultTitle: string;
     /**
      * @event
      */
@@ -32,9 +29,7 @@ export declare class Route extends CustomElement {
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    readonly defaultName: string;
     name: string;
-    title: string;
     readonly path: string[];
     readonly isRoot: boolean;
     connectedCallback(): void;

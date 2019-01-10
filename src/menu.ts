@@ -1,10 +1,10 @@
 import {CustomElement} from "./element.js";
-import {Route} from "./navigation";
 
 
 export class Menu extends CustomElement {
     private readonly button : HTMLButtonElement;
     private readonly container : HTMLDivElement;
+    private collapseWidth : number = 600;
 
     protected openedClass = 'opened';
 
@@ -28,6 +28,9 @@ export class Menu extends CustomElement {
         };
     }
 
+    static get observedAttributes() {
+        return ['collapse-width'];
+    }
 
     get css(){
         // language=CSS
@@ -36,6 +39,9 @@ export class Menu extends CustomElement {
                 --menu-background-color: white;
                 --menu-color: black;
                 --menu-button-size: 40px;
+                --menu-float: right;
+                
+                position: relative;
             }
             
             ::slotted(*) {
@@ -51,16 +57,29 @@ export class Menu extends CustomElement {
                 border: 0;
                 line-height: var(--menu-button-size);
                 font-size: calc(var(--menu-button-size) - 20px);
+                padding: 0 10px;
+                float: var(--menu-float);
             }
             
-            @media screen and (max-width: 600px) {                  
+            button:focus {
+                outline: none;
+            }
+            
+            @media screen and (max-width: ${this.collapseWidth}px) {  
+                :host {
+                    float: var(--menu-float);
+                }         
+                       
                 ::slotted(*) {
                     display: block;
                 } 
                 
                 div {
                     display: none;
-                    float: left;
+                    position: absolute;
+                    top: var(--menu-button-size);
+                    right: 0;
+                    z-index: 9999;
                 }     
                 
                 div.${this.openedClass} {
@@ -77,6 +96,12 @@ export class Menu extends CustomElement {
 
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
+        let collapseWidth = attributes['collapse-width'];
+        if (collapseWidth != null) {
+            this.collapseWidth = Number.parseInt(collapseWidth);
+        } else {
+            this.collapseWidth = 600;
+        }
     }
 
 

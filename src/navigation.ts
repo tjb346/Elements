@@ -214,7 +214,7 @@ export abstract class LazyRoute extends Route {
 }
 
 export class RouterLink extends CustomElement {
-    private route : string = window.location.pathname;
+    private route : string = "/";
     /**
      * @event
      */
@@ -224,11 +224,10 @@ export class RouterLink extends CustomElement {
         super();
 
         this.onclick = (event) => {
-            let a = document.createElement('a');
-            a.href = this.route;
-            window.history.pushState({}, "", a.href);
+            let url = new URL(this.route, window.location.href).toString();
+            window.history.pushState({}, "", url);
 
-            let customEvent = new CustomEvent(RouterLink.EVENT_ROUTE_CHANGE, {detail: a.href});
+            let customEvent = new CustomEvent(RouterLink.EVENT_ROUTE_CHANGE, {detail: url});
             document.dispatchEvent(customEvent);
         };
     }
@@ -258,13 +257,9 @@ export class RouterLink extends CustomElement {
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
         if (attributes.route !== null) {
-            if (attributes.route.trim() === ""){
-                this.route = window.location.pathname;
-            } else {
-                this.route = attributes.route;
-            }
+            this.route = attributes.route.trim();
         } else {
-            this.route = window.location.pathname;
+            this.route = "/";
         }
     }
 

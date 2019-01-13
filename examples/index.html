@@ -167,13 +167,16 @@
 
               document.addEventListener("DOMContentLoaded", function(event) {
                 document.querySelector('page-route[name=dialog]').addEventListener(Route.EVENT_SHOWN, (event) =>{
-                  let i = 1;
-                  for (let dialog of document.querySelectorAll('base-dialog')) {
-                    dialog.position = {x: 50 * i, y: 50 * i};
-                    dialog.velocity = {x: 0, y: 0};
-                    dialog.visible = true;
-                    i ++;
-                  }
+                    window.setTimeout(() => {
+                        // Wait for onclick listener to finish because one will close dialog if visible.
+                        let i = 1;
+                        for (let dialog of document.querySelectorAll('base-dialog')) {
+                            dialog.position = {x: 50 * i, y: 50 * i};
+                            dialog.velocity = {x: 0, y: 0};
+                            dialog.visible = true;
+                            i ++;
+                        }
+                    }, 0);
                 });
               });
             </script>

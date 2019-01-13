@@ -205,19 +205,15 @@ export class Dialog extends Grabbable {
 
   set visible(value : boolean){
     if (value !== this.visible){
-      window.setTimeout(() => {
-        // Wait for click events that may have triggered to finish being handled, so they don't close the dialog as well
-        if (value){
-          this.setAttribute('visible', "true");
-          let event = new Event(Dialog.EVENT_OPENED);
-          this.dispatchEvent(event);
-        } else {
-          this.removeAttribute('visible');
-          let event = new Event(Dialog.EVENT_CLOSED);
-          this.dispatchEvent(event);
-        }
-      }, 0);
-
+      if (value){
+        this.setAttribute('visible', "true");
+        let event = new Event(Dialog.EVENT_OPENED);
+        this.dispatchEvent(event);
+      } else {
+        this.removeAttribute('visible');
+        let event = new Event(Dialog.EVENT_CLOSED);
+        this.dispatchEvent(event);
+      }
     }
   }
 

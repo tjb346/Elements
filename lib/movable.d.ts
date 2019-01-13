@@ -37,6 +37,7 @@ export declare class Movable extends CustomElement {
      */
     velocity: Vector;
     readonly speed: number;
+    center(): void;
 }
 /**
  An element who's position can be changed by clicking and dragging.

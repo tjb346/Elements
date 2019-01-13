@@ -123,8 +123,6 @@ export class Dialog extends Grabbable {
       }
     
       :host([expanded]) {
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
       }
@@ -207,30 +205,19 @@ export class Dialog extends Grabbable {
 
   set visible(value : boolean){
     if (value !== this.visible){
-      if (value){
-        this.setAttribute('visible', "true");
-        let event = new Event(Dialog.EVENT_OPENED);
-        this.dispatchEvent(event);
-      } else {
-        this.removeAttribute('visible');
-        let event = new Event(Dialog.EVENT_CLOSED);
-        this.dispatchEvent(event);
-      }
-    }
-  }
+      window.setTimeout(() => {
+        // Wait for click events that may have triggered to finish being handled, so they don't close the dialog as well
+        if (value){
+          this.setAttribute('visible', "true");
+          let event = new Event(Dialog.EVENT_OPENED);
+          this.dispatchEvent(event);
+        } else {
+          this.removeAttribute('visible');
+          let event = new Event(Dialog.EVENT_CLOSED);
+          this.dispatchEvent(event);
+        }
+      }, 0);
 
-  get centered() : boolean {
-    let attr = this.getAttribute('centered');
-    return !(attr === null);
-  }
-
-  set centered(value : boolean) {
-    if (value !== this.centered){
-      if (value){
-        this.setAttribute('centered', "true");
-      } else {
-        this.removeAttribute('centered');
-      }
     }
   }
 

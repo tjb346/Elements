@@ -31,7 +31,6 @@ export declare class Dialog extends Grabbable {
     */
     name: string;
     visible: boolean;
-    centered: boolean;
     expanded: boolean;
     updateAttributes(attributes: {
         [p: string]: string | null;

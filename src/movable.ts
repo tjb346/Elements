@@ -150,10 +150,9 @@ export class Movable extends CustomElement {
  An element who's position can be changed by clicking and dragging.
  */
 export class Grabbable extends Movable {
+  public onmousedown : (ev: MouseEvent) => any;
   private startPosition : Vector = {x: 0, y: 0};
   private mouseStartPosition : Vector = {x: 0, y: 0};
-  private yMousePosition : number = 0;
-
   protected noPropagate : boolean = false;
 
   constructor(){
@@ -164,10 +163,12 @@ export class Grabbable extends Movable {
         event.stopImmediatePropagation();
       }
 
-      this.startPosition = this.position;
-      this.mouseStartPosition = {x: event.clientX, y: event.clientY};
+      if (event.target === this) {
+        this.startPosition = this.position;
+        this.mouseStartPosition = {x: event.clientX, y: event.clientY};
 
-      this.startDrag();
+        this.startDrag();
+      }
     };
   }
 

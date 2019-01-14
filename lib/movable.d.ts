@@ -43,9 +43,9 @@ export declare class Movable extends CustomElement {
  An element who's position can be changed by clicking and dragging.
  */
 export declare class Grabbable extends Movable {
+    onmousedown: (ev: MouseEvent) => any;
     private startPosition;
     private mouseStartPosition;
-    private yMousePosition;
     protected noPropagate: boolean;
     constructor();
     private startDrag;

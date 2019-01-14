@@ -46,6 +46,7 @@ export declare class Grabbable extends Movable {
     onmousedown: (ev: MouseEvent) => any;
     private startPosition;
     private mouseStartPosition;
+    protected includeChildren: boolean;
     protected noPropagate: boolean;
     constructor();
     private startDrag;

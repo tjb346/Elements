@@ -153,6 +153,7 @@ export class Grabbable extends Movable {
   public onmousedown : (ev: MouseEvent) => any;
   private startPosition : Vector = {x: 0, y: 0};
   private mouseStartPosition : Vector = {x: 0, y: 0};
+  protected includeChildren : boolean = false;
   protected noPropagate : boolean = false;
 
   constructor(){
@@ -163,7 +164,8 @@ export class Grabbable extends Movable {
         event.stopImmediatePropagation();
       }
 
-      if (event.target === this) {
+      if (event.target === this || this.includeChildren) {
+        event.preventDefault();
         this.startPosition = this.position;
         this.mouseStartPosition = {x: event.clientX, y: event.clientY};
 
@@ -174,9 +176,11 @@ export class Grabbable extends Movable {
 
   private startDrag() {
     document.onmousemove = (event : MouseEvent) => {
+      event.preventDefault();
       if (this.noPropagate){
         event.stopImmediatePropagation();
       }
+
       let xMovement = event.clientX - this.mouseStartPosition.x;
       let yMovement = event.clientY - this.mouseStartPosition.y;
       this.position = {
@@ -192,6 +196,8 @@ export class Grabbable extends Movable {
     if (this.noPropagate){
       event.stopImmediatePropagation();
     }
+    event.preventDefault();
+
     document.onmousemove = null;
     document.onmouseup = null;
   }

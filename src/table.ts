@@ -418,6 +418,11 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   public contextMenu : Grabbable | null;
 
+  /**
+   * @event
+   */
+  static EVENT_SELECTION_CHANGED = 'selectionchanged';
+
   constructor(){
     super();
     this.sortStack = [];
@@ -506,6 +511,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     for (let row of addedRows){
       row.selected = true;
     }
+
+    let event = new Event(Table.EVENT_SELECTION_CHANGED);
+    this.dispatchEvent(event);
   }
 
   get rows() : Row[] {

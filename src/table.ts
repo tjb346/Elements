@@ -521,12 +521,8 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   set rows(value : Row[]) {
-    for (let row of this.rows){
-      this.removeChild(row);
-    }
-    for (let row of value){
-      this.appendChild(row);
-    }
+    this.removeChildren(Row);
+    this.appendChildren(value);
   }
 
   get showHidden(){

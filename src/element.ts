@@ -62,9 +62,18 @@ export abstract class CustomElement extends HTMLElement {
   /**
    * Remove every child element
    */
-  removeChildren(){
-    while (this.firstChild) {
+  removeChildren(type? : any){
+    if (type !== undefined){
+      let children = Array.from(this.children);
+      for (let child of children){
+        if (child instanceof type){
+          this.removeChild(child);
+        }
+      }
+    } else {
+      while (this.firstChild) {
         this.removeChild(this.firstChild);
+      }
     }
   }
 

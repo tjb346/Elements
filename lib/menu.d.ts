@@ -7,8 +7,10 @@ export declare class Menu extends CustomElement {
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
+    readonly opened: boolean;
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     render(shadowRoot: ShadowRoot): void;
+    toggleOpened(): void;
 }

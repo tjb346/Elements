@@ -26,7 +26,7 @@ export declare abstract class CustomElement extends HTMLElement {
     /**
      * Remove every child element
      */
-    removeChildren(): void;
+    removeChildren(type?: any): void;
     /**
      * Add child to the shadow dom
      */

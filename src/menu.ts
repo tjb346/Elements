@@ -19,13 +19,23 @@ export class Menu extends CustomElement {
         this.button.type = 'button';
         this.button.innerText = '\u2630';
         this.button.onclick = (event : MouseEvent) => {
-            // Toggle open and close menu
-            if (this.container.classList.contains(this.openedClass)){
-                this.container.classList.remove(this.openedClass);
-            } else {
-                this.container.classList.add(this.openedClass);
-            }
+            this.toggleOpened();
         };
+
+        document.addEventListener('click', (event : MouseEvent) => {
+            if (event.target instanceof Element) {
+                let element : Element | null = event.target;
+                while(element !== null) {
+                    if (element === this){
+                        return;
+                    }
+                    element = element.parentElement;
+                }
+                if (this.opened){
+                    this.toggleOpened();
+                }
+            }
+        });
     }
 
     static get observedAttributes() {
@@ -94,6 +104,10 @@ export class Menu extends CustomElement {
         `;
     }
 
+    get opened(){
+        return this.container.classList.contains(this.openedClass);
+    }
+
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
         let collapseWidth = attributes['collapse-width'];
@@ -109,6 +123,15 @@ export class Menu extends CustomElement {
         super.render(shadowRoot);
         shadowRoot.appendChild(this.button);
         shadowRoot.appendChild(this.container);
+    }
+
+    toggleOpened(){
+        // Toggle open and close menu
+        if (this.opened){
+            this.container.classList.remove(this.openedClass);
+        } else {
+            this.container.classList.add(this.openedClass);
+        }
     }
 }
 

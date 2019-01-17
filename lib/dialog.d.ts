@@ -1,6 +1,5 @@
 import { Grabbable } from "./movable.js";
 export declare class Dialog extends Grabbable {
-    private _parentDialog;
     private readonly nameElement;
     private readonly headerElement;
     private readonly containerElement;

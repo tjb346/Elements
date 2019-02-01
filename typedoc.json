@@ -1,6 +1,6 @@
 {
   "mode": "modules",
-  "out": "./docs",
+  "out": "./docs/api",
   "name": "elements",
   "theme": "minimal",
   "ignoreCompilerErrors": "true",

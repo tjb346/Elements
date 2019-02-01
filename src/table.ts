@@ -416,8 +416,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   protected headerContainerClass = 'header';
   protected showHiddenClass = 'show-hidden';
 
-  public contextMenu : Grabbable | null;
-
   /**
    * @event
    */
@@ -430,8 +428,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
     this.columnsDialog = new Dialog();
     this.columnsDialog.name = "Columns";
-
-    this.contextMenu = null;
 
     // Deselected other rows if selectMultiple is false
     this.onclick = (event) => {

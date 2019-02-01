@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "test",
-    "doc": "typedoc --options typedoc.json src/"
+    "doc": "tsc -p tsconfig.docs.json && typedoc --options typedoc.json src/"
   },
   "author": "Ty Brockhoeft",
   "license": "ISC"

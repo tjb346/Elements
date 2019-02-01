@@ -1,0 +1,122 @@
+import { CustomElement } from "./element.js";
+export class Menu extends CustomElement {
+    constructor() {
+        super();
+        this.collapseWidth = 600;
+        this.openedClass = 'opened';
+        this.container = document.createElement('div');
+        let slot = document.createElement('slot');
+        this.container.appendChild(slot);
+        this.button = document.createElement('button');
+        this.button.type = 'button';
+        this.button.innerText = '\u2630';
+        this.button.onclick = (event) => {
+            this.toggleOpened();
+        };
+        document.addEventListener('click', (event) => {
+            if (event.target instanceof Element) {
+                let element = event.target;
+                while (element !== null) {
+                    if (element === this) {
+                        return;
+                    }
+                    element = element.parentElement;
+                }
+                if (this.opened) {
+                    this.toggleOpened();
+                }
+            }
+        });
+    }
+    static get observedAttributes() {
+        return ['collapse-width'];
+    }
+    get css() {
+        // language=CSS
+        return `            
+            :host {
+                --menu-background-color: white;
+                --menu-color: black;
+                --menu-button-size: 40px;
+                --menu-float: right;
+                
+                position: relative;
+            }
+            
+            ::slotted(*) {
+                display: inline;
+                margin-right: 20px;
+            }
+            
+            button {
+                display: none;
+                cursor: pointer;
+                color: var(--menu-color);
+                background-color: transparent;
+                border: 0;
+                line-height: var(--menu-button-size);
+                font-size: calc(var(--menu-button-size) - 20px);
+                padding: 0 10px;
+                float: var(--menu-float);
+            }
+            
+            button:focus {
+                outline: none;
+            }
+            
+            @media screen and (max-width: ${this.collapseWidth}px) {  
+                :host {
+                    float: var(--menu-float);
+                }         
+                       
+                ::slotted(*) {
+                    display: block;
+                } 
+                
+                div {
+                    display: none;
+                    position: absolute;
+                    top: var(--menu-button-size);
+                    right: 0;
+                    z-index: 9999;
+                }     
+                
+                div.${this.openedClass} {
+                    display: block;
+                    background-color: var(--menu-background-color);
+                }
+                
+                button {
+                    display: block;
+                }
+            }
+        `;
+    }
+    get opened() {
+        return this.container.classList.contains(this.openedClass);
+    }
+    updateAttributes(attributes) {
+        let collapseWidth = attributes['collapse-width'];
+        if (collapseWidth != null) {
+            this.collapseWidth = Number.parseInt(collapseWidth);
+        }
+        else {
+            this.collapseWidth = 600;
+        }
+    }
+    render(shadowRoot) {
+        super.render(shadowRoot);
+        shadowRoot.appendChild(this.button);
+        shadowRoot.appendChild(this.container);
+    }
+    toggleOpened() {
+        // Toggle open and close menu
+        if (this.opened) {
+            this.container.classList.remove(this.openedClass);
+        }
+        else {
+            this.container.classList.add(this.openedClass);
+        }
+    }
+}
+customElements.define('collapse-menu', Menu);

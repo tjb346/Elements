@@ -1,13 +1,15 @@
 import { Dialog } from "./dialog.js";
 import { CustomElement } from "./element.js";
+import { Scrollable } from "./movable.js";
 declare class ScrollWindowElement extends CustomElement {
-    readonly view: HTMLElement;
-    readonly pane: HTMLElement;
+    protected readonly view: HTMLElement;
+    protected readonly pane: Scrollable;
     constructor();
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     render(shadowRoot: ShadowRoot): void;
+    resetPane(): void;
 }
 declare class TableElement extends CustomElement {
     readonly table: Table | null;
@@ -31,9 +33,7 @@ export declare class Header extends BaseRow {
 }
 declare const Row_base: {
     new (...args: any[]): {
-        connectedCallback(): void; /**
-         * An row element for use with [[Table]]. Should be a direct child of [[Table]].
-         */
+        connectedCallback(): void;
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
         connected: boolean;

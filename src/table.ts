@@ -35,14 +35,14 @@ class TableBody extends Scrollable {
 customElements.define('table-body', TableBody);
 
 class ScrollWindowElement extends CustomElement {
-  public readonly view : HTMLElement;
-  public readonly pane : HTMLElement;
+  protected readonly view : HTMLElement;
+  protected readonly pane : Scrollable;
 
   constructor() {
     super();
 
     this.view = document.createElement('div');
-    this.pane = document.createElement('table-body');
+    this.pane = document.createElement('table-body') as TableBody;
 
     let slot = document.createElement('slot');
     this.pane.appendChild(slot);
@@ -62,6 +62,11 @@ class ScrollWindowElement extends CustomElement {
     this.pane.style.width = '100%';
 
     shadowRoot.appendChild(this.view);
+  }
+
+  resetPane(){
+    this.pane.position = {x: 0, y:0};
+    this.pane.velocity = {x: 0, y: 0};
   }
 }
 
@@ -519,6 +524,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   set rows(value : Row[]) {
     this.removeChildren(Row);
     this.appendChildren(value);
+    this.resetPane();
   }
 
   get showHidden(){

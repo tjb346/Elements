@@ -21,6 +21,8 @@ export declare class Dialog extends Grabbable {
      * @event
      */
     static EVENT_CLOSED: string;
+    static DETETE_BUTTON_URL: string;
+    static EXPAND_BUTTON_URL: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

@@ -1,3 +1,4 @@
+import "./dialog.js";
 import { Dialog } from "./dialog.js";
 import { CustomElement } from "./element.js";
 import { Scrollable } from "./movable.js";

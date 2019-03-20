@@ -20,8 +20,8 @@ export abstract class CustomElement extends HTMLElement {
     return [];
   }
 
-  get css(): string | null{
-    return null;
+  get css(): string {
+    return "";
   }
 
   get template(): string | HTMLTemplateElement | null {
@@ -150,7 +150,7 @@ export abstract class CustomElement extends HTMLElement {
    */
   render(shadowRoot : ShadowRoot){
     let css = this.css;
-    if (css) {
+    if (css !== "") {
         let styleElement = document.createElement('style');
         styleElement.type = 'text/css';
         styleElement.innerHTML= css.toString();

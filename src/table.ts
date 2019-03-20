@@ -1,7 +1,9 @@
+// import to define dialog element
+import "./dialog.js";
+
 import {Dialog} from "./dialog.js";
 import {CustomElement} from "./element.js";
-import {Grabbable, Scrollable} from "./movable.js";
-// import {compareDateStrings, compareNumbers, compareStrings} from "../utils.js";
+import {Scrollable} from "./movable.js";
 import {DraggableMixin, DroppableMixin} from "./draggable.js";
 
 class TableBody extends Scrollable {

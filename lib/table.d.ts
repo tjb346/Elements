@@ -19,7 +19,7 @@ declare class TableElement extends CustomElement {
     }): void;
 }
 declare class BaseRow extends TableElement {
-    protected hiddenClass: string;
+    static hiddenClass: string;
     constructor();
     readonly css: string;
     readonly template: string;
@@ -611,8 +611,8 @@ export declare class Row extends Row_base {
     handleDragStart(event: DragEvent): void;
 }
 export declare class Data extends TableElement {
-    protected ascendingSortClass: string;
-    protected descendingSortClass: string;
+    static ascendingSortClass: string;
+    static descendingSortClass: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
@@ -931,8 +931,8 @@ export declare class Table extends Table_base {
     private columnsDialog;
     private _selectMultiple;
     static readonly HEADER_SLOT_NAME = "header";
-    protected headerContainerClass: string;
-    protected showHiddenClass: string;
+    static headerContainerClass: string;
+    static showHiddenClass: string;
     /**
      * @event
      */

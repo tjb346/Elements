@@ -90,7 +90,7 @@ class TableElement extends CustomElement {
 }
 
 class BaseRow extends TableElement {
-  protected hiddenClass = "hidden";
+  static hiddenClass = "hidden";
 
   constructor() {
     super();
@@ -115,14 +115,14 @@ class BaseRow extends TableElement {
   }
 
   get hidden() : boolean {
-    return this.classList.contains(this.hiddenClass);
+    return this.classList.contains(BaseRow.hiddenClass);
   }
 
   set hidden(value : boolean){
     if (value){
-      this.classList.add(this.hiddenClass);
+      this.classList.add(BaseRow.hiddenClass);
     } else {
-      this.classList.remove(this.hiddenClass);
+      this.classList.remove(BaseRow.hiddenClass);
     }
   }
 
@@ -280,8 +280,8 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 }
 
 export class Data extends TableElement {
-  protected ascendingSortClass = 'asc';
-  protected descendingSortClass = 'des';
+  static ascendingSortClass = 'asc';
+  static descendingSortClass = 'des';
 
   constructor(){
     super();
@@ -309,11 +309,11 @@ export class Data extends TableElement {
             margin-right: 10px;
         }
 
-        :host(.${this.ascendingSortClass})::after {
+        :host(.${Data.ascendingSortClass})::after {
            content: "\\25BC";
         }
 
-        :host(.${this.descendingSortClass})::after {
+        :host(.${Data.descendingSortClass})::after {
             content: "\\25B2";
         }
 
@@ -359,9 +359,9 @@ export class Data extends TableElement {
   }
 
   get sortOrder(){
-    if (this.classList.contains(this.ascendingSortClass)){
+    if (this.classList.contains(Data.ascendingSortClass)){
       return 1;
-    } else if (this.classList.contains(this.descendingSortClass)){
+    } else if (this.classList.contains(Data.descendingSortClass)){
       return -1;
     }
     return 0;
@@ -380,16 +380,16 @@ export class Data extends TableElement {
   }
 
   toggleSortOrder(){
-    let next : string | null = this.ascendingSortClass;
-    if (this.classList.contains(this.ascendingSortClass)){
-      next = this.descendingSortClass;
-    } else if (this.classList.contains(this.descendingSortClass)){
+    let next : string | null = Data.ascendingSortClass;
+    if (this.classList.contains(Data.ascendingSortClass)){
+      next = Data.descendingSortClass;
+    } else if (this.classList.contains(Data.descendingSortClass)){
       next = null;
     }
 
     this.classList.remove(
-      this.ascendingSortClass,
-      this.descendingSortClass
+      Data.ascendingSortClass,
+      Data.descendingSortClass
     );
 
     if (next !== null) {
@@ -422,8 +422,8 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   static readonly HEADER_SLOT_NAME = 'header';
 
-  protected headerContainerClass = 'header';
-  protected showHiddenClass = 'show-hidden';
+  static headerContainerClass = 'header';
+  static showHiddenClass = 'show-hidden';
 
   /**
    * @event
@@ -476,13 +476,17 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             color: var(--table-body-text-color, black);
         }
         
+        :host(:not(.${Table.showHiddenClass})) ::slotted(.hidden) {
+            display: none;
+        }
+        
         a {
             text-decoration: none;
             color: var(--table-selected-item-color, #5d91e5);
             font-weight: bold;
         }
         
-        .${this.headerContainerClass} {
+        .${Table.headerContainerClass} {
             width: 100%;
         }
      `;
@@ -529,7 +533,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get showHidden(){
-    return this.classList.contains(this.showHiddenClass);
+    return this.classList.contains(Table.showHiddenClass);
   }
 
   get visibleColumnsDialog(){
@@ -572,9 +576,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   set showHidden(value){
     if (value) {
-      this.classList.add(this.showHiddenClass);
+      this.classList.add(Table.showHiddenClass);
     } else {
-      this.classList.remove(this.showHiddenClass);
+      this.classList.remove(Table.showHiddenClass);
     }
   }
 
@@ -589,7 +593,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   render(shadowRoot : ShadowRoot){
     let headerContainer = document.createElement('div');
-    headerContainer.className = this.headerContainerClass;
+    headerContainer.className = Table.headerContainerClass;
     let headerSlot = document.createElement('slot');
     headerSlot.name = Table.HEADER_SLOT_NAME;
     headerContainer.appendChild(headerSlot);

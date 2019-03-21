@@ -1,4 +1,13 @@
 import { Grabbable } from "./movable.js";
+/**
+ * A movable dialog element
+ * CSS variables for theming:
+ *    --dialog-header-height
+ *    --dialog-header-background-color
+ *    --dialog-header-text-color
+ *    --dialog-background
+ *    --dialog-font
+ */
 export declare class Dialog extends Grabbable {
     private readonly nameElement;
     private readonly headerElement;

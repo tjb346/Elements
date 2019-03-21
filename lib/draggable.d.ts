@@ -34,7 +34,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
          */
         clearTimeOuts(): void;
         connected: boolean;
-        readonly css: string | null;
+        readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;
         disconnectedCallback(): void;
@@ -320,7 +320,7 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
          */
         handleDragEnd(event: DragEvent): void;
         connected: boolean;
-        readonly css: string | null;
+        readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;

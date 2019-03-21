@@ -1,6 +1,14 @@
 import {CustomElement} from "./element.js";
 
 
+/**
+ * A collapsible menu
+ * CSS variables for theming:
+ *    --menu-color
+ *    --menu-background-color
+ *    --menu-button-size
+ *    --menu-float
+ */
 export class Menu extends CustomElement {
     private readonly button : HTMLButtonElement;
     private readonly container : HTMLDivElement;
@@ -46,10 +54,7 @@ export class Menu extends CustomElement {
         // language=CSS
         return `            
             :host {
-                --menu-background-color: white;
-                --menu-color: black;
-                --menu-button-size: 40px;
-                --menu-float: right;
+                --button-size: var(--menu-button-size, 40px);
                 
                 position: relative;
             }
@@ -62,13 +67,13 @@ export class Menu extends CustomElement {
             button {
                 display: none;
                 cursor: pointer;
-                color: var(--menu-color);
+                color: var(--menu-color, white);
                 background-color: transparent;
                 border: 0;
-                line-height: var(--menu-button-size);
-                font-size: calc(var(--menu-button-size) - 20px);
+                line-height: var(--button-size);
+                font-size: calc(var(--button-size) - 20px);
                 padding: 0 10px;
-                float: var(--menu-float);
+                float: var(--menu-float, right);
             }
             
             button:focus {
@@ -77,7 +82,7 @@ export class Menu extends CustomElement {
             
             @media screen and (max-width: ${this.collapseWidth}px) {  
                 :host {
-                    float: var(--menu-float);
+                    float: var(--menu-float, right);
                 }         
                        
                 ::slotted(*) {
@@ -87,14 +92,14 @@ export class Menu extends CustomElement {
                 div {
                     display: none;
                     position: absolute;
-                    top: var(--menu-button-size);
+                    top: var(--button-size);
                     right: 0;
                     z-index: 9999;
                 }     
                 
                 div.${this.openedClass} {
                     display: block;
-                    background-color: var(--menu-background-color);
+                    background-color: var(--menu-background-color, white);
                 }
                 
                 button {

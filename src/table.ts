@@ -100,9 +100,6 @@ class BaseRow extends TableElement {
     // language=CSS
     return `
         :host {
-            --selected-item-color: #5d91e5;
-            --focus-item-color: #c0d5e8;
-
             display: flex;
             width: 100%;
             height: var(--table-row-height, 30px);
@@ -158,11 +155,8 @@ export class Header extends BaseRow {
     // language=CSS
     return super.css + `
         :host {
-            --table-header-text-color: white;
-            --table-header-color: #5c6873;
-            
-            color: var(--table-header-text-color);
-            background: var(--table-header-color);
+            color: var(--table-header-text-color, white);
+            background: var(--table-header-color, #5c6873);
             text-transform: uppercase;
         }
         
@@ -172,7 +166,7 @@ export class Header extends BaseRow {
         
         a {
             text-decoration: none;
-            color: var(--table-header-text-color);
+            color: var(--table-header-text-color, white);
             font-weight: bold;
         }
      `;
@@ -223,17 +217,17 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
     // language=CSS
     return super.css + `
         :host(:hover) {
-            background: var(--focus-item-color);
+            background: var(--table-focus-item-color, #c0d5e8);
             cursor: pointer;
         }
         
         :host(.${Row.SELECTED_CLASS}){
-          background-color: var(--selected-item-color);
+          background-color: var(--table-selected-item-color, #5d91e5);
           color: #fff;
         }
         
         :host(.dragover) {
-            background: var(--focus-item-color);
+            background: var(--table-focus-item-color, #c0d5e8);
         }
         
         a.button {
@@ -412,7 +406,15 @@ type SortData = {
 
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
- */
+ *
+ * CSS variables for theming:
+ *    --table-row-height
+ *    --table-header-text-color
+ *    --table-header-color
+ *    --table-focus-item-color
+ *    --table-selected-item-color
+ *    --table-body-text-color
+ **/
 export class Table extends DroppableMixin(ScrollWindowElement) {
   private sortStack : Data[];
   private columnsDialog : Dialog;
@@ -463,23 +465,20 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   get css(){
     // language=CSS
     return `      
-        :host {
-            --table-row-height: 30px;
-            --table-background-color: white;
-          
+        :host {          
             position: relative;
             padding: 0;
             width: 100%;
             height: 400px;
-            background-color: var(--table-background-color);
+            background-color: var(--table-background-color, white);
             border-spacing: 0;
             box-shadow: none;
-            color: var(--body-text-color);
+            color: var(--table-body-text-color, black);
         }
         
         a {
             text-decoration: none;
-            color: var(--selected-item-color);
+            color: var(--table-selected-item-color, #5d91e5);
             font-weight: bold;
         }
         

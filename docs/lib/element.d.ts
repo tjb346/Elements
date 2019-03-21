@@ -8,7 +8,7 @@ export declare abstract class CustomElement extends HTMLElement {
     connected: boolean;
     protected constructor();
     static readonly observedAttributes: string[];
-    readonly css: string | null;
+    readonly css: string;
     readonly template: string | HTMLTemplateElement | null;
     connectedCallback(): void;
     disconnectedCallback(): void;

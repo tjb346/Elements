@@ -1,4 +1,12 @@
 import { CustomElement } from "./element.js";
+/**
+ * A collapsible menu
+ * CSS variables for theming:
+ *    --menu-color
+ *    --menu-background-color
+ *    --menu-button-size
+ *    --menu-float
+ */
 export declare class Menu extends CustomElement {
     private readonly button;
     private readonly container;

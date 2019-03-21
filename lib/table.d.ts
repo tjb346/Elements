@@ -38,7 +38,7 @@ declare const Row_base: {
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
         connected: boolean;
-        readonly css: string | null;
+        readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
@@ -323,7 +323,7 @@ declare const Row_base: {
         setTimeouts(): void;
         clearTimeOuts(): void;
         connected: boolean;
-        readonly css: string | null;
+        readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;
         disconnectedCallback(): void;
@@ -641,7 +641,7 @@ declare const Table_base: {
         setTimeouts(): void;
         clearTimeOuts(): void;
         connected: boolean;
-        readonly css: string | null;
+        readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;
         disconnectedCallback(): void;
@@ -917,7 +917,15 @@ declare const Table_base: {
 } & typeof ScrollWindowElement;
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
- */
+ *
+ * CSS variables for theming:
+ *    --table-row-height
+ *    --table-header-text-color
+ *    --table-header-color
+ *    --table-focus-item-color
+ *    --table-selected-item-color
+ *    --table-body-text-color
+ **/
 export declare class Table extends Table_base {
     private sortStack;
     private columnsDialog;

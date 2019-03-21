@@ -1459,6 +1459,12 @@ img { max-width: 100%; }
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a href="_dialog_.dialog.html#translate" class="tsd-kind-icon">translate</a>
 				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a href="_dialog_.dialog.html#detete_button_url" class="tsd-kind-icon">DETETE_<wbr>BUTTON_<wbr>URL</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a href="_dialog_.dialog.html#expand_button_url" class="tsd-kind-icon">EXPAND_<wbr>BUTTON_<wbr>URL</a>
+				</li>
 				<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite">
 					<a href="_dialog_.dialog.html#css" class="tsd-kind-icon">css</a>
 				</li>
@@ -1738,6 +1744,19 @@ img { max-width: 100%; }
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
+		<section class="tsd-panel tsd-comment">
+			<div class="tsd-comment tsd-typography">
+				<div class="lead">
+					<p>A movable dialog element
+						CSS variables for theming:
+						--dialog-header-height
+						--dialog-header-background-color
+						--dialog-header-text-color
+						--dialog-background
+					--dialog-font</p>
+				</div>
+			</div>
+		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
@@ -1955,6 +1974,8 @@ img { max-width: 100%; }
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_dialog_.dialog.html#timestep" class="tsd-kind-icon">time<wbr>Step</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_dialog_.dialog.html#title" class="tsd-kind-icon">title</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_dialog_.dialog.html#translate" class="tsd-kind-icon">translate</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_dialog_.dialog.html#detete_button_url" class="tsd-kind-icon">DETETE_<wbr>BUTTON_<wbr>URL</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_dialog_.dialog.html#expand_button_url" class="tsd-kind-icon">EXPAND_<wbr>BUTTON_<wbr>URL</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -2074,7 +2095,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_movable_.grabbable.html">Grabbable</a>.<a href="_movable_.grabbable.html#constructor">constructor</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L30">dialog.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L42">dialog.ts:42</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="_dialog_.dialog.html" class="tsd-signature-type">Dialog</a></h4>
@@ -2090,7 +2111,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">EVENT_<wbr>CLOSED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;closed&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L30">dialog.ts:30</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L39">dialog.ts:39</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2102,7 +2123,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">EVENT_<wbr>OPENED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;opened&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L25">dialog.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L34">dialog.ts:34</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2509,7 +2530,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#connected">connected</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L9">element.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L9">element.ts:9</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2601,7 +2622,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#frictioncoef">frictionCoef</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L19">movable.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L19">movable.ts:19</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2645,7 +2666,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.grabbable.html">Grabbable</a>.<a href="_movable_.grabbable.html#includechildren">includeChildren</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L156">movable.ts:156</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L156">movable.ts:156</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2825,7 +2846,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Overrides <a href="_movable_.grabbable.html">Grabbable</a>.<a href="_movable_.grabbable.html#nopropagate">noPropagate</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L15">dialog.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L24">dialog.ts:24</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2958,7 +2979,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Close<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L19">dialog.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L28">dialog.ts:28</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2968,7 +2989,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Remove<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L20">dialog.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L29">dialog.ts:29</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2978,7 +2999,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Show<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L18">dialog.ts:18</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L27">dialog.ts:27</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3735,7 +3756,7 @@ img { max-width: 100%; }
 					<p>Inherited from <a href="_movable_.grabbable.html">Grabbable</a>.<a href="_movable_.grabbable.html#onmousedown">onmousedown</a></p>
 					<p>Overrides GlobalEventHandlers.onmousedown</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L153">movable.ts:153</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L153">movable.ts:153</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -4676,7 +4697,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#timestep">timeStep</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L24">movable.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L24">movable.ts:24</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4707,6 +4728,26 @@ img { max-width: 100%; }
 					</ul>
 				</aside>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+				<a name="detete_button_url" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> DETETE_<wbr>BUTTON_<wbr>URL</h3>
+				<div class="tsd-signature tsd-kind-icon">DETETE_<wbr>BUTTON_<wbr>URL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gMUEDkZeUosOwAAAtJJREFUWMPNmL9PFEEUxz+7IfzQkHCGQlBC7uzuYiWUlIaWno20a71/x9ROCxl7WmJ5JViZozwERCyIZ0ICQsFa+Nasm52ZvRXO+yab7CVv5r47853ve28CKiCKE4xW2fsrYA1YBzrAUiH8FOgBe0DXaPWxOIcLQRUiUZw8AjaA99TDW2DbaHXtIxZUIPMG2OZ+sGW02nGRCjxk9oEV7hcHRqtVGykboQZwDkzxMLgBFoxWAyehKE4AGsB3RoMF4Ft+pcKSk3TO6PBZpPE3oYJmpkZIaCqKk/08qSC3Qq7TlEpsB/gALFb8w6/Aa/Gl1HGqt4xWOwCBMJsBrhxkboG20aofxUkAHAHLHjLHQNNolUZx0gIOgUkHqcfAVSi62fKYZxvo5wi2gIFjzEBiUvndlzlcRrxhtPodEMVJ6gjsGK0OS6xhBvghX53HLTBntLouGdOW7SuF0SoIJDcdeHTwHEiLRiakzsQqspV5ViQjsgiALx79rYSSKF1YFM2EJV90DcyLXo6B+bKVkbFHFQ7DWihZ24dl4EJWpIg74KU8d5atvahwCADWgyhOTkpKCBus+rCkIJvObDgNPIK2naB54M6WsUUzoaxMY5jJwxru2pBjPOuImZWYxrCT1yH0oKhDKDO9S0fMZQXzLHfhcRP1hDjnUsWVsZlepqfLvNClhp4rmKcLvVC6Ax98pvdJHp95+rAXAt0KJUSzgun5zLMpc7nQHbvkOiHvm46eqxfFyQugn6vsQtFFmVgngbMoTv6Yp4xpuchI70YowbuOwFSKq1auPvKZXmaeWf2TFWiundiO4mT8Sth8kb/jqIuyiXpDkMlKl56nSz7IutlikZ91Hj9H2HncGK2m811sWaP4dIS92RNgkDfTsWulbcl1YLSa9tTa/3LZMG1LvKHFoDJNrXpapDrXMatDX8eUCH1GiL2rSWQT2DVaXdW+sPpfV3q/AM0PYtQhZQVnAAAAAElFTkSuQmCC&quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L41">dialog.ts:41</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+				<a name="expand_button_url" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> EXPAND_<wbr>BUTTON_<wbr>URL</h3>
+				<div class="tsd-signature tsd-kind-icon">EXPAND_<wbr>BUTTON_<wbr>URL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gYHEhUdzt4g4wAAAlJJREFUWMPtmLFr20AUxn+6Oq7imoQUCs2QvyCDh9TQJVshayBbY+rVhUIH/xnlhnbJrTGXbKVdM3XwEmgyZAhkLHhIoVDToXbT0KbLU1CPk6zIqqOhHwgZcXr+9O5J7/teQAa0Ol2s0dHvNWAd2ABWgRVn+QA4BQ6AvjX62I2RhiALkVanWwM2gT3y4Tmwa40eTyIWZCDzDNilGLSt0b00UsEEMh+BRxSLI2t0M4lUEqEl4By4y7/BBbBsjR6mEmp1ugBLwFdmg2XgczxTyvMmnTM7fJLS+DtDE2rmDPgAhMDClAQWgQbwIKmmgliGfG/TGbAl5wC4MyWhqsR75ZBqW6N7AIGkax4YeQLsAC+A3wVuUx14Bzxxrt8DRkrqpp1wc+gU/pw85U2PuViMn8A3z39tWqOpxDLhw4Js0y+gArwEHufIyiHwGrhMWbMH7FekN2WBEjJbObfqTYaeuaakUZYF60q6dlmwoURClAWryqNnbhMripLhP6EshAYl4jNQIsjLglMl7qAsOFBAv0SE+iryTWWANfo46vbbGTzXlXTtPDiU+yd5t2uBVgO+exa9BZ6Khon0UJCD0FVMelSBfY9qqAHjigi0UavTbXsk7KIEiAhdFrAzVYnrGsjx9YdRBHYPOHIWNuRJ6jmVonvUJV7DEfm9yHkEHrf6wzGIX4CTBNk5reu4sEaHcRfrM4oPZ+jN7gPDuFEsnZVOaq5Da3Toqamihg0hMMzc7SN7a41uplikvOOY5o3HMZ5CnxdiOzmJbAPvrdGj3AOr2xrp/QFWN+Jth0cnawAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L42">dialog.ts:42</a></li>
+					</ul>
+				</aside>
+			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Accessors</h2>
@@ -4717,7 +4758,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#css">css</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L93">dialog.ts:93</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L105">dialog.ts:105</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4727,8 +4768,8 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">expanded<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L219">dialog.ts:219</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L224">dialog.ts:224</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L221">dialog.ts:221</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L226">dialog.ts:226</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4739,7 +4780,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#frictionforce">frictionForce</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L67">movable.ts:67</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L67">movable.ts:67</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4749,8 +4790,8 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L188">dialog.ts:188</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L196">dialog.ts:196</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L190">dialog.ts:190</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L198">dialog.ts:198</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4763,8 +4804,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#position">position</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L43">movable.ts:43</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L47">movable.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L43">movable.ts:43</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L47">movable.ts:47</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4780,7 +4821,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#speed">speed</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L134">movable.ts:134</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L134">movable.ts:134</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4791,7 +4832,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#template">template</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L27">element.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L27">element.ts:27</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4802,8 +4843,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#velocity">velocity</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L80">movable.ts:80</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L87">movable.ts:87</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L80">movable.ts:80</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L87">movable.ts:87</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -4818,8 +4859,8 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L200">dialog.ts:200</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L205">dialog.ts:205</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L202">dialog.ts:202</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L207">dialog.ts:207</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -4830,7 +4871,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#observedattributes">observedAttributes</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L89">dialog.ts:89</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L101">dialog.ts:101</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -5049,7 +5090,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendchildren">appendChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L105">element.ts:105</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L105">element.ts:105</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5078,7 +5119,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendshadowchild">appendShadowChild</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L83">element.ts:83</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L83">element.ts:83</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5107,7 +5148,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#appendshadowchildren">appendShadowChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L92">element.ts:92</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L92">element.ts:92</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5165,7 +5206,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#attributechangedcallback">attributeChangedCallback</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L40">element.ts:40</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L40">element.ts:40</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -5244,7 +5285,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#center">center</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/movable.ts#L139">movable.ts:139</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/movable.ts#L139">movable.ts:139</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -5415,7 +5456,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#connectedcallback">connectedCallback</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L246">dialog.ts:246</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L248">dialog.ts:248</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -5462,7 +5503,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#disconnectedcallback">disconnectedCallback</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L252">dialog.ts:252</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L254">dialog.ts:254</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -5510,7 +5551,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#flatchildren">flatChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L116">element.ts:116</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L116">element.ts:116</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6614,7 +6655,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#refresh">refresh</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L133">element.ts:133</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L133">element.ts:133</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6661,7 +6702,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides ChildNode.remove</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L263">dialog.ts:263</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L265">dialog.ts:265</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -6794,7 +6835,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#removechildren">removeChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L65">element.ts:65</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L65">element.ts:65</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6904,7 +6945,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#removeshadowchildren">removeShadowChildren</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/element.ts#L54">element.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/element.ts#L54">element.ts:54</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -6927,7 +6968,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_element_.customelement.html">CustomElement</a>.<a href="_element_.customelement.html#render">render</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L256">dialog.ts:256</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L258">dialog.ts:258</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -7370,7 +7411,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="_movable_.movable.html">Movable</a>.<a href="_movable_.movable.html#updateattributes">updateAttributes</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/9fff0d8/src/dialog.ts#L235">dialog.ts:235</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/8133b24/src/dialog.ts#L237">dialog.ts:237</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

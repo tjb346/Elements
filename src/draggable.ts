@@ -7,9 +7,23 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
         public dragOverActions : (() => void)[] = []; // Actions to happen after dragover for dragOverDelay
         public dragOverDelay = 2000;
         public timeOuts : number[] = [];
+        public counterSet : Set<EventTarget> = new Set();
+
+        static dragOverClass = 'dragover';
+        static pendingActionClass = 'pending-action';
 
         protected constructor(...args: any[]) {
             super(...args);
+
+            // Update the dragover counter if a child is removed.
+            let mutationObserver = new MutationObserver((mutationList) => {
+                for (let mutation of mutationList){
+                    if (mutation.removedNodes.length > 0) {
+                        this.handleChildrenRemoved(mutation.removedNodes);
+                    }
+                }
+            });
+            mutationObserver.observe(this, {childList: true, subtree: true});
 
             this.addEventListener("dragover", this.handleDragOver.bind(this));
             this.addEventListener("dragenter", this.handleDragEnter.bind(this));
@@ -17,16 +31,8 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
             this.addEventListener("drop", this.handleDrop.bind(this));
         }
 
-        static get dragOverClass(){
-            return 'dragover';
-        }
-
-        static get pendingActionClass(){
-            return 'pending-action';
-        }
-
         get isOver(){
-            return this.classList.contains((this.constructor as typeof Droppable).dragOverClass);
+            return this.classList.contains(Droppable.dragOverClass);
         }
 
         /**
@@ -49,8 +55,13 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
         handleDragEnter(event : Event){
             event.preventDefault();
 
-            this.classList.add((this.constructor as typeof Droppable).dragOverClass);
-            this.setTimeouts();
+            if (this.counterSet.size === 0){
+                this.classList.add(Droppable.dragOverClass);
+                this.setTimeouts();
+            }
+            if (event.target !== null){
+                this.counterSet.add(event.target);
+            }
         }
 
         /**
@@ -59,8 +70,13 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
         handleDragLeave(event : Event){
             event.preventDefault();
 
-            this.classList.remove((this.constructor as typeof Droppable).dragOverClass);
-            this.clearTimeOuts();
+            if (event.target !== null){
+                this.counterSet.delete(event.target);
+            }
+            if (this.counterSet.size === 0) {
+                this.classList.remove(Droppable.dragOverClass);
+                this.clearTimeOuts();
+            }
         }
 
         /**
@@ -69,8 +85,17 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
         handleDrop(event : Event){
             event.preventDefault();
 
-            this.classList.remove((this.constructor as typeof Droppable).dragOverClass);
+            this.counterSet = new Set();
+            this.classList.remove(Droppable.dragOverClass);
             this.clearTimeOuts();
+
+        }
+
+        handleChildrenRemoved(removedChildren : NodeList) {
+            for (let child of removedChildren){
+                this.counterSet.delete(child);
+                this.handleChildrenRemoved(child.childNodes);
+            }
         }
 
         /**
@@ -84,7 +109,7 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
                     }, this.dragOverDelay);
                     this.timeOuts.push(timeoutId);
                 }
-                this.classList.add((this.constructor as typeof Droppable).pendingActionClass);
+                this.classList.add(Droppable.pendingActionClass);
             }
         }
 
@@ -92,7 +117,7 @@ export function DroppableMixin<T extends new(...args: any[]) => CustomElement>(E
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts(){
-            this.classList.remove((this.constructor as typeof Droppable).pendingActionClass);
+            this.classList.remove(Droppable.pendingActionClass);
             for (let timeout of this.timeOuts){
                 window.clearTimeout(timeout);
             }

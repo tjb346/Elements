@@ -236,22 +236,16 @@ export class Dialog extends Grabbable {
      */
     closeOnOutsideClick(event) {
         if (!event.defaultPrevented) {
-            let targets = new Set();
-            let target = event.target;
-            while (target) {
-                targets.add(target);
-                target = target.parentElement;
+            let targets = new Set(event.composedPath());
+            if (targets.has(this)) {
+                return;
             }
-            let isThis = targets.has(this);
-            let isChild = false;
             for (let child of this.flatChildren(Dialog)) {
                 if (targets.has(child)) {
-                    isChild = true;
+                    return;
                 }
             }
-            if (!(isThis || isChild)) {
-                this.visible = false;
-            }
+            this.visible = false;
         }
     }
     ;

@@ -104,7 +104,7 @@ export class Dialog extends Grabbable {
 
   get css(){
     // language=CSS
-    return  `     
+    return  super.css + `     
       :host {
         --header-height: var(--dialog-header-height, 28px);
         --delete-button: url(${Dialog.DETETE_BUTTON_URL});
@@ -148,19 +148,14 @@ export class Dialog extends Grabbable {
       }
       
       .${this.headerClass} > button {
+        float: right;
+        cursor: pointer;
         border: none;
+        margin: 0;
         background-color: inherit;
         padding: unset;
         width: var(--header-height);
         height: var(--header-height);
-      }
-      
-      button {
-        display: inline-block;
-        float: right;
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
       }
       
       .${this.expandButtonClass}::after {
@@ -292,34 +287,48 @@ export class Dialog extends Grabbable {
 }
 
 export class ConfirmDialog extends Dialog {
-  private _confirmButton : HTMLButtonElement;
+  private readonly confirmButton : HTMLButtonElement;
 
   /**
    * @event
    */
   static EVENT_CONFIRMED = 'confirmed';
 
+  static confirmButtonClass = 'confirm';
+
   constructor(){
     super();
 
-    this._confirmButton = document.createElement('button');
+    this.confirmButton = document.createElement('button');
+    this.confirmButton.className = ConfirmDialog.confirmButtonClass;
+    this.confirmButton.innerText = "Yes";
+    this.confirmButton.onclick = this.onConfirmed.bind(this);
   }
+
+  get css(){
+    // language=CSS
+    return  super.css + `
+        .${ConfirmDialog.confirmButtonClass} {
+            float: right;
+            margin: 2px;
+            cursor: pointer;
+        }
+    `
+  }
+
 
   render(root : ShadowRoot) {
     super.render(root);
 
-    this._confirmButton.innerText = "Yes";
-    this._confirmButton.onclick = this.onConfirmed.bind(this);
-    this._confirmButton.className = 'button';
-    root.appendChild(this._confirmButton);
+    root.appendChild(this.confirmButton);
   }
 
   set confirmationText(value : string){
-    this._confirmButton.innerText = value;
+    this.confirmButton.innerText = value;
   }
 
   set disabled(value : boolean | string){
-    this._confirmButton.disabled = Boolean(value);
+    this.confirmButton.disabled = Boolean(value);
   }
 
   onConfirmed(event : Event){

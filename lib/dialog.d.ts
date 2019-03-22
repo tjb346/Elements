@@ -55,12 +55,14 @@ export declare class Dialog extends Grabbable {
     private closeOnOutsideClick;
 }
 export declare class ConfirmDialog extends Dialog {
-    private _confirmButton;
+    private readonly confirmButton;
     /**
      * @event
      */
     static EVENT_CONFIRMED: string;
+    static confirmButtonClass: string;
     constructor();
+    readonly css: string;
     render(root: ShadowRoot): void;
     confirmationText: string;
     disabled: boolean | string;

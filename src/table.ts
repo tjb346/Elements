@@ -126,7 +126,7 @@ class BaseRow extends TableElement {
     }
   }
 
-  get allColumns() : Data[]{
+  get allColumns() : Data[] {
     return Array.from(this.children).filter((child : Element) => child instanceof Data) as Data[];
   }
 
@@ -169,6 +169,19 @@ export class Header extends BaseRow {
             color: var(--table-header-text-color, white);
             font-weight: bold;
         }
+      
+        ::slotted(*)::after {
+            float: right;
+            margin-right: 10px;
+        }
+
+        ::slotted(.${Data.ascendingSortClass})::after {
+           content: "\\25BC";
+        }
+
+        ::slotted(.${Data.descendingSortClass})::after {
+            content: "\\25B2";
+        }
      `;
   }
 
@@ -178,6 +191,13 @@ export class Header extends BaseRow {
   }
 }
 
+
+type SortOrderValues = -1 | 0 | 1;
+
+type SortData = {
+  columnNumber: number,
+  sortOrder: SortOrderValues;
+}
 
 /**
  * An row element for use with [[Table]]. Should be a direct child of [[Table]].
@@ -277,6 +297,15 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
       event.dataTransfer.dropEffect = 'move';
     }
   }
+
+  compare(row : Row, columnNumber : number){
+    let dataElement1 = this.getColumn(columnNumber);
+    let dataElement2 = row.getColumn(columnNumber);
+    if (dataElement1 === null || dataElement2 === null){
+      return 0;
+    }
+    return dataElement1.compare(dataElement2);
+  }
 }
 
 export class Data extends TableElement {
@@ -303,20 +332,6 @@ export class Data extends TableElement {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
-        :host::after {
-            float: right;
-            margin-right: 10px;
-        }
-
-        :host(.${Data.ascendingSortClass})::after {
-           content: "\\25BC";
-        }
-
-        :host(.${Data.descendingSortClass})::after {
-            content: "\\25B2";
-        }
-
     `;
   }
 
@@ -358,13 +373,30 @@ export class Data extends TableElement {
     return null;
   }
 
-  get sortOrder(){
+  get sortOrder() : SortOrderValues {
     if (this.classList.contains(Data.ascendingSortClass)){
       return 1;
     } else if (this.classList.contains(Data.descendingSortClass)){
       return -1;
     }
     return 0;
+  }
+
+  set sortOrder(value : SortOrderValues){
+    switch (value){
+      case -1:
+        this.classList.remove(Data.ascendingSortClass);
+        this.classList.add(Data.descendingSortClass);
+        break;
+      case 0:
+        this.classList.remove(Data.descendingSortClass);
+        this.classList.remove(Data.ascendingSortClass);
+        break;
+      case 1:
+        this.classList.remove(Data.descendingSortClass);
+        this.classList.add(Data.ascendingSortClass);
+        break;
+    }
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -375,32 +407,9 @@ export class Data extends TableElement {
     this.width = width;
   }
 
-  compare(dataElement : Data){
+  compare(dataElement : Data) : number {
     return this.data.localeCompare(dataElement.data);
   }
-
-  toggleSortOrder(){
-    let next : string | null = Data.ascendingSortClass;
-    if (this.classList.contains(Data.ascendingSortClass)){
-      next = Data.descendingSortClass;
-    } else if (this.classList.contains(Data.descendingSortClass)){
-      next = null;
-    }
-
-    this.classList.remove(
-      Data.ascendingSortClass,
-      Data.descendingSortClass
-    );
-
-    if (next !== null) {
-      this.classList.add(next);
-    }
-  }
-}
-
-type SortData = {
-  columnNumber: number,
-  sortOrder: number
 }
 
 
@@ -416,9 +425,9 @@ type SortData = {
  *    --table-body-text-color
  **/
 export class Table extends DroppableMixin(ScrollWindowElement) {
-  private sortStack : Data[];
+  private sortOrder : SortData[] = [];
   private columnsDialog : Dialog;
-  private _selectMultiple : boolean;
+  private _selectMultiple : boolean = false;
 
   static readonly HEADER_SLOT_NAME = 'header';
 
@@ -432,8 +441,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   constructor(){
     super();
-    this.sortStack = [];
-    this._selectMultiple = false;
 
     this.columnsDialog = new Dialog();
     this.columnsDialog.name = "Columns";
@@ -569,7 +576,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   set selectMultiple(value){
     this._selectMultiple = value;
-    for (let row of this.flatChildren(Row)){
+    for (let row of this.rows){
       row.selected = false;
     }
   }
@@ -584,6 +591,16 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   get mainHeader() : Header | null {
     return this.querySelector('table-header');
+  }
+
+  get sortMap() : {[columnNumber : number] : SortOrderValues}  {
+    return this.sortOrder.reduce(
+      (sortMap : {[columnNumber : number] : SortOrderValues}, sortData : SortData) => {
+        sortMap[sortData.columnNumber] = sortData.sortOrder;
+        return sortMap;
+      },
+      {},
+    );
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
@@ -607,59 +624,69 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
    * Sort the table by the column with the given columnNumber.
    */
   sortColumn(columnNumber : number){
-    let header = this.mainHeader;
-    if (header){
-      let dataElement = header.getColumn(columnNumber);
-      if (dataElement) {
-        dataElement.toggleSortOrder();
-        if (dataElement.sortOrder === 0){
-          let index = this.sortStack.indexOf(dataElement);
-          if (index){
-            this.sortStack.splice(index, 1);
-          }
+    // Get existing value if it exists
+    let sortOrderValue : SortOrderValues = this.sortMap[columnNumber] || 0;
+
+    // Remove existing from sort order
+    this.sortOrder = this.sortOrder.filter((sortData) => {
+      return sortData.columnNumber !== columnNumber;
+    });
+
+    if (sortOrderValue !== null){
+      switch (sortOrderValue) {
+        case -1:
+          sortOrderValue = 0;
+          break;
+        case 0:
+          sortOrderValue = 1;
+          break;
+        case 1:
+          sortOrderValue = -1;
+          break;
+      }
+      if (sortOrderValue !== 0){
+        this.sortOrder.unshift({
+          columnNumber: columnNumber,
+          sortOrder: sortOrderValue,
+        });
+      }
+    }
+
+    this.sort();
+
+    this.updateColumnSortOrders();
+  }
+
+  private updateColumnSortOrders(){
+    let sortMap = this.sortMap;
+    for (let row of this.flatChildren(BaseRow)){
+      let columns = row.allColumns;
+      for (let i = 0; i < columns.length; i++) {
+        let column : Data = columns[i];
+        let sortOrderValue = sortMap[i];
+        if (sortOrderValue === undefined){
+          column.sortOrder = 0;
         } else {
-          this.sortStack.push(dataElement);
+          column.sortOrder = sortOrderValue;
         }
-        this.sort();
       }
     }
   }
 
   private sort(){
-    let frag = document.createDocumentFragment();
     let rows = this.rows;
 
-    // Create array of arrays that have form [column index, sort order] for each column in sort stack.
-    let sortData : SortData[] = [];
-    for (let dataElement of this.sortStack) {
-      let order = dataElement.sortOrder;
-      let columnNumber = dataElement.column;
-      if (order !== 0 && columnNumber !== null) {
-        sortData.unshift({
-            columnNumber: columnNumber,
-            sortOrder: order
-        });
-      }
-    }
     rows = rows.sort((row1, row2) => {
-      for (let items of sortData){
-        let dataElement1 = row1.getColumn(items.columnNumber);
-        let dataElement2 = row2.getColumn(items.columnNumber);
-        if (dataElement1 === null || dataElement2 === null){
-          return 0;
-        }
-        dataElement1.compare(dataElement2);
-        let result = items.sortOrder * dataElement1.compare(dataElement2);
+      for (let sortData of this.sortOrder){
+        let result = sortData.sortOrder * row1.compare(row2, sortData.columnNumber);
         if (result !== 0) {
           return result;
         }
       }
       return 0;
     });
-    for (let row of rows){
-      frag.appendChild(row);
-    }
-    this.appendChild(frag);
+
+    this.rows = rows;
   }
 
   /**

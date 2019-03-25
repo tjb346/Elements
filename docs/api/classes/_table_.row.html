@@ -938,6 +938,9 @@ img { max-width: 100%; }
 					<a href="_table_.row.html#selected" class="tsd-kind-icon">selected</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="_table_.row.html#compare" class="tsd-kind-icon">compare</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_table_.row.html#handledragstart" class="tsd-kind-icon">handle<wbr>Drag<wbr>Start</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -959,6 +962,9 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
 			<a href="../modules/_table_.html#sortdata" class="tsd-kind-icon">Sort<wbr>Data</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+			<a href="../modules/_table_.html#sortordervalues" class="tsd-kind-icon">Sort<wbr>Order<wbr>Values</a>
 		</li>
 	</ul>
 </nav>
@@ -1016,6 +1022,7 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_table_.row.html#compare" class="tsd-kind-icon">compare</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_table_.row.html#handledragstart" class="tsd-kind-icon">handle<wbr>Drag<wbr>Start</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_table_.row.html#toggleselected" class="tsd-kind-icon">toggle<wbr>Selected</a></li>
 						</ul>
@@ -1035,7 +1042,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L187">table.ts:187</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L207">table.ts:207</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="_table_.row.html" class="tsd-signature-type">Row</a></h4>
@@ -1051,7 +1058,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">DATA_<wbr>TRANSFER_<wbr>TYPE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"text/table-rows"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;text/table-rows&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L186">table.ts:186</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L206">table.ts:206</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1061,7 +1068,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">SELECTED_<wbr>CLASS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"selected"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;selected&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L187">table.ts:187</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L207">table.ts:207</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1074,7 +1081,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">css<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L216">table.ts:216</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L236">table.ts:236</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1084,7 +1091,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L248">table.ts:248</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L268">table.ts:268</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1094,14 +1101,40 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">selected<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L244">table.ts:244</a></li>
-						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L258">table.ts:258</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L264">table.ts:264</a></li>
+						<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L278">table.ts:278</a></li>
 					</ul>
 				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="compare" class="tsd-anchor"></a>
+				<h3>compare</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">compare<span class="tsd-signature-symbol">(</span>row<span class="tsd-signature-symbol">: </span><a href="_table_.row.html" class="tsd-signature-type">Row</a>, columnNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L301">table.ts:301</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>row: <a href="_table_.row.html" class="tsd-signature-type">Row</a></h5>
+							</li>
+							<li>
+								<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="handledragstart" class="tsd-anchor"></a>
 				<h3>handle<wbr>Drag<wbr>Start</h3>
@@ -1112,7 +1145,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L273">table.ts:273</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L293">table.ts:293</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1135,7 +1168,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/1f9ff80/src/table.ts#L268">table.ts:268</a></li>
+								<li>Defined in <a href="https://github.com/tjb346/Elements/blob/825eed0/src/table.ts#L288">table.ts:288</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

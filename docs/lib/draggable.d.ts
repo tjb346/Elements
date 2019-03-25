@@ -4,6 +4,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         dragOverActions: (() => void)[];
         dragOverDelay: number;
         timeOuts: number[];
+        counterSet: Set<EventTarget>;
         readonly isOver: boolean;
         /**
          * Add callback to be called when dragover starts after the dragover delay.
@@ -25,6 +26,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
          * Called when drop event triggered.
          */
         handleDrop(event: Event): void;
+        handleChildrenRemoved(removedChildren: NodeList): void;
         /**
          * Set timeouts to call dragover actions.
          */
@@ -305,8 +307,8 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         focus(options?: FocusOptions | undefined): void;
         readonly style: CSSStyleDeclaration;
     };
-    readonly dragOverClass: string;
-    readonly pendingActionClass: string;
+    dragOverClass: string;
+    pendingActionClass: string;
 } & T;
 export declare function DraggableMixin<T extends new (...args: any[]) => CustomElement>(ElementClass: T): {
     new (...args: any[]): {

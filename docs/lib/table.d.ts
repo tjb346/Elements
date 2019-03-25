@@ -32,6 +32,7 @@ export declare class Header extends BaseRow {
     readonly css: string;
     connectedCallback(): void;
 }
+declare type SortOrderValues = -1 | 0 | 1;
 declare const Row_base: {
     new (...args: any[]): {
         connectedCallback(): void;
@@ -314,12 +315,14 @@ declare const Row_base: {
         dragOverActions: (() => void)[];
         dragOverDelay: number;
         timeOuts: number[];
+        counterSet: Set<EventTarget>;
         readonly isOver: boolean;
         addDragoverAction(callback: () => void): void;
         handleDragOver(event: Event): void;
         handleDragEnter(event: Event): void;
         handleDragLeave(event: Event): void;
         handleDrop(event: Event): void;
+        handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
         connected: boolean;
@@ -594,8 +597,8 @@ declare const Row_base: {
         focus(options?: FocusOptions | undefined): void;
         readonly style: CSSStyleDeclaration;
     };
-    readonly dragOverClass: string;
-    readonly pendingActionClass: string;
+    dragOverClass: string;
+    pendingActionClass: string;
 } & typeof BaseRow;
 /**
  * An row element for use with [[Table]]. Should be a direct child of [[Table]].
@@ -609,6 +612,7 @@ export declare class Row extends Row_base {
     readonly data: string[];
     toggleSelected(): void;
     handleDragStart(event: DragEvent): void;
+    compare(row: Row, columnNumber: number): number;
 }
 export declare class Data extends TableElement {
     static ascendingSortClass: string;
@@ -620,24 +624,25 @@ export declare class Data extends TableElement {
     data: string;
     width: number | null;
     readonly column: number | null;
-    readonly sortOrder: 1 | 0 | -1;
+    sortOrder: SortOrderValues;
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     compare(dataElement: Data): number;
-    toggleSortOrder(): void;
 }
 declare const Table_base: {
     new (...args: any[]): {
         dragOverActions: (() => void)[];
         dragOverDelay: number;
         timeOuts: number[];
+        counterSet: Set<EventTarget>;
         readonly isOver: boolean;
         addDragoverAction(callback: () => void): void;
         handleDragOver(event: Event): void;
         handleDragEnter(event: Event): void;
         handleDragLeave(event: Event): void;
         handleDrop(event: Event): void;
+        handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
         connected: boolean;
@@ -912,8 +917,8 @@ declare const Table_base: {
         focus(options?: FocusOptions | undefined): void;
         readonly style: CSSStyleDeclaration;
     };
-    readonly dragOverClass: string;
-    readonly pendingActionClass: string;
+    dragOverClass: string;
+    pendingActionClass: string;
 } & typeof ScrollWindowElement;
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
@@ -927,7 +932,7 @@ declare const Table_base: {
  *    --table-body-text-color
  **/
 export declare class Table extends Table_base {
-    private sortStack;
+    private sortOrder;
     private columnsDialog;
     private _selectMultiple;
     static readonly HEADER_SLOT_NAME = "header";
@@ -951,6 +956,9 @@ export declare class Table extends Table_base {
      */
     selectMultiple: boolean;
     readonly mainHeader: Header | null;
+    readonly sortMap: {
+        [columnNumber: number]: SortOrderValues;
+    };
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
@@ -959,6 +967,7 @@ export declare class Table extends Table_base {
      * Sort the table by the column with the given columnNumber.
      */
     sortColumn(columnNumber: number): void;
+    private updateColumnSortOrders;
     private sort;
     /**
     * Toggles the selection of a row. The argument can either be a row element in

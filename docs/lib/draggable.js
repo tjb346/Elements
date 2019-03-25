@@ -6,19 +6,23 @@ export function DroppableMixin(ElementClass) {
             this.dragOverActions = []; // Actions to happen after dragover for dragOverDelay
             this.dragOverDelay = 2000;
             this.timeOuts = [];
+            this.counterSet = new Set();
+            // Update the dragover counter if a child is removed.
+            let mutationObserver = new MutationObserver((mutationList) => {
+                for (let mutation of mutationList) {
+                    if (mutation.removedNodes.length > 0) {
+                        this.handleChildrenRemoved(mutation.removedNodes);
+                    }
+                }
+            });
+            mutationObserver.observe(this, { childList: true, subtree: true });
             this.addEventListener("dragover", this.handleDragOver.bind(this));
             this.addEventListener("dragenter", this.handleDragEnter.bind(this));
             this.addEventListener("dragleave", this.handleDragLeave.bind(this));
             this.addEventListener("drop", this.handleDrop.bind(this));
         }
-        static get dragOverClass() {
-            return 'dragover';
-        }
-        static get pendingActionClass() {
-            return 'pending-action';
-        }
         get isOver() {
-            return this.classList.contains(this.constructor.dragOverClass);
+            return this.classList.contains(Droppable.dragOverClass);
         }
         /**
          * Add callback to be called when dragover starts after the dragover delay.
@@ -37,24 +41,41 @@ export function DroppableMixin(ElementClass) {
          */
         handleDragEnter(event) {
             event.preventDefault();
-            this.classList.add(this.constructor.dragOverClass);
-            this.setTimeouts();
+            if (this.counterSet.size === 0) {
+                this.classList.add(Droppable.dragOverClass);
+                this.setTimeouts();
+            }
+            if (event.target !== null) {
+                this.counterSet.add(event.target);
+            }
         }
         /**
          * Called when dragleave event triggered.
          */
         handleDragLeave(event) {
             event.preventDefault();
-            this.classList.remove(this.constructor.dragOverClass);
-            this.clearTimeOuts();
+            if (event.target !== null) {
+                this.counterSet.delete(event.target);
+            }
+            if (this.counterSet.size === 0) {
+                this.classList.remove(Droppable.dragOverClass);
+                this.clearTimeOuts();
+            }
         }
         /**
          * Called when drop event triggered.
          */
         handleDrop(event) {
             event.preventDefault();
-            this.classList.remove(this.constructor.dragOverClass);
+            this.counterSet = new Set();
+            this.classList.remove(Droppable.dragOverClass);
             this.clearTimeOuts();
+        }
+        handleChildrenRemoved(removedChildren) {
+            for (let child of removedChildren) {
+                this.counterSet.delete(child);
+                this.handleChildrenRemoved(child.childNodes);
+            }
         }
         /**
          * Set timeouts to call dragover actions.
@@ -67,20 +88,22 @@ export function DroppableMixin(ElementClass) {
                     }, this.dragOverDelay);
                     this.timeOuts.push(timeoutId);
                 }
-                this.classList.add(this.constructor.pendingActionClass);
+                this.classList.add(Droppable.pendingActionClass);
             }
         }
         /**
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts() {
-            this.classList.remove(this.constructor.pendingActionClass);
+            this.classList.remove(Droppable.pendingActionClass);
             for (let timeout of this.timeOuts) {
                 window.clearTimeout(timeout);
             }
             this.timeOuts = [];
         }
     }
+    Droppable.dragOverClass = 'dragover';
+    Droppable.pendingActionClass = 'pending-action';
     return Droppable;
 }
 export function DraggableMixin(ElementClass) {

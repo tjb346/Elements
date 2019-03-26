@@ -156,9 +156,9 @@
             </script>
         </page-route>
         <page-route name="dialog">
-            <base-dialog name="Example" visible>
+            <base-dialog name="Example">
                 <p>This is the parent dialog. It should close when you click outside of it or the child dialog.</p>
-                <base-dialog name="Child Dialog" visible>
+                <base-dialog name="Child Dialog">
                     <p>This is a child dialog. It should close when it's parent closes or you click anywhere outside of it.</p>
                 </base-dialog>
             </base-dialog>
@@ -173,6 +173,7 @@
                         for (let dialog of document.querySelectorAll('base-dialog')) {
                             dialog.position = {x: 50 * i, y: 50 * i};
                             dialog.velocity = {x: 0, y: 0};
+                            dialog.visible = "true";
                             i ++;
                         }
                     }, 0);

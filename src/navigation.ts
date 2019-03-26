@@ -214,11 +214,12 @@ export abstract class LazyRoute extends Route {
 }
 
 export class RouterLink extends CustomElement {
-    private route : string = "/";
     /**
      * @event
      */
     static EVENT_ROUTE_CHANGE = 'route-change';
+
+    static routeAttribute = 'route';
 
     constructor() {
         super();
@@ -233,7 +234,7 @@ export class RouterLink extends CustomElement {
     }
 
     static get observedAttributes() {
-        return ['route'];
+        return [RouterLink.routeAttribute];
     }
 
     get css() {
@@ -255,13 +256,15 @@ export class RouterLink extends CustomElement {
         `;
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {
-        if (attributes.route !== null) {
-            this.route = attributes.route.trim();
-        } else {
-            this.route = "/";
-        }
+    get route() : string {
+        return this.getAttribute(RouterLink.routeAttribute) || '/'
     }
+
+    set route(value : string) {
+        this.setAttribute(RouterLink.routeAttribute, value.trim());
+    }
+
+    updateAttributes(attributes: { [p: string]: string | null }): void {}
 
 
     render(shadowRoot: ShadowRoot) {

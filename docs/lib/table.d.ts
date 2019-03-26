@@ -617,6 +617,7 @@ export declare class Row extends Row_base {
 export declare class Data extends TableElement {
     static ascendingSortClass: string;
     static descendingSortClass: string;
+    static widthAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
@@ -934,10 +935,10 @@ declare const Table_base: {
 export declare class Table extends Table_base {
     private sortOrder;
     private columnsDialog;
-    private _selectMultiple;
     static readonly HEADER_SLOT_NAME = "header";
     static headerContainerClass: string;
     static showHiddenClass: string;
+    static selectMultipleAttribute: string;
     /**
      * @event
      */

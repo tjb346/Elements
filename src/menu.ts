@@ -16,6 +16,8 @@ export class Menu extends CustomElement {
 
     protected openedClass = 'opened';
 
+    static collapseWidthAttribute = 'collapse-width';
+
     constructor() {
         super();
 
@@ -47,7 +49,7 @@ export class Menu extends CustomElement {
     }
 
     static get observedAttributes() {
-        return ['collapse-width'];
+        return [Menu.collapseWidthAttribute];
     }
 
     get css(){
@@ -115,7 +117,7 @@ export class Menu extends CustomElement {
 
 
     updateAttributes(attributes: { [p: string]: string | null }): void {
-        let collapseWidth = attributes['collapse-width'];
+        let collapseWidth = attributes[Menu.collapseWidthAttribute];
         if (collapseWidth != null) {
             this.collapseWidth = Number.parseInt(collapseWidth);
         } else {

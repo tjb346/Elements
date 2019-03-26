@@ -23,6 +23,8 @@ export class Dialog extends Grabbable {
   private readonly containerClass = 'container';
   protected readonly noPropagate = true; // Don't let clicks effect other dialogs.
 
+  private opened = false;
+
   // Event callbacks
   public onShow : ((dialog: Dialog) => void) | null = null;
   public onClose : ((dialog: Dialog) => void) | null = null;
@@ -40,6 +42,10 @@ export class Dialog extends Grabbable {
 
   static DETETE_BUTTON_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gMUEDkZeUosOwAAAtJJREFUWMPNmL9PFEEUxz+7IfzQkHCGQlBC7uzuYiWUlIaWno20a71/x9ROCxl7WmJ5JViZozwERCyIZ0ICQsFa+Nasm52ZvRXO+yab7CVv5r47853ve28CKiCKE4xW2fsrYA1YBzrAUiH8FOgBe0DXaPWxOIcLQRUiUZw8AjaA99TDW2DbaHXtIxZUIPMG2OZ+sGW02nGRCjxk9oEV7hcHRqtVGykboQZwDkzxMLgBFoxWAyehKE4AGsB3RoMF4Ft+pcKSk3TO6PBZpPE3oYJmpkZIaCqKk/08qSC3Qq7TlEpsB/gALFb8w6/Aa/Gl1HGqt4xWOwCBMJsBrhxkboG20aofxUkAHAHLHjLHQNNolUZx0gIOgUkHqcfAVSi62fKYZxvo5wi2gIFjzEBiUvndlzlcRrxhtPodEMVJ6gjsGK0OS6xhBvghX53HLTBntLouGdOW7SuF0SoIJDcdeHTwHEiLRiakzsQqspV5ViQjsgiALx79rYSSKF1YFM2EJV90DcyLXo6B+bKVkbFHFQ7DWihZ24dl4EJWpIg74KU8d5atvahwCADWgyhOTkpKCBus+rCkIJvObDgNPIK2naB54M6WsUUzoaxMY5jJwxru2pBjPOuImZWYxrCT1yH0oKhDKDO9S0fMZQXzLHfhcRP1hDjnUsWVsZlepqfLvNClhp4rmKcLvVC6Ax98pvdJHp95+rAXAt0KJUSzgun5zLMpc7nQHbvkOiHvm46eqxfFyQugn6vsQtFFmVgngbMoTv6Yp4xpuchI70YowbuOwFSKq1auPvKZXmaeWf2TFWiundiO4mT8Sth8kb/jqIuyiXpDkMlKl56nSz7IutlikZ91Hj9H2HncGK2m811sWaP4dIS92RNgkDfTsWulbcl1YLSa9tTa/3LZMG1LvKHFoDJNrXpapDrXMatDX8eUCH1GiL2rSWQT2DVaXdW+sPpfV3q/AM0PYtQhZQVnAAAAAElFTkSuQmCC';
   static EXPAND_BUTTON_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gYHEhUdzt4g4wAAAlJJREFUWMPtmLFr20AUxn+6Oq7imoQUCs2QvyCDh9TQJVshayBbY+rVhUIH/xnlhnbJrTGXbKVdM3XwEmgyZAhkLHhIoVDToXbT0KbLU1CPk6zIqqOhHwgZcXr+9O5J7/teQAa0Ol2s0dHvNWAd2ABWgRVn+QA4BQ6AvjX62I2RhiALkVanWwM2gT3y4Tmwa40eTyIWZCDzDNilGLSt0b00UsEEMh+BRxSLI2t0M4lUEqEl4By4y7/BBbBsjR6mEmp1ugBLwFdmg2XgczxTyvMmnTM7fJLS+DtDE2rmDPgAhMDClAQWgQbwIKmmgliGfG/TGbAl5wC4MyWhqsR75ZBqW6N7AIGkax4YeQLsAC+A3wVuUx14Bzxxrt8DRkrqpp1wc+gU/pw85U2PuViMn8A3z39tWqOpxDLhw4Js0y+gArwEHufIyiHwGrhMWbMH7FekN2WBEjJbObfqTYaeuaakUZYF60q6dlmwoURClAWryqNnbhMripLhP6EshAYl4jNQIsjLglMl7qAsOFBAv0SE+iryTWWANfo46vbbGTzXlXTtPDiU+yd5t2uBVgO+exa9BZ6Khon0UJCD0FVMelSBfY9qqAHjigi0UavTbXsk7KIEiAhdFrAzVYnrGsjx9YdRBHYPOHIWNuRJ6jmVonvUJV7DEfm9yHkEHrf6wzGIX4CTBNk5reu4sEaHcRfrM4oPZ+jN7gPDuFEsnZVOaq5Da3Toqamihg0hMMzc7SN7a41uplikvOOY5o3HMZ5CnxdiOzmJbAPvrdGj3AOr2xrp/QFWN+Jth0cnawAAAABJRU5ErkJggg==';
+
+  static expandedAttribute = 'expanded';
+  static visibleAttribute = 'visible';
+  static nameAttribute = 'name';
 
   constructor(){
     super();
@@ -99,7 +105,7 @@ export class Dialog extends Grabbable {
   }
 
   static get observedAttributes(): string[] {
-    return ['name', 'visible', 'expanded'];
+    return [Dialog.nameAttribute, Dialog.visibleAttribute, Dialog.expandedAttribute];
   }
 
   get css(){
@@ -119,11 +125,11 @@ export class Dialog extends Grabbable {
         border: 1px solid black;
       }
       
-      :host([visible]) {
+      :host([${Dialog.visibleAttribute}]) {
         display: block;
       }
     
-      :host([expanded]) {
+      :host([${Dialog.expandedAttribute}]) {
         width: 100%;
         height: 100%;
       }
@@ -183,7 +189,7 @@ export class Dialog extends Grabbable {
   }
 
   get name() : string {
-    return this.nameElement.innerText;
+    return this.getAttribute(Dialog.nameAttribute) || "";
   }
 
   /**
@@ -191,52 +197,60 @@ export class Dialog extends Grabbable {
    * @param {string} value
    */
   set name(value : string){
-    this.nameElement.innerText = value;
+    this.setAttribute(Dialog.nameAttribute, value);
   }
 
   get visible() : boolean {
-    let attr = this.getAttribute('visible');
-    return !(attr === null);
+    return this.getAttribute(Dialog.visibleAttribute) !== null;
   }
 
   set visible(value : boolean){
-    if (value !== this.visible){
-      if (value){
-        this.setAttribute('visible', "true");
-        let event = new Event(Dialog.EVENT_OPENED);
-        this.dispatchEvent(event);
-      } else {
-        this.removeAttribute('visible');
-        let event = new Event(Dialog.EVENT_CLOSED);
-        this.dispatchEvent(event);
-      }
+    if (value){
+      this.setAttribute(Dialog.visibleAttribute, "");
+    } else {
+      this.removeAttribute(Dialog.visibleAttribute);
     }
   }
 
   get expanded() : boolean {
-    let attr = this.getAttribute('expanded');
-    return !(attr === null);
+    return  this.getAttribute(Dialog.expandedAttribute) !== null;
   }
 
   set expanded(value : boolean) {
-    if (value !== this.expanded){
-      if (value){
-        this.setAttribute('expanded', "true");
-        this.position = {x: 0, y: 0};
-      } else {
-        this.removeAttribute('expanded');
-      }
+    if (value){
+      this.setAttribute(Dialog.expandedAttribute, "");
+    } else {
+      this.removeAttribute(Dialog.expandedAttribute);
     }
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
-    this.visible = !(attributes.visible === null);
-    this.expanded = !(attributes.expanded === null);
+    let name = attributes[Dialog.nameAttribute];
+    let visible = attributes[Dialog.visibleAttribute];
+    let expanded = attributes[Dialog.expandedAttribute];
 
-    if (attributes.name === null){
-      this.name = "";
+    if (expanded !== null){
+      this.position = {x: 0, y: 0};
+    }
+
+    if (name === null) {
+      this.nameElement.innerText = "";
     } else {
-      this.name = attributes.name;
+      this.nameElement.innerText = name;
+    }
+
+    if (visible === null){
+      if (this.opened){
+        this.opened = false;
+        let event = new Event(Dialog.EVENT_CLOSED);
+        this.dispatchEvent(event);
+      }
+    } else {
+      if (!this.opened){
+        this.opened = true;
+        let event = new Event(Dialog.EVENT_OPENED);
+        this.dispatchEvent(event);
+      }
     }
   }
 

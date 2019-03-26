@@ -12,6 +12,7 @@ export declare class Menu extends CustomElement {
     private readonly container;
     private collapseWidth;
     protected openedClass: string;
+    static collapseWidthAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

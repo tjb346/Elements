@@ -58,14 +58,15 @@ export declare abstract class LazyRoute extends Route {
     abstract renderResponse(response: Response): void;
 }
 export declare class RouterLink extends CustomElement {
-    private route;
     /**
      * @event
      */
     static EVENT_ROUTE_CHANGE: string;
+    static routeAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
+    route: string;
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;

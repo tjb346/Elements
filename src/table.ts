@@ -311,13 +311,15 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 export class Data extends TableElement {
   static ascendingSortClass = 'asc';
   static descendingSortClass = 'des';
+  
+  static widthAttribute = 'width';
 
   constructor(){
     super();
   }
 
   static get observedAttributes() {
-    return ['width'];
+    return [Data.widthAttribute];
   }
 
   get css(){
@@ -350,18 +352,19 @@ export class Data extends TableElement {
   }
 
   get width() : number | null {
-    let flex = this.style.flex;
-    if (flex === null){
+    let stringWidth = this.getAttribute(Data.widthAttribute);
+    if (stringWidth === null){
       return null;
+    } else {
+      return Number.parseInt(stringWidth);
     }
-    return Number.parseInt(flex);
   }
 
   set width(value : number | null){
     if (value === null){
-      this.style.flex = null;
+      this.removeAttribute(Data.widthAttribute);
     } else {
-      this.style.flex = value.toString();
+      this.setAttribute(Data.widthAttribute,  value.toString());
     }
   }
 
@@ -400,11 +403,15 @@ export class Data extends TableElement {
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
-    let width = null;
-    if (attributes.width !== null){
-      width = Number.parseInt(attributes.width);
+    let width = attributes[Data.widthAttribute];
+    if (width === null){
+      this.style.flex = null;
+    } else {
+      let parsed = Number.parseInt(width);
+      if (!isNaN(parsed)){
+        this.style.flex = parsed.toString();
+      }
     }
-    this.width = width;
   }
 
   compare(dataElement : Data) : number {
@@ -427,12 +434,13 @@ export class Data extends TableElement {
 export class Table extends DroppableMixin(ScrollWindowElement) {
   private sortOrder : SortData[] = [];
   private columnsDialog : Dialog;
-  private _selectMultiple : boolean = false;
 
   static readonly HEADER_SLOT_NAME = 'header';
 
   static headerContainerClass = 'header';
   static showHiddenClass = 'show-hidden';
+  
+  static selectMultipleAttribute = 'select-multiple';
 
   /**
    * @event
@@ -461,7 +469,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   // getters
 
   static get observedAttributes() {
-    return ['select-multiple'];
+    return [Table.selectMultipleAttribute];
   }
 
 
@@ -570,18 +578,19 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   /**
    * Whether or not the table will allow for the selection of more than one row at a time.
    */
-  get selectMultiple(){
-    return this._selectMultiple || false;
+  get selectMultiple() : boolean{
+    return this.getAttribute(Table.selectMultipleAttribute) !== null;
   }
 
-  set selectMultiple(value){
-    this._selectMultiple = value;
-    for (let row of this.rows){
-      row.selected = false;
+  set selectMultiple(value : boolean){
+    if (value){
+      this.setAttribute(Table.selectMultipleAttribute, "");
+    } else {
+      this.removeAttribute(Table.selectMultipleAttribute);
     }
   }
 
-  set showHidden(value){
+  set showHidden(value : boolean){
     if (value) {
       this.classList.add(Table.showHiddenClass);
     } else {
@@ -604,8 +613,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
-    let multiSelect = attributes['select-multiple'];
-    this.selectMultiple = multiSelect !== null;
+    for (let row of this.rows){
+      row.selected = false;
+    }
   }
 
   render(shadowRoot : ShadowRoot){

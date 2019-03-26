@@ -19,6 +19,7 @@ export declare class Dialog extends Grabbable {
     private readonly headerClass;
     private readonly containerClass;
     protected readonly noPropagate = true;
+    private opened;
     onShow: ((dialog: Dialog) => void) | null;
     onClose: ((dialog: Dialog) => void) | null;
     onRemove: ((dialog: Dialog) => void) | null;
@@ -32,6 +33,9 @@ export declare class Dialog extends Grabbable {
     static EVENT_CLOSED: string;
     static DETETE_BUTTON_URL: string;
     static EXPAND_BUTTON_URL: string;
+    static expandedAttribute: string;
+    static visibleAttribute: string;
+    static nameAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

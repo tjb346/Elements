@@ -62,6 +62,7 @@ export declare class Scrollable extends Movable {
      A multiplier for the rate the element moves when scrolled. Can be set with "scroll-speed" attribute .
      */
     protected scrollSpeed: number;
+    static scrollSpeedAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     updateAttributes(attributes: {

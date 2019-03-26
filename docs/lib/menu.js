@@ -37,7 +37,7 @@ export class Menu extends CustomElement {
         });
     }
     static get observedAttributes() {
-        return ['collapse-width'];
+        return [Menu.collapseWidthAttribute];
     }
     get css() {
         // language=CSS
@@ -101,7 +101,7 @@ export class Menu extends CustomElement {
         return this.container.classList.contains(this.openedClass);
     }
     updateAttributes(attributes) {
-        let collapseWidth = attributes['collapse-width'];
+        let collapseWidth = attributes[Menu.collapseWidthAttribute];
         if (collapseWidth != null) {
             this.collapseWidth = Number.parseInt(collapseWidth);
         }
@@ -124,4 +124,5 @@ export class Menu extends CustomElement {
         }
     }
 }
+Menu.collapseWidthAttribute = 'collapse-width';
 customElements.define('collapse-menu', Menu);

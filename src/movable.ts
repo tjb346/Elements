@@ -221,6 +221,8 @@ export class Scrollable extends Movable {
    */
   protected scrollSpeed = Scrollable.defaultScrollSpeed;
 
+  static scrollSpeedAttribute = 'scroll-speed';
+
   constructor() {
     super();
 
@@ -257,11 +259,11 @@ export class Scrollable extends Movable {
   }
 
   static get observedAttributes() {
-    return ['scroll-speed'];
+    return [Scrollable.scrollSpeedAttribute];
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {
-    let scrollSpeed = attributes['scroll-speed'];
+    let scrollSpeed = attributes[Scrollable.scrollSpeedAttribute];
     if (scrollSpeed === null) {
       this.scrollSpeed = Scrollable.defaultScrollSpeed;
     } else {

@@ -466,7 +466,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
       }
     };
 
-    this.oncontextmenu = (event) => {
+    this.oncontextmenu = (event : MouseEvent) => {
       // allow for adding Dialog elements as children. These will function as context menus.
       let dialogs = this.flatChildren(Dialog);
       if (dialogs.length > 0){

@@ -257,11 +257,13 @@ export class Dialog extends Grabbable {
   connectedCallback() {
     super.connectedCallback();
     this.style.position = 'fixed';
-    document.addEventListener('click', this.documentClickListener);
+
+    // Add to body because in FireFox document click listeners prevent contextmenu listeners
+    document.body.addEventListener('click', this.documentClickListener);
   }
 
   disconnectedCallback(){
-    document.removeEventListener('click', this.documentClickListener);
+    document.body.removeEventListener('click', this.documentClickListener);
   }
 
   render(shadowRoot : ShadowRoot){

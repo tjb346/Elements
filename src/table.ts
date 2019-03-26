@@ -422,6 +422,7 @@ export class Data extends TableElement {
 
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
+ * [[ Dialog ]] elements can also be added as children and will act as a context menu.
  *
  * CSS variables for theming:
  *    --table-row-height
@@ -461,6 +462,19 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
           if (row !== element){
             row.selected = false;
           }
+        }
+      }
+    };
+
+    this.oncontextmenu = (event) => {
+      // allow for adding Dialog elements as children. These will function as context menus.
+      let dialogs = this.flatChildren(Dialog);
+      if (dialogs.length > 0){
+        event.preventDefault();
+        for (let dialog of dialogs){
+          dialog.position = {x: event.pageX, y: event.pageY};
+          dialog.velocity = {x: 0, y: 0};
+          dialog.visible = true;
         }
       }
     };

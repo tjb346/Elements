@@ -125,6 +125,7 @@
                     <table-data>Water</table-data>
                     <table-data>1.25</table-data>
                 </table-row>
+                <base-dialog id="table-context" name="Sample Context Menu"></base-dialog>
             </selectable-table>
 
             <script type="module">
@@ -132,27 +133,16 @@
               import {Dialog} from "../lib/dialog.js";
 
               let multi = document.getElementById("multi");
-              multi.oncontextmenu = (event) => {
+              let contextMenu = document.getElementById("table-context");
+              contextMenu.addEventListener(Dialog.EVENT_OPENED, () => {
                 let selectedRows = multi.selectedRows;
-                if (selectedRows.length > 0){
-                  event.preventDefault();
+                if (selectedRows.length > 0) {
 
-                  let menu = document.createElement('base-dialog');
-
-                  let div = document.createElement('div');
-                  div.innerText = `${selectedRows.length} rows selected`;
-
-                  menu.appendChild(div);
-                  menu.addEventListener(Dialog.EVENT_CLOSED, () => {
-                    document.body.removeChild(menu);
-                  });
-                  document.body.appendChild(menu);
-
-                  menu.position = {x: event.pageX, y: event.pageY};
-                  menu.setAttribute("name", "Sample Context Menu");
-                  menu.visible = true;
+                  contextMenu.innerText = `${selectedRows.length} rows selected`;
+                } else {
+                  contextMenu.innerText = "No rows selected";
                 }
-              };
+              });
             </script>
         </page-route>
         <page-route name="dialog">

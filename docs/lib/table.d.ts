@@ -923,6 +923,7 @@ declare const Table_base: {
 } & typeof ScrollWindowElement;
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
+ * [[ Dialog ]] elements can also be added as children and will act as a context menu.
  *
  * CSS variables for theming:
  *    --table-row-height

@@ -472,7 +472,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
       if (dialogs.length > 0){
         event.preventDefault();
         for (let dialog of dialogs){
-          dialog.position = {x: event.pageX - document.documentElement.scrollLeft, y: event.pageY - document.documentElement.scrollTop};
+          dialog.position = {x: event.pageX - window.pageXOffset, y: event.pageY - window.pageYOffset};
           dialog.velocity = {x: 0, y: 0};
           dialog.visible = true;
         }

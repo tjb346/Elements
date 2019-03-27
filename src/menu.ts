@@ -32,7 +32,7 @@ export class Menu extends CustomElement {
             this.toggleOpened();
         };
 
-        document.addEventListener('click', (event : MouseEvent) => {
+        document.documentElement.addEventListener('click', (event : MouseEvent) => {
             if (event.target instanceof Element) {
                 let element : Element | null = event.target;
                 while(element !== null) {

@@ -59,11 +59,6 @@ export class Dialog extends Grabbable {
         this.headerElement.appendChild(this.nameElement);
         this.headerElement.appendChild(deleteButton);
         this.headerElement.appendChild(expandButton);
-        // this.onclick = (event) => {
-        //   console.log("STOP");
-        //   // Don't let clicks effect other dialogs.
-        //   event.stopImmediatePropagation();
-        // };
         let slot = document.createElement('slot');
         this.containerElement.appendChild(slot);
         this.documentClickListener = (event) => {
@@ -215,11 +210,11 @@ export class Dialog extends Grabbable {
     connectedCallback() {
         super.connectedCallback();
         this.style.position = 'fixed';
-        // Add to body because in FireFox document click listeners prevent contextmenu listeners
-        document.body.addEventListener('click', this.documentClickListener);
+        // Add to documentElement because in FireFox document click listeners fire on contextmenu events
+        document.documentElement.addEventListener('click', this.documentClickListener);
     }
     disconnectedCallback() {
-        document.body.removeEventListener('click', this.documentClickListener);
+        document.documentElement.removeEventListener('click', this.documentClickListener);
     }
     render(shadowRoot) {
         super.render(shadowRoot);
@@ -233,7 +228,7 @@ export class Dialog extends Grabbable {
         if (this.parentElement) {
             this.parentElement.removeChild(this);
         }
-        document.removeEventListener('click', this.documentClickListener);
+        document.documentElement.removeEventListener('click', this.documentClickListener);
     }
     /**
      *  Checks if click is in dialog or one of one of its child dialogs and if not closes.

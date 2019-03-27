@@ -21,7 +21,7 @@ export class Menu extends CustomElement {
         this.button.onclick = (event) => {
             this.toggleOpened();
         };
-        document.addEventListener('click', (event) => {
+        document.documentElement.addEventListener('click', (event) => {
             if (event.target instanceof Element) {
                 let element = event.target;
                 while (element !== null) {

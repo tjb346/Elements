@@ -608,7 +608,12 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get mainHeader() : Header | null {
-    return this.querySelector('table-header');
+    for (let child of this.children){
+      if (child instanceof Header){
+        return child;
+      }
+    }
+    return null;
   }
 
   get sortMap() : {[columnNumber : number] : SortOrderValues}  {

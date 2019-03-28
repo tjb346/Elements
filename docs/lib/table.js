@@ -271,6 +271,10 @@ export class Data extends TableElement {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+      
+        :host(.${Data.hiddenClass}) {
+            display: none;
+        }
     `;
     }
     get template() {
@@ -299,6 +303,17 @@ export class Data extends TableElement {
         }
         else {
             this.setAttribute(Data.widthAttribute, value.toString());
+        }
+    }
+    get hidden() {
+        return this.classList.contains(Data.hiddenClass);
+    }
+    set hidden(value) {
+        if (value) {
+            this.classList.add(Data.hiddenClass);
+        }
+        else {
+            this.classList.remove(Data.hiddenClass);
         }
     }
     get column() {
@@ -351,6 +366,7 @@ export class Data extends TableElement {
 }
 Data.ascendingSortClass = 'asc';
 Data.descendingSortClass = 'des';
+Data.hiddenClass = 'hidden';
 Data.widthAttribute = 'width';
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
@@ -415,7 +431,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             color: var(--table-body-text-color, black);
         }
         
-        :host(:not(.${Table.showHiddenClass})) ::slotted(.hidden) {
+        :host(:not(.${Table.showHiddenClass})) ::slotted(.${BaseRow.hiddenClass}) {
             display: none;
         }
         
@@ -463,30 +479,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         this.appendChildren(value);
         this.resetPane();
     }
-    get showHidden() {
-        return this.classList.contains(Table.showHiddenClass);
-    }
-    get visibleColumnsDialog() {
-        // let header = this.mainHeader;
-        // if (header !== null){
-        //   for (let column of header.allColumns){
-        //     let div = document.createElement('div');
-        //     let columnLabel = document.createElement('span');
-        //     let columnCheckbox = document.createElement('input');
-        //     columnCheckbox.type = 'checkbox';
-        //     columnCheckbox.checked = column.visible;
-        //     columnLabel.innerText = column.name;
-        //     columnCheckbox.onchange = () => {
-        //       column.visible = columnCheckbox.checked;
-        //     };
-        //     div.appendChild(columnLabel);
-        //     div.appendChild(columnCheckbox);
-        //     this.columnsDialog.appendChild(div);
-        //   }
-        // }
-        //
-        return this.columnsDialog;
-    }
     // setters
     /**
      * Whether or not the table will allow for the selection of more than one row at a time.
@@ -501,6 +493,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         else {
             this.removeAttribute(Table.selectMultipleAttribute);
         }
+    }
+    get showHidden() {
+        return this.classList.contains(Table.showHiddenClass);
     }
     set showHidden(value) {
         if (value) {
@@ -531,6 +526,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         headerSlot.name = Table.HEADER_SLOT_NAME;
         headerContainer.appendChild(headerSlot);
         shadowRoot.appendChild(headerContainer);
+        shadowRoot.appendChild(this.columnsDialog);
         super.render(shadowRoot);
     }
     // Internal Events
@@ -594,6 +590,38 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             return 0;
         });
         this.rows = rows;
+    }
+    showVisibleColumnsDialog(positionX, positionY) {
+        this.columnsDialog.removeChildren();
+        let items = [];
+        let header = this.mainHeader;
+        if (header !== null) {
+            let columns = header.allColumns;
+            for (let columnNumber = 0; columnNumber < columns.length; columnNumber++) {
+                const headerColumnData = columns[columnNumber];
+                let div = document.createElement('div');
+                let columnLabel = document.createElement('span');
+                let columnCheckbox = document.createElement('input');
+                columnCheckbox.type = 'checkbox';
+                columnCheckbox.checked = !headerColumnData.hidden;
+                columnLabel.innerText = headerColumnData.data;
+                columnCheckbox.onchange = () => {
+                    for (let row of this.flatChildren(BaseRow)) {
+                        let columnData = row.getColumn(columnNumber);
+                        if (columnData !== null) {
+                            columnData.hidden = !columnCheckbox.checked;
+                        }
+                    }
+                };
+                div.appendChild(columnLabel);
+                div.appendChild(columnCheckbox);
+                items.push(div);
+            }
+        }
+        this.columnsDialog.appendChildren(items);
+        this.columnsDialog.visible = true;
+        this.columnsDialog.position = { x: positionX, y: positionY };
+        this.columnsDialog.velocity = { x: 0, y: 0 };
     }
     /**
     * Toggles the selection of a row. The argument can either be a row element in

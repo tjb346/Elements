@@ -311,6 +311,7 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 export class Data extends TableElement {
   static ascendingSortClass = 'asc';
   static descendingSortClass = 'des';
+  static hiddenClass = 'hidden';
   
   static widthAttribute = 'width';
 
@@ -333,6 +334,10 @@ export class Data extends TableElement {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+      
+        :host(.${Data.hiddenClass}) {
+            display: none;
         }
     `;
   }
@@ -365,6 +370,18 @@ export class Data extends TableElement {
       this.removeAttribute(Data.widthAttribute);
     } else {
       this.setAttribute(Data.widthAttribute,  value.toString());
+    }
+  }
+
+  get hidden() : boolean {
+    return this.classList.contains(Data.hiddenClass);
+  }
+
+  set hidden(value : boolean){
+    if (value){
+      this.classList.add(Data.hiddenClass);
+    } else {
+      this.classList.remove(Data.hiddenClass);
     }
   }
 
@@ -505,7 +522,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             color: var(--table-body-text-color, black);
         }
         
-        :host(:not(.${Table.showHiddenClass})) ::slotted(.hidden) {
+        :host(:not(.${Table.showHiddenClass})) ::slotted(.${BaseRow.hiddenClass}) {
             display: none;
         }
         
@@ -561,32 +578,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     this.resetPane();
   }
 
-  get showHidden(){
-    return this.classList.contains(Table.showHiddenClass);
-  }
-
-  get visibleColumnsDialog(){
-    // let header = this.mainHeader;
-    // if (header !== null){
-    //   for (let column of header.allColumns){
-    //     let div = document.createElement('div');
-    //     let columnLabel = document.createElement('span');
-    //     let columnCheckbox = document.createElement('input');
-    //     columnCheckbox.type = 'checkbox';
-    //     columnCheckbox.checked = column.visible;
-    //     columnLabel.innerText = column.name;
-    //     columnCheckbox.onchange = () => {
-    //       column.visible = columnCheckbox.checked;
-    //     };
-    //     div.appendChild(columnLabel);
-    //     div.appendChild(columnCheckbox);
-    //     this.columnsDialog.appendChild(div);
-    //   }
-    // }
-    //
-    return this.columnsDialog;
-  }
-
   // setters
 
   /**
@@ -602,6 +593,10 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     } else {
       this.removeAttribute(Table.selectMultipleAttribute);
     }
+  }
+
+  get showHidden() : boolean{
+    return this.classList.contains(Table.showHiddenClass);
   }
 
   set showHidden(value : boolean){
@@ -639,6 +634,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     headerSlot.name = Table.HEADER_SLOT_NAME;
     headerContainer.appendChild(headerSlot);
     shadowRoot.appendChild(headerContainer);
+    shadowRoot.appendChild(this.columnsDialog);
     super.render(shadowRoot);
   }
 
@@ -711,6 +707,41 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     });
 
     this.rows = rows;
+  }
+
+  showVisibleColumnsDialog(positionX: number, positionY: number){
+    this.columnsDialog.removeChildren();
+    let items : HTMLDivElement[] = [];
+
+    let header = this.mainHeader;
+    if (header !== null){
+      let columns = header.allColumns;
+      for (let columnNumber = 0; columnNumber < columns.length; columnNumber++) {
+        const headerColumnData = columns[columnNumber];
+        let div = document.createElement('div');
+        let columnLabel = document.createElement('span');
+        let columnCheckbox = document.createElement('input');
+        columnCheckbox.type = 'checkbox';
+        columnCheckbox.checked = !headerColumnData.hidden;
+        columnLabel.innerText = headerColumnData.data;
+        columnCheckbox.onchange = () => {
+          for (let row of this.flatChildren(BaseRow)){
+            let columnData = row.getColumn(columnNumber);
+            if (columnData !== null){
+              columnData.hidden = !columnCheckbox.checked;
+            }
+          }
+        };
+        div.appendChild(columnLabel);
+        div.appendChild(columnCheckbox);
+        items.push(div);
+      }
+    }
+
+    this.columnsDialog.appendChildren(items);
+    this.columnsDialog.visible = true;
+    this.columnsDialog.position = {x: positionX, y: positionY};
+    this.columnsDialog.velocity = {x: 0, y: 0};
   }
 
   /**

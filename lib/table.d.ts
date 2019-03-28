@@ -1,5 +1,4 @@
 import "./dialog.js";
-import { Dialog } from "./dialog.js";
 import { CustomElement } from "./element.js";
 import { Scrollable } from "./movable.js";
 declare class ScrollWindowElement extends CustomElement {
@@ -617,6 +616,7 @@ export declare class Row extends Row_base {
 export declare class Data extends TableElement {
     static ascendingSortClass: string;
     static descendingSortClass: string;
+    static hiddenClass: string;
     static widthAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
@@ -624,6 +624,7 @@ export declare class Data extends TableElement {
     readonly template: string;
     data: string;
     width: number | null;
+    hidden: boolean;
     readonly column: number | null;
     sortOrder: SortOrderValues;
     updateAttributes(attributes: {
@@ -951,12 +952,11 @@ export declare class Table extends Table_base {
     readonly selectedData: Set<any>;
     selectedRows: Row[];
     rows: Row[];
-    showHidden: boolean;
-    readonly visibleColumnsDialog: Dialog;
     /**
      * Whether or not the table will allow for the selection of more than one row at a time.
      */
     selectMultiple: boolean;
+    showHidden: boolean;
     readonly mainHeader: Header | null;
     readonly sortMap: {
         [columnNumber: number]: SortOrderValues;
@@ -971,6 +971,7 @@ export declare class Table extends Table_base {
     sortColumn(columnNumber: number): void;
     private updateColumnSortOrders;
     private sort;
+    showVisibleColumnsDialog(positionX: number, positionY: number): void;
     /**
     * Toggles the selection of a row. The argument can either be a row element in
     * the table or null. If null it will deselect all rows. A selected event is

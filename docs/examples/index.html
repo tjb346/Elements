@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Navigation Example</title>
 
-    <script type="module" src="../lib/navigation.js"></script>
-    <script type="module" src="../lib/table.js"></script>
-    <script type="module" src="../lib/dialog.js"></script>
-    <script type="module" src="../lib/menu.js"></script>
+    <script src="../lib/navigation.js" type="module"></script>
+    <script src="../lib/table.js" type="module"></script>
+    <script src="../lib/dialog.js" type="module"></script>
+    <script src="../lib/menu.js" type="module"></script>
     <style>
         nav {
             height: 50px;
@@ -30,153 +30,155 @@
 <body>
     <nav>
         <collapse-menu>
-            <router-link route="">Home</router-link>
-            <router-link route="table">Table</router-link>
-            <router-link route="dialog">Dialog</router-link>
-            <router-link route="lazy">Lazy</router-link>
+            <router-link route="/Elements/examples/">Home</router-link>
+            <router-link route="/Elements/examples/table">Table</router-link>
+            <router-link route="/Elements/examples/dialog">Dialog</router-link>
+            <router-link route="/Elements/examples/lazy">Lazy</router-link>
         </collapse-menu>
     </nav>
-    <page-route name="/Elements/examples">
-        <page-route>
-            <h1>Home</h1>
-            <p>Here are some examples of the elements. Navigation on this page is done using the page-nav element.</p>
-        </page-route>
-        <page-route name="table">
-            <h1>Table</h1>
-            <style>
-                selectable-table {
-                    height: 100px;
-                }
-            </style>
-            <h3>Single Select Table</h3>
-            <selectable-table id="single">
-                <table-header>
-                    <table-data>Item Name</table-data>
-                    <table-data>Price ($)</table-data>
-                </table-header>
-                <table-row>
-                    <table-data>Banana</table-data>
-                    <table-data>1</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Carrot</table-data>
-                    <table-data>0.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Pizza</table-data>
-                    <table-data>10.00</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Bread</table-data>
-                    <table-data>3.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Cookie</table-data>
-                    <table-data>1.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Candy</table-data>
-                    <table-data>0.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Soda</table-data>
-                    <table-data>1.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Water</table-data>
-                    <table-data>1.25</table-data>
-                </table-row>
-            </selectable-table>
-            <h3>Multi Select Table</h3>
-            <selectable-table id="multi" select-multiple>
-                <table-header>
-                    <table-data>Item Name</table-data>
-                    <table-data>Price ($)</table-data>
-                </table-header>
-                <table-row>
-                    <table-data>Banana</table-data>
-                    <table-data>1</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Carrot</table-data>
-                    <table-data>0.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Pizza</table-data>
-                    <table-data>10.00</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Bread</table-data>
-                    <table-data>3.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Cookie</table-data>
-                    <table-data>1.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Candy</table-data>
-                    <table-data>0.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Soda</table-data>
-                    <table-data>1.50</table-data>
-                </table-row>
-                <table-row>
-                    <table-data>Water</table-data>
-                    <table-data>1.25</table-data>
-                </table-row>
-                <base-dialog id="table-context" name="Sample Context Menu"></base-dialog>
-            </selectable-table>
+    <page-route name="Elements">
+        <page-route name="examples">
+            <page-route>
+                <h1>Home</h1>
+                <p>Here are some examples of the elements. Navigation on this page is done using the page-nav element.</p>
+            </page-route>
+            <page-route name="table">
+                <h1>Table</h1>
+                <style>
+                    selectable-table {
+                        height: 100px;
+                    }
+                </style>
+                <h3>Single Select Table</h3>
+                <selectable-table id="single">
+                    <table-header>
+                        <table-data>Item Name</table-data>
+                        <table-data>Price ($)</table-data>
+                    </table-header>
+                    <table-row>
+                        <table-data>Banana</table-data>
+                        <table-data>1</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Carrot</table-data>
+                        <table-data>0.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Pizza</table-data>
+                        <table-data>10.00</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Bread</table-data>
+                        <table-data>3.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Cookie</table-data>
+                        <table-data>1.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Candy</table-data>
+                        <table-data>0.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Soda</table-data>
+                        <table-data>1.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Water</table-data>
+                        <table-data>1.25</table-data>
+                    </table-row>
+                </selectable-table>
+                <h3>Multi Select Table</h3>
+                <selectable-table id="multi" select-multiple>
+                    <table-header>
+                        <table-data>Item Name</table-data>
+                        <table-data>Price ($)</table-data>
+                    </table-header>
+                    <table-row>
+                        <table-data>Banana</table-data>
+                        <table-data>1</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Carrot</table-data>
+                        <table-data>0.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Pizza</table-data>
+                        <table-data>10.00</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Bread</table-data>
+                        <table-data>3.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Cookie</table-data>
+                        <table-data>1.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Candy</table-data>
+                        <table-data>0.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Soda</table-data>
+                        <table-data>1.50</table-data>
+                    </table-row>
+                    <table-row>
+                        <table-data>Water</table-data>
+                        <table-data>1.25</table-data>
+                    </table-row>
+                    <base-dialog id="table-context" name="Sample Context Menu"></base-dialog>
+                </selectable-table>
 
-            <script type="module">
-              // Create a sample context menu that displays the number of rows selected.
-              import {Dialog} from "../lib/dialog.js";
+                <script type="module">
+                  // Create a sample context menu that displays the number of rows selected.
+                  import {Dialog} from "../lib/dialog.js";
 
-              let multi = document.getElementById("multi");
-              let contextMenu = document.getElementById("table-context");
-              contextMenu.addEventListener(Dialog.EVENT_OPENED, () => {
-                let selectedRows = multi.selectedRows;
-                if (selectedRows.length > 0) {
+                  let multi = document.getElementById("multi");
+                  let contextMenu = document.getElementById("table-context");
+                  contextMenu.addEventListener(Dialog.EVENT_OPENED, () => {
+                    let selectedRows = multi.selectedRows;
+                    if (selectedRows.length > 0) {
 
-                  contextMenu.innerText = `${selectedRows.length} rows selected`;
-                } else {
-                  contextMenu.innerText = "No rows selected";
-                }
-              });
-            </script>
-        </page-route>
-        <page-route name="dialog">
-            <base-dialog name="Example">
-                <p>This is the parent dialog. It should close when you click outside of it or the child dialog.</p>
-                <base-dialog name="Child Dialog">
-                    <p>This is a child dialog. It should close when it's parent closes or you click anywhere outside of it.</p>
+                      contextMenu.innerText = `${selectedRows.length} rows selected`;
+                    } else {
+                      contextMenu.innerText = "No rows selected";
+                    }
+                  });
+                </script>
+            </page-route>
+            <page-route name="dialog">
+                <base-dialog name="Example">
+                    <p>This is the parent dialog. It should close when you click outside of it or the child dialog.</p>
+                    <base-dialog name="Child Dialog">
+                        <p>This is a child dialog. It should close when it's parent closes or you click anywhere outside of it.</p>
+                    </base-dialog>
                 </base-dialog>
-            </base-dialog>
-            <script type="module">
-              import {Route} from "../lib/navigation.js";
+                <script type="module">
+                  import {Route} from "../lib/navigation.js";
 
-              document.addEventListener("DOMContentLoaded", function(event) {
-                document.querySelector('page-route[name=dialog]').addEventListener(Route.EVENT_SHOWN, (event) =>{
-                    window.setTimeout(() => {
+                  document.addEventListener("DOMContentLoaded", function(event) {
+                    document.querySelector('page-route[name=dialog]').addEventListener(Route.EVENT_SHOWN, (event) =>{
+                      window.setTimeout(() => {
                         // Wait for onclick listener to finish because one will close dialog if visible.
                         let i = 1;
                         for (let dialog of document.querySelectorAll('base-dialog')) {
-                            dialog.position = {x: 50 * i, y: 50 * i};
-                            dialog.velocity = {x: 0, y: 0};
-                            dialog.visible = "true";
-                            i ++;
+                          dialog.position = {x: 50 * i, y: 50 * i};
+                          dialog.velocity = {x: 0, y: 0};
+                          dialog.visible = "true";
+                          i ++;
                         }
-                    }, 0);
-                });
-              });
-            </script>
+                      }, 0);
+                    });
+                  });
+                </script>
+            </page-route>
+            <lazy-route name="lazy">
+                <h1>Lazy</h1>
+                <template>
+                    <p>This content is lazy loaded</p>
+                </template>
+            </lazy-route>
         </page-route>
-        <lazy-route name="lazy">
-            <h1>Lazy</h1>
-            <template>
-                <p>This content is lazy loaded</p>
-            </template>
-        </lazy-route>
     </page-route>
 </body>
 </html>

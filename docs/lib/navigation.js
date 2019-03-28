@@ -6,7 +6,6 @@ import { CustomElement } from "./element.js";
 export class Route extends CustomElement {
     constructor() {
         super();
-        this.localPath = [""];
         this.containerId = 'container';
         window.addEventListener('popstate', (event) => {
             event.preventDefault();
@@ -17,35 +16,34 @@ export class Route extends CustomElement {
         }));
     }
     static get observedAttributes() {
-        return ['name', 'title'];
-    }
-    static currentRoute() {
-        if (window.location.pathname[window.location.pathname.length - 1] === '/') {
-            return window.location.pathname.slice(0, window.location.pathname.length - 1);
-        }
-        return window.location.pathname;
+        return [Route.nameAttribute];
     }
     static currentPath() {
-        return Route.currentRoute().split('/');
+        let path = window.location.pathname;
+        if (path[path.length - 1] === '/') {
+            path = path.slice(0, path.length - 1);
+        }
+        if (path[0] === "/") {
+            path = path.slice(1);
+        }
+        return path.split('/');
     }
     updateAttributes(attributes) {
-        if (attributes.name) {
-            this.name = attributes.name;
-        }
-        if (attributes.title) {
-            this.title = attributes.title;
-        }
+        this.dispatchEvent(new Event(Route.EVENT_NAME_CHANGE));
     }
     get name() {
-        return this.localPath.join('/');
+        let name = this.getAttribute(Route.nameAttribute);
+        if (name === null) {
+            return '';
+        }
+        return name.trim();
     }
     set name(value) {
-        this.localPath = value.split('/');
-        this.dispatchEvent(new CustomEvent(Route.EVENT_NAME_CHANGE, { detail: this.name }));
+        this.setAttribute(Route.nameAttribute, value.trim());
     }
     get path() {
         let parent = this.parentElement;
-        let path = this.localPath;
+        let path = [this.name];
         if (parent instanceof Route) {
             path = parent.path.concat(path);
         }
@@ -88,16 +86,15 @@ export class Route extends CustomElement {
         let routePath = this.path;
         let currentPath = Route.currentPath();
         let segmentIndex = 0;
-        let match = true;
         while (routePath.length > segmentIndex) {
             let route = routePath[segmentIndex];
-            let segmentName = currentPath[segmentIndex];
-            if ((route !== segmentName) && !(route === "" && segmentName === undefined)) {
-                match = false;
+            let segmentName = currentPath[segmentIndex] || "";
+            if (route !== segmentName && !(route === "" && segmentName === 'index.html')) {
+                return false;
             }
             segmentIndex++;
         }
-        return match;
+        return true;
     }
     updateState() {
         if (this.matchesCurrentLocation()) {
@@ -124,21 +121,22 @@ Route.EVENT_SHOWN = 'show';
  * @event
  */
 Route.EVENT_HIDDEN = 'hidden';
+Route.nameAttribute = 'name';
 export class LazyRoute extends Route {
     constructor() {
         super();
         this.url = null;
-        this._container = document.createElement('div');
+        this.container = document.createElement('div');
     }
     static get observedAttributes() {
         return Route.observedAttributes.concat(['url']);
     }
     get loaded() {
-        return this._container && this._container.lastChild;
+        return this.container && this.container.lastChild;
     }
     render(shadowRoot) {
-        this._container = document.createElement('div');
-        shadowRoot.appendChild(this._container);
+        this.container = document.createElement('div');
+        shadowRoot.appendChild(this.container);
     }
     show() {
         super.show();
@@ -155,7 +153,7 @@ export class LazyRoute extends Route {
     }
     lazyLoad() {
         let slot = document.createElement('slot');
-        this._container.appendChild(slot);
+        this.container.appendChild(slot);
         let templates = this.querySelectorAll('template');
         for (let template of templates) {
             let clone = document.importNode(template.content, true);
@@ -180,7 +178,7 @@ export class RouterLink extends CustomElement {
         this.onclick = (event) => {
             let url = new URL(this.route, window.location.href).toString();
             window.history.pushState({}, "", url);
-            let customEvent = new CustomEvent(RouterLink.EVENT_ROUTE_CHANGE, { detail: url });
+            let customEvent = new Event(RouterLink.EVENT_ROUTE_CHANGE);
             document.dispatchEvent(customEvent);
         };
     }
@@ -206,7 +204,11 @@ export class RouterLink extends CustomElement {
         `;
     }
     get route() {
-        return this.getAttribute(RouterLink.routeAttribute) || '/';
+        let route = this.getAttribute(RouterLink.routeAttribute);
+        if (route === null) {
+            return "";
+        }
+        return route.trim();
     }
     set route(value) {
         this.setAttribute(RouterLink.routeAttribute, value.trim());

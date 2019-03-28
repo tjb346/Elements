@@ -4,7 +4,6 @@ import { CustomElement } from "./element.js";
  * of this element.
  */
 export declare class Route extends CustomElement {
-    private localPath;
     protected containerId: string;
     /**
      * @event
@@ -22,9 +21,9 @@ export declare class Route extends CustomElement {
      * @event
      */
     static EVENT_HIDDEN: string;
+    static nameAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
-    static currentRoute(): string;
     static currentPath(): string[];
     updateAttributes(attributes: {
         [p: string]: string | null;
@@ -43,7 +42,7 @@ export declare class Route extends CustomElement {
     updateState(): void;
 }
 export declare abstract class LazyRoute extends Route {
-    private _container;
+    private container;
     url: string | null;
     protected constructor();
     static readonly observedAttributes: string[];

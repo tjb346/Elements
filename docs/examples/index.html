@@ -8,6 +8,7 @@
     <script src="../lib/table.js" type="module"></script>
     <script src="../lib/dialog.js" type="module"></script>
     <script src="../lib/menu.js" type="module"></script>
+    <script src="../lib/form.js" type="module"></script>
     <style>
         nav {
             height: 50px;
@@ -34,6 +35,7 @@
             <router-link route="/Elements/examples/table">Table</router-link>
             <router-link route="/Elements/examples/dialog">Dialog</router-link>
             <router-link route="/Elements/examples/lazy">Lazy</router-link>
+            <router-link route="/Elements/examples/form">Form</router-link>
         </collapse-menu>
     </nav>
     <page-route name="Elements">
@@ -178,6 +180,15 @@
                     <p>This content is lazy loaded</p>
                 </template>
             </lazy-route>
+            <page-route name="form">
+                <json-form action="/" id="form">
+                    <form-input name="email">Email</form-input>
+                    <form-input name="password">Password</form-input>
+                    <form-input name="firstName">First Name</form-input>
+                    <form-input name="lastName">Last Name</form-input>
+                    <button type="submit">Create Account</button>
+                </json-form>
+            </page-route>
         </page-route>
     </page-route>
 </body>

@@ -35,7 +35,6 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts(): void;
-        connected: boolean;
         readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;
@@ -321,7 +320,6 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
          * Called when dragend event is fired.
          */
         handleDragEnd(event: DragEvent): void;
-        connected: boolean;
         readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         disconnectedCallback(): void;

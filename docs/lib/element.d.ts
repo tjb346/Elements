@@ -2,10 +2,6 @@
  * Basic element class with some utilities to help extend HTMLElement.
  */
 export declare abstract class CustomElement extends HTMLElement {
-    /**
-     * Is this element connected to the DOM
-     */
-    connected: boolean;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

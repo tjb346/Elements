@@ -19,6 +19,7 @@ declare abstract class AbstractInput extends CustomElement {
 export declare class Input extends AbstractInput {
     protected input: HTMLInputElement;
     protected label: HTMLLabelElement;
+    static valueClass: string;
     static typeAttribute: string;
     constructor();
     static readonly observedAttributes: string[];

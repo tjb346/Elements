@@ -37,7 +37,6 @@ declare const Row_base: {
         connectedCallback(): void;
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
-        connected: boolean;
         readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         disconnectedCallback(): void;
@@ -324,7 +323,6 @@ declare const Row_base: {
         handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
-        connected: boolean;
         readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;
@@ -647,7 +645,6 @@ declare const Table_base: {
         handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
-        connected: boolean;
         readonly css: string;
         readonly template: string | HTMLTemplateElement | null;
         connectedCallback(): void;

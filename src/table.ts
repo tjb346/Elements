@@ -516,7 +516,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             padding: 0;
             width: 100%;
             height: 400px;
-            background-color: var(--table-background-color, white);
             border-spacing: 0;
             box-shadow: none;
             color: var(--table-body-text-color, black);
@@ -534,6 +533,10 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         
         .${Table.headerContainerClass} {
             width: 100%;
+        }
+        
+        table-body {
+            background-color: var(--table-background-color);
         }
      `;
   }

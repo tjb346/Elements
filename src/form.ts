@@ -94,13 +94,20 @@ export class Input extends AbstractInput {
     protected input : HTMLInputElement;
     protected label : HTMLLabelElement;
 
+    static valueClass = 'value';
     static typeAttribute = 'type';
 
     constructor(){
         super();
 
         this.input = document.createElement("input");
-        this.input.required = true;
+        this.input.oninput = (event) => {
+            if (this.input.value) {
+                this.input.classList.add(Input.valueClass);
+            } else {
+                this.input.classList.remove(Input.valueClass);
+            }
+        };
         this.label = document.createElement('label');
         let slot = document.createElement('slot');
         this.label.appendChild(slot);
@@ -140,7 +147,7 @@ export class Input extends AbstractInput {
                 pointer-events: none;
            }
            
-           input:focus ~ label, input:valid ~ label {
+           input:focus ~ label, input.value ~ label {
               top: 0;
               font-size: calc(.75 * var(--input-font-size));
               line-height: calc(.75 * var(--input-font-size));

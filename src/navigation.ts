@@ -77,8 +77,11 @@ export class Route extends CustomElement {
     get path() : string[] {
         let parent = this.parentElement;
         let path = [this.name];
-        if (parent instanceof Route){
-            path = parent.path.concat(path);
+        while (parent !== null){
+            if (parent instanceof Route){
+                return parent.path.concat(path);
+            }
+            parent = parent.parentElement;
         }
         return path;
     }

@@ -411,6 +411,7 @@ export class Data extends TableElement {
  *    --table-focus-item-color
  *    --table-selected-item-color
  *    --table-body-text-color
+ *    --table-background-color
  **/
 export class Table extends DroppableMixin(ScrollWindowElement) {
   private sortOrder : SortData[] = [];
@@ -494,12 +495,12 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             font-weight: bold;
         }
         
-        .${Table.headerContainerClass} {
-            width: 100%;
+        div {
+            background-color: var(--table-background-color, white);
         }
         
-        table-body {
-            background-color: var(--table-background-color);
+        .${Table.headerContainerClass} {
+            width: 100%;
         }
      `;
   }

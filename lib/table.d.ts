@@ -928,6 +928,7 @@ declare const Table_base: {
  *    --table-focus-item-color
  *    --table-selected-item-color
  *    --table-body-text-color
+ *    --table-background-color
  **/
 export declare class Table extends Table_base {
     private sortOrder;

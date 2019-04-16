@@ -1,9 +1,7 @@
 import "./dialog.js";
 import { CustomElement } from "./element.js";
-import { Scrollable } from "./movable.js";
 declare class ScrollWindowElement extends CustomElement {
     protected readonly view: HTMLElement;
-    protected readonly pane: Scrollable;
     constructor();
     updateAttributes(attributes: {
         [p: string]: string | null;

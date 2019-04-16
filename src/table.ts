@@ -3,52 +3,18 @@ import "./dialog.js";
 
 import {Dialog} from "./dialog.js";
 import {CustomElement} from "./element.js";
-import {Scrollable} from "./movable.js";
 import {DraggableMixin, DroppableMixin} from "./draggable.js";
-
-class TableBody extends Scrollable {
-  get template(){
-    return `
-      <slot></slot>
-    `;
-  }
-
-  get parentHeightDifference(){
-    if (this.parentElement === null){
-      return 0;
-    }
-    return this.parentElement.getBoundingClientRect().height - this.getBoundingClientRect().height;
-  }
-
-  get position(){
-    return super.position;
-  }
-
-  set position(value){
-    value.x = 0; // Don't allow motion in the x direction.
-    value.y = Math.min(
-        0,
-        Math.max(this.parentHeightDifference, value.y || 0)
-    );
-    super.position = value;
-  }
-}
-
-customElements.define('table-body', TableBody);
 
 class ScrollWindowElement extends CustomElement {
   protected readonly view : HTMLElement;
-  protected readonly pane : Scrollable;
 
   constructor() {
     super();
 
     this.view = document.createElement('div');
-    this.pane = document.createElement('table-body') as TableBody;
 
     let slot = document.createElement('slot');
-    this.pane.appendChild(slot);
-    this.view.appendChild(this.pane);
+    this.view.appendChild(slot);
   }
 
   updateAttributes(attributes: { [p: string]: string | null }): void {}
@@ -57,18 +23,15 @@ class ScrollWindowElement extends CustomElement {
     super.render(shadowRoot);
 
     this.view.style.position = 'relative';
-    this.view.style.overflowY = 'hidden';
+    this.view.style.overflowY = 'auto';
     this.view.style.height = 'inherit';
     this.view.style.width = '100%';
-
-    this.pane.style.width = '100%';
 
     shadowRoot.appendChild(this.view);
   }
 
   resetPane(){
-    this.pane.position = {x: 0, y:0};
-    this.pane.velocity = {x: 0, y: 0};
+    this.view.scrollTop = 0;
   }
 }
 

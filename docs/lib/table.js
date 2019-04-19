@@ -356,16 +356,15 @@ export class NumberData extends AbstractTableData {
 }
 export class TimeData extends AbstractTableData {
     constructor() {
-        super();
+        super(...arguments);
         this.datetime = new Date();
-        this.innerText = this.datetime.toLocaleString();
     }
     get data() {
         return this.datetime;
     }
     set data(value) {
-        this.innerText = value.toLocaleString();
         this.datetime = value;
+        this.innerText = this.datetime.toLocaleString();
     }
     compare(dataElement) {
         return this.data.getTime() - dataElement.data.getTime();

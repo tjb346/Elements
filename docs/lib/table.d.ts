@@ -638,7 +638,6 @@ export declare class NumberData extends AbstractTableData<number> {
 }
 export declare class TimeData extends AbstractTableData<Date> {
     private datetime;
-    constructor();
     data: Date;
     compare(dataElement: AbstractTableData<Date>): number;
 }

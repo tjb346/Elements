@@ -422,18 +422,13 @@ export class NumberData extends AbstractTableData<number> {
 export class TimeData extends AbstractTableData<Date> {
   private datetime : Date = new Date();
 
-  constructor(){
-    super();
-    this.innerText = this.datetime.toLocaleString();
-  }
-
   get data() : Date {
     return this.datetime;
   }
 
   set data(value : Date){
-    this.innerText = value.toLocaleString();
     this.datetime = value;
+    this.innerText = this.datetime.toLocaleString();
   }
 
   compare(dataElement: AbstractTableData<Date>): number {

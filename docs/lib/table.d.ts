@@ -636,6 +636,12 @@ export declare class NumberData extends AbstractTableData<number> {
     data: number;
     compare(dataElement: NumberData): number;
 }
+export declare class TimeData extends AbstractTableData<Date> {
+    private datetime;
+    constructor();
+    data: Date;
+    compare(dataElement: AbstractTableData<Date>): number;
+}
 declare const Table_base: {
     new (...args: any[]): {
         dragOverActions: (() => void)[];

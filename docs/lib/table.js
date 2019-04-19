@@ -345,13 +345,30 @@ export class TextData extends AbstractTableData {
 }
 export class NumberData extends AbstractTableData {
     get data() {
-        return Number.parseFloat(this.innerText);
+        return Number.parseFloat(this.innerText) || 0;
     }
     set data(value) {
         this.innerText = value.toLocaleString();
     }
     compare(dataElement) {
         return this.data - dataElement.data;
+    }
+}
+export class TimeData extends AbstractTableData {
+    constructor() {
+        super();
+        this.datetime = new Date();
+        this.innerText = this.datetime.toLocaleString();
+    }
+    get data() {
+        return this.datetime;
+    }
+    set data(value) {
+        this.innerText = value.toLocaleString();
+        this.datetime = value;
+    }
+    compare(dataElement) {
+        return this.data.getTime() - dataElement.data.getTime();
     }
 }
 /**
@@ -681,4 +698,5 @@ customElements.define('table-header', Header);
 customElements.define('table-row', Row);
 customElements.define('text-data', TextData);
 customElements.define('number-data', NumberData);
+customElements.define('time-data', TimeData);
 customElements.define('selectable-table', Table);

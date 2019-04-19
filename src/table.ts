@@ -407,7 +407,7 @@ export class TextData extends AbstractTableData<string> {
 
 export class NumberData extends AbstractTableData<number> {
   get data() : number {
-    return Number.parseFloat(this.innerText);
+    return Number.parseFloat(this.innerText) || 0;
   }
 
   set data(value : number){
@@ -416,6 +416,28 @@ export class NumberData extends AbstractTableData<number> {
 
   compare(dataElement: NumberData): number {
     return this.data - dataElement.data;
+  }
+}
+
+export class TimeData extends AbstractTableData<Date> {
+  private datetime : Date = new Date();
+
+  constructor(){
+    super();
+    this.innerText = this.datetime.toLocaleString();
+  }
+
+  get data() : Date {
+    return this.datetime;
+  }
+
+  set data(value : Date){
+    this.innerText = value.toLocaleString();
+    this.datetime = value;
+  }
+
+  compare(dataElement: AbstractTableData<Date>): number {
+    return this.data.getTime() - dataElement.data.getTime();
   }
 }
 
@@ -794,4 +816,5 @@ customElements.define('table-header', Header);
 customElements.define('table-row', Row);
 customElements.define('text-data', TextData);
 customElements.define('number-data', NumberData);
+customElements.define('time-data', TimeData);
 customElements.define('selectable-table', Table);

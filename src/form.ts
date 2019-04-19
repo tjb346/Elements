@@ -660,7 +660,8 @@ export class Form extends CustomElement {
     }
 
     onSuccess(){
-        this.className = this.successClass;
+        this.classList.remove(this.errorClass);
+        this.classList.add(this.successClass);
         let event = new Event(Form.EVENT_SUCCESS);
         this.errorMessage.innerText = "";
         for (let child of this.children) {
@@ -672,7 +673,8 @@ export class Form extends CustomElement {
     }
 
     onError(fieldErrors : {[field : string]: string}, errorMessage : string){
-        this.className = this.errorClass;
+        this.classList.remove(this.successClass);
+        this.classList.add(this.errorClass);
         if (errorMessage) {
             this.errorMessage.innerText = errorMessage;
         }

@@ -68,7 +68,7 @@ class BaseRow extends TableElement {
         }
     }
     get allColumns() {
-        return Array.from(this.children).filter((child) => child instanceof Data);
+        return Array.from(this.children).filter((child) => child instanceof AbstractTableData);
     }
     getColumn(columnNumber) {
         return this.allColumns[columnNumber] || null;
@@ -80,7 +80,7 @@ export class Header extends BaseRow {
         super();
         this.onclick = (event) => {
             let target = event.target;
-            if (target instanceof Data) {
+            if (target instanceof AbstractTableData) {
                 let table = this.table;
                 let column = target.column;
                 if (table !== null && column !== null) {
@@ -113,11 +113,11 @@ export class Header extends BaseRow {
             margin-right: 10px;
         }
 
-        ::slotted(.${Data.ascendingSortClass})::after {
+        ::slotted(.${AbstractTableData.ascendingSortClass})::after {
            content: "\\25BC";
         }
 
-        ::slotted(.${Data.descendingSortClass})::after {
+        ::slotted(.${AbstractTableData.descendingSortClass})::after {
             content: "\\25B2";
         }
      `;
@@ -225,12 +225,12 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 }
 Row.DATA_TRANSFER_TYPE = "text/table-rows";
 Row.SELECTED_CLASS = "selected";
-export class Data extends TableElement {
+export class AbstractTableData extends TableElement {
     constructor() {
         super();
     }
     static get observedAttributes() {
-        return [Data.widthAttribute];
+        return [AbstractTableData.widthAttribute];
     }
     get css() {
         // language=CSS
@@ -245,7 +245,7 @@ export class Data extends TableElement {
             white-space: nowrap;
         }
       
-        :host(.${Data.hiddenClass}) {
+        :host(.${AbstractTableData.hiddenClass}) {
             display: none;
         }
     `;
@@ -255,14 +255,8 @@ export class Data extends TableElement {
       <slot></slot>
     `;
     }
-    get data() {
-        return this.innerText;
-    }
-    set data(value) {
-        this.innerText = value.toString();
-    }
     get width() {
-        let stringWidth = this.getAttribute(Data.widthAttribute);
+        let stringWidth = this.getAttribute(AbstractTableData.widthAttribute);
         if (stringWidth === null) {
             return null;
         }
@@ -272,21 +266,21 @@ export class Data extends TableElement {
     }
     set width(value) {
         if (value === null) {
-            this.removeAttribute(Data.widthAttribute);
+            this.removeAttribute(AbstractTableData.widthAttribute);
         }
         else {
-            this.setAttribute(Data.widthAttribute, value.toString());
+            this.setAttribute(AbstractTableData.widthAttribute, value.toString());
         }
     }
     get hidden() {
-        return this.classList.contains(Data.hiddenClass);
+        return this.classList.contains(AbstractTableData.hiddenClass);
     }
     set hidden(value) {
         if (value) {
-            this.classList.add(Data.hiddenClass);
+            this.classList.add(AbstractTableData.hiddenClass);
         }
         else {
-            this.classList.remove(Data.hiddenClass);
+            this.classList.remove(AbstractTableData.hiddenClass);
         }
     }
     get column() {
@@ -297,10 +291,10 @@ export class Data extends TableElement {
         return null;
     }
     get sortOrder() {
-        if (this.classList.contains(Data.ascendingSortClass)) {
+        if (this.classList.contains(AbstractTableData.ascendingSortClass)) {
             return 1;
         }
-        else if (this.classList.contains(Data.descendingSortClass)) {
+        else if (this.classList.contains(AbstractTableData.descendingSortClass)) {
             return -1;
         }
         return 0;
@@ -308,21 +302,21 @@ export class Data extends TableElement {
     set sortOrder(value) {
         switch (value) {
             case -1:
-                this.classList.remove(Data.ascendingSortClass);
-                this.classList.add(Data.descendingSortClass);
+                this.classList.remove(AbstractTableData.ascendingSortClass);
+                this.classList.add(AbstractTableData.descendingSortClass);
                 break;
             case 0:
-                this.classList.remove(Data.descendingSortClass);
-                this.classList.remove(Data.ascendingSortClass);
+                this.classList.remove(AbstractTableData.descendingSortClass);
+                this.classList.remove(AbstractTableData.ascendingSortClass);
                 break;
             case 1:
-                this.classList.remove(Data.descendingSortClass);
-                this.classList.add(Data.ascendingSortClass);
+                this.classList.remove(AbstractTableData.descendingSortClass);
+                this.classList.add(AbstractTableData.ascendingSortClass);
                 break;
         }
     }
     updateAttributes(attributes) {
-        let width = attributes[Data.widthAttribute];
+        let width = attributes[AbstractTableData.widthAttribute];
         if (width === null) {
             this.style.flex = null;
         }
@@ -333,14 +327,33 @@ export class Data extends TableElement {
             }
         }
     }
+}
+AbstractTableData.ascendingSortClass = 'asc';
+AbstractTableData.descendingSortClass = 'des';
+AbstractTableData.hiddenClass = 'hidden';
+AbstractTableData.widthAttribute = 'width';
+export class TextData extends AbstractTableData {
+    get data() {
+        return this.innerText;
+    }
+    set data(value) {
+        this.innerText = value;
+    }
     compare(dataElement) {
         return this.data.localeCompare(dataElement.data);
     }
 }
-Data.ascendingSortClass = 'asc';
-Data.descendingSortClass = 'des';
-Data.hiddenClass = 'hidden';
-Data.widthAttribute = 'width';
+export class NumberData extends AbstractTableData {
+    get data() {
+        return Number.parseFloat(this.innerText);
+    }
+    set data(value) {
+        this.innerText = value.toLocaleString();
+    }
+    compare(dataElement) {
+        return this.data - dataElement.data;
+    }
+}
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
  * [[ Dialog ]] elements can also be added as children and will act as a context menu.
@@ -586,7 +599,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
                 let columnCheckbox = document.createElement('input');
                 columnCheckbox.type = 'checkbox';
                 columnCheckbox.checked = !headerColumnData.hidden;
-                columnLabel.innerText = headerColumnData.data;
+                columnLabel.innerText = headerColumnData.data.toString();
                 columnCheckbox.onchange = () => {
                     for (let row of this.flatChildren(BaseRow)) {
                         let columnData = row.getColumn(columnNumber);
@@ -666,5 +679,6 @@ Table.selectMultipleAttribute = 'select-multiple';
 Table.EVENT_SELECTION_CHANGED = 'selectionchanged';
 customElements.define('table-header', Header);
 customElements.define('table-row', Row);
-customElements.define('table-data', Data);
+customElements.define('text-data', TextData);
+customElements.define('number-data', NumberData);
 customElements.define('selectable-table', Table);

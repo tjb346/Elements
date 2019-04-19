@@ -21,8 +21,8 @@ declare class BaseRow extends TableElement {
     readonly css: string;
     readonly template: string;
     hidden: boolean;
-    readonly allColumns: Data[];
-    getColumn(columnNumber: number): Data | null;
+    readonly allColumns: AbstractTableData<any>[];
+    getColumn(columnNumber: number): AbstractTableData<any> | null;
 }
 export declare class Header extends BaseRow {
     constructor();
@@ -609,16 +609,16 @@ export declare class Row extends Row_base {
     handleDragStart(event: DragEvent): void;
     compare(row: Row, columnNumber: number): number;
 }
-export declare class Data extends TableElement {
+export declare abstract class AbstractTableData<T> extends TableElement {
     static ascendingSortClass: string;
     static descendingSortClass: string;
     static hiddenClass: string;
     static widthAttribute: string;
-    constructor();
+    abstract data: T;
+    protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     readonly template: string;
-    data: string;
     width: number | null;
     hidden: boolean;
     readonly column: number | null;
@@ -626,7 +626,15 @@ export declare class Data extends TableElement {
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    compare(dataElement: Data): number;
+    abstract compare(dataElement: AbstractTableData<T>): number;
+}
+export declare class TextData extends AbstractTableData<string> {
+    data: string;
+    compare(dataElement: TextData): number;
+}
+export declare class NumberData extends AbstractTableData<number> {
+    data: number;
+    compare(dataElement: NumberData): number;
 }
 declare const Table_base: {
     new (...args: any[]): {

@@ -102,11 +102,7 @@ export class Input extends AbstractInput {
 
         this.input = document.createElement("input");
         this.input.oninput = (event) => {
-            if (this.input.value) {
-                this.input.classList.add(Input.valueClass);
-            } else {
-                this.input.classList.remove(Input.valueClass);
-            }
+            this.onValueChange();
         };
         this.label = document.createElement('label');
         let slot = document.createElement('slot');
@@ -167,6 +163,7 @@ export class Input extends AbstractInput {
 
     set value(value : any){
         this.input.value = value;
+        this.onValueChange()
     }
 
     get type() : string {
@@ -181,6 +178,14 @@ export class Input extends AbstractInput {
         this.input.name = attributes[AbstractInput.nameAttribute] || "";
         this.input.type = attributes[Input.typeAttribute] || "";
     }
+
+    protected onValueChange(){
+        if (this.input.value) {
+            this.input.classList.add(Input.valueClass);
+        } else {
+            this.input.classList.remove(Input.valueClass);
+        }
+    }
 }
 
 class ArrayInput extends Input {
@@ -190,6 +195,7 @@ class ArrayInput extends Input {
 
     set value(value : string[]){
         this.input.value = value.join(',');
+        this.onValueChange();
     }
 }
 
@@ -285,6 +291,7 @@ export class BooleanInput extends Input {
 
     set value(value : boolean){
         this.input.checked = value;
+        this.onValueChange();
     }
 }
 

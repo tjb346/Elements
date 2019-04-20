@@ -29,6 +29,7 @@ export declare class Input extends AbstractInput {
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
+    protected onValueChange(): void;
 }
 export declare class BooleanInput extends Input {
     private checkId;

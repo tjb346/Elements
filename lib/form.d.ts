@@ -1,5 +1,5 @@
 import { CustomElement } from "./element.js";
-declare abstract class AbstractInput extends CustomElement {
+export declare abstract class AbstractInput extends CustomElement {
     abstract value: any;
     static readonly errorClass = "error";
     static nameAttribute: string;
@@ -96,4 +96,3 @@ export declare class Form extends CustomElement {
         [field: string]: string;
     }, errorMessage: string): void;
 }
-export {};

@@ -1,6 +1,6 @@
 import {CustomElement} from "./element.js";
 
-abstract class AbstractInput extends CustomElement {
+export abstract class AbstractInput extends CustomElement {
     public abstract value : any;
 
     static readonly errorClass = "error";

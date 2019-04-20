@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { CustomElement } from "./element.js";
-class AbstractInput extends CustomElement {
+export class AbstractInput extends CustomElement {
     constructor() {
         super();
         this.container = document.createElement('div');

@@ -34,8 +34,12 @@ export declare class Input extends AbstractInput {
 export declare class BooleanInput extends Input {
     private checkId;
     constructor();
+    static readonly observedAttributes: string[];
     readonly css: string;
     value: boolean;
+    updateAttributes(attributes: {
+        [p: string]: string | null;
+    }): void;
 }
 export declare class SelectInput extends AbstractInput {
     static multiAttribute: string;

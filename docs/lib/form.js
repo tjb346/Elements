@@ -178,6 +178,9 @@ export class BooleanInput extends Input {
         span.id = this.checkId;
         this.inputContainer.appendChild(span);
     }
+    static get observedAttributes() {
+        return AbstractInput.observedAttributes;
+    }
     get css() {
         // language=CSS
         return super.css + `
@@ -256,6 +259,9 @@ export class BooleanInput extends Input {
     set value(value) {
         this.input.checked = value;
         this.onValueChange();
+    }
+    updateAttributes(attributes) {
+        this.input.name = attributes[AbstractInput.nameAttribute] || "";
     }
 }
 export class SelectInput extends AbstractInput {
@@ -379,6 +385,10 @@ export class SelectOption extends CustomElement {
     constructor() {
         super();
         this.option = document.createElement('option');
+        let observer = new MutationObserver((mutations) => {
+            this.option.innerText = this.innerText;
+        });
+        observer.observe(this, { characterData: true, subtree: true });
     }
     static get observedAttributes() {
         return [SelectOption.typeAttribute, SelectOption.valueAttribute];
@@ -540,6 +550,8 @@ export class Form extends CustomElement {
     }
     submit() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.classList.remove(this.errorClass);
+            this.classList.remove(this.successClass);
             let data = {};
             for (let child of this.children) {
                 if (child instanceof AbstractInput) {
@@ -583,7 +595,6 @@ export class Form extends CustomElement {
         });
     }
     onSuccess() {
-        this.classList.remove(this.errorClass);
         this.classList.add(this.successClass);
         let event = new Event(Form.EVENT_SUCCESS);
         this.errorMessage.innerText = "";
@@ -595,7 +606,6 @@ export class Form extends CustomElement {
         this.dispatchEvent(event);
     }
     onError(fieldErrors, errorMessage) {
-        this.classList.remove(this.successClass);
         this.classList.add(this.errorClass);
         if (errorMessage) {
             this.errorMessage.innerText = errorMessage;

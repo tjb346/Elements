@@ -212,6 +212,10 @@ export class BooleanInput extends Input {
         this.inputContainer.appendChild(span);
     }
 
+    static get observedAttributes() {
+        return AbstractInput.observedAttributes;
+    }
+
     get css(){
         // language=CSS
         return super.css + `
@@ -292,6 +296,10 @@ export class BooleanInput extends Input {
     set value(value : boolean){
         this.input.checked = value;
         this.onValueChange();
+    }
+
+    updateAttributes(attributes: { [p: string]: string | null }): void {
+        this.input.name = attributes[AbstractInput.nameAttribute] || "";
     }
 }
 
@@ -434,6 +442,11 @@ export class SelectOption extends CustomElement {
         super();
 
         this.option = document.createElement('option');
+
+        let observer = new MutationObserver((mutations) => {
+            this.option.innerText = this.innerText;
+        });
+        observer.observe(this, {characterData: true, subtree: true});
     }
 
     static get observedAttributes() {
@@ -628,6 +641,9 @@ export class Form extends CustomElement {
     }
 
     async submit(){
+        this.classList.remove(this.errorClass);
+        this.classList.remove(this.successClass);
+
         let data : {[name:string]:any} = {};
         for (let child of this.children){
             if (child instanceof AbstractInput){
@@ -667,7 +683,6 @@ export class Form extends CustomElement {
     }
 
     onSuccess(){
-        this.classList.remove(this.errorClass);
         this.classList.add(this.successClass);
         let event = new Event(Form.EVENT_SUCCESS);
         this.errorMessage.innerText = "";
@@ -680,7 +695,6 @@ export class Form extends CustomElement {
     }
 
     onError(fieldErrors : {[field : string]: string}, errorMessage : string){
-        this.classList.remove(this.successClass);
         this.classList.add(this.errorClass);
         if (errorMessage) {
             this.errorMessage.innerText = errorMessage;

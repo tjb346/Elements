@@ -386,9 +386,10 @@ export class SelectOption extends CustomElement {
         super();
         this.option = document.createElement('option');
         let observer = new MutationObserver((mutations) => {
+            console.log("OBJSERVER");
             this.option.innerText = this.innerText;
         });
-        observer.observe(this, { characterData: true, subtree: true });
+        observer.observe(this, { characterData: true, childList: true, subtree: true });
     }
     static get observedAttributes() {
         return [SelectOption.typeAttribute, SelectOption.valueAttribute];

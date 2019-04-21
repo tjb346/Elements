@@ -423,7 +423,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     get css() {
         // language=CSS
         return `      
-        :host {          
+        :host {       
+            display: flex;
+            flex-flow: column;   
             position: relative;
             padding: 0;
             width: 100%;

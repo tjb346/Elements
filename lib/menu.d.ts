@@ -1,6 +1,6 @@
 import { CustomElement } from "./element.js";
 /**
- * A collapsible menu
+ * A collapsible menu. Requires page have <meta name="viewport" content="width=device-width"> set in HTML to collapse.
  * CSS variables for theming:
  *    --menu-color
  *    --menu-background-color
@@ -10,16 +10,21 @@ import { CustomElement } from "./element.js";
 export declare class Menu extends CustomElement {
     private readonly button;
     private readonly container;
-    private collapseWidth;
     protected openedClass: string;
+    static defaultCollapseWidth: number;
     static collapseWidthAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     readonly opened: boolean;
+    collapseWidth: number;
     updateAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     render(shadowRoot: ShadowRoot): void;
     toggleOpened(): void;
+    open(): void;
+    close(): void;
+    isOutsideTarget(event: Event): boolean;
+    handleEvent(event: Event): void;
 }

@@ -2,7 +2,7 @@ import {CustomElement} from "./element.js";
 
 
 /**
- * A collapsible menu
+ * A collapsible menu. Requires page have <meta name="viewport" content="width=device-width"> set in HTML to collapse.
  * CSS variables for theming:
  *    --menu-color
  *    --menu-background-color
@@ -12,10 +12,10 @@ import {CustomElement} from "./element.js";
 export class Menu extends CustomElement {
     private readonly button : HTMLButtonElement;
     private readonly container : HTMLDivElement;
-    private collapseWidth : number = 600;
 
     protected openedClass = 'opened';
 
+    static defaultCollapseWidth = 600;
     static collapseWidthAttribute = 'collapse-width';
 
     constructor() {
@@ -33,18 +33,10 @@ export class Menu extends CustomElement {
         };
 
         document.documentElement.addEventListener('click', (event : MouseEvent) => {
-            if (event.target instanceof Element) {
-                let element : Element | null = event.target;
-                while(element !== null) {
-                    if (element === this){
-                        return;
-                    }
-                    element = element.parentElement;
-                }
-                if (this.opened){
-                    this.toggleOpened();
-                }
-            }
+            this.handleEvent(event);
+        });
+        document.documentElement.addEventListener('touchstart', (event : TouchEvent) => {
+            this.handleEvent(event);
         });
     }
 
@@ -115,16 +107,20 @@ export class Menu extends CustomElement {
         return this.container.classList.contains(this.openedClass);
     }
 
-
-    updateAttributes(attributes: { [p: string]: string | null }): void {
-        let collapseWidth = attributes[Menu.collapseWidthAttribute];
-        if (collapseWidth != null) {
-            this.collapseWidth = Number.parseInt(collapseWidth);
+    get collapseWidth() : number {
+        let attr = this.getAttribute(Menu.collapseWidthAttribute);
+        if (attr === null){
+            return Menu.defaultCollapseWidth;
         } else {
-            this.collapseWidth = 600;
+            return parseInt(attr) || Menu.defaultCollapseWidth;
         }
     }
 
+    set collapseWidth(value : number){
+        this.setAttribute(Menu.collapseWidthAttribute, value.toString());
+    }
+
+    updateAttributes(attributes: { [p: string]: string | null }): void {}
 
     render(shadowRoot: ShadowRoot) {
         super.render(shadowRoot);
@@ -135,9 +131,34 @@ export class Menu extends CustomElement {
     toggleOpened(){
         // Toggle open and close menu
         if (this.opened){
-            this.container.classList.remove(this.openedClass);
+            this.close();
         } else {
-            this.container.classList.add(this.openedClass);
+            this.open();
+        }
+    }
+
+    open() {
+        this.container.classList.add(this.openedClass);
+    }
+
+    close(){
+        this.container.classList.remove(this.openedClass);
+    }
+
+    isOutsideTarget(event : Event) {
+        let node = event.target;
+        while(node !== null && node instanceof Node) {
+            if (node === this){
+                return false;
+            }
+            node = node.parentNode;
+        }
+        return true;
+    }
+
+    handleEvent(event : Event){
+        if (this.opened && this.isOutsideTarget(event)) {
+            this.close();
         }
     }
 }

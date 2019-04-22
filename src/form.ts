@@ -549,9 +549,12 @@ export class SelectOption extends CustomElement {
 export class Form extends CustomElement {
     private readonly container : HTMLElement;
     private readonly errorMessage : HTMLElement;
-    protected containerClass = 'container';
-    protected successClass = 'success';
-    protected errorClass = 'error';
+
+    public lastResponse : Response | null = null;
+
+    static containerClass = 'container';
+    static successClass = 'success';
+    static errorClass = 'error';
 
     /**
      * @event
@@ -568,7 +571,7 @@ export class Form extends CustomElement {
 
         this.errorMessage = document.createElement('span');
         this.container = document.createElement('div');
-        this.container.className = this.containerClass;
+        this.container.className = Form.containerClass;
         let slot = document.createElement('slot');
         this.container.appendChild(this.errorMessage);
         this.container.appendChild(slot);
@@ -602,7 +605,7 @@ export class Form extends CustomElement {
                 line-height: 16px;
             }
             
-            .${this.containerClass} {
+            .${Form.containerClass} {
                 max-width: 300px;
             }
         `
@@ -640,50 +643,62 @@ export class Form extends CustomElement {
         shadowRoot.appendChild(this.container);
     }
 
-    async submit(){
-        this.classList.remove(this.errorClass);
-        this.classList.remove(this.successClass);
+    protected async getResponse() : Promise<Response> {
+        this.classList.remove(Form.errorClass);
+        this.classList.remove(Form.successClass);
 
-        let data : {[name:string]:any} = {};
-        for (let child of this.children){
-            if (child instanceof AbstractInput){
+        let data: { [name: string]: any } = {};
+        for (let child of this.children) {
+            if (child instanceof AbstractInput) {
                 data[child.name] = child.value;
             }
         }
-        try {
-            let response = await fetch(this.action || '', {
-                method: this.method || 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                this.onSuccess();
-            } else {
-                let fieldErrors = {};
-                let errorMessage = response.statusText;
-                if (response.status == 400){
+
+        return await fetch(this.action || '', {
+            method: this.method || 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    }
+
+    protected async handleResponse(response : Response){
+        this.lastResponse = response;
+
+        if (this.lastResponse.ok) {
+            this.onSuccess();
+        } else {
+            let fieldErrors = {};
+            let errorMessage = this.lastResponse.statusText;
+            if (this.lastResponse.status == 400){
+                try {
+                    fieldErrors = await this.lastResponse.json();
+                } catch (e) {
                     try {
-                        fieldErrors = await response.json();
+                        errorMessage = await this.lastResponse.text();
                     } catch (e) {
-                        try {
-                            errorMessage = await response.text();
-                        } catch (e) {
-                            console.log("Could not parse request data.");
-                        }
+                        console.log("could not parse response");
                     }
                 }
-                this.onError(fieldErrors, errorMessage);
             }
-        } catch (e) {
-            this.onError({}, "Error saving form");
+            this.onError(fieldErrors, errorMessage);
         }
     }
 
+    submit(){
+        this.getResponse()
+          .then((response : Response) => {
+              return this.handleResponse(response);
+          })
+          .catch((error : Error) => {
+              this.onError({}, "Error saving form");
+          })
+    }
+
     onSuccess(){
-        this.classList.add(this.successClass);
+        this.classList.add(Form.successClass);
         let event = new Event(Form.EVENT_SUCCESS);
         this.errorMessage.innerText = "";
         for (let child of this.children) {
@@ -695,11 +710,11 @@ export class Form extends CustomElement {
     }
 
     onError(fieldErrors : {[field : string]: string}, errorMessage : string){
-        this.classList.add(this.errorClass);
+        this.classList.add(Form.errorClass);
         if (errorMessage) {
             this.errorMessage.innerText = errorMessage;
         }
-        console.trace();
+
         for (let child of this.children) {
             if (child instanceof AbstractInput) {
                 let fieldError = fieldErrors[child.name];

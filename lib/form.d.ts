@@ -76,9 +76,10 @@ export declare class SelectOption extends CustomElement {
 export declare class Form extends CustomElement {
     private readonly container;
     private readonly errorMessage;
-    protected containerClass: string;
-    protected successClass: string;
-    protected errorClass: string;
+    lastResponse: Response | null;
+    static containerClass: string;
+    static successClass: string;
+    static errorClass: string;
     /**
      * @event
      */
@@ -95,7 +96,9 @@ export declare class Form extends CustomElement {
         [p: string]: string | null;
     }): void;
     render(shadowRoot: ShadowRoot): void;
-    submit(): Promise<void>;
+    protected getResponse(): Promise<Response>;
+    protected handleResponse(response: Response): Promise<void>;
+    submit(): void;
     onSuccess(): void;
     onError(fieldErrors: {
         [field: string]: string;

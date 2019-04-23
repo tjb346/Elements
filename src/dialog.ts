@@ -307,6 +307,8 @@ export class ConfirmDialog extends Dialog {
 
   static confirmButtonClass = 'confirm';
 
+  static confirmationTextAttribute = 'confirmation-text';
+
   constructor(){
     super();
 
@@ -314,6 +316,10 @@ export class ConfirmDialog extends Dialog {
     this.confirmButton.className = ConfirmDialog.confirmButtonClass;
     this.confirmButton.innerText = "Yes";
     this.confirmButton.onclick = this.onConfirmed.bind(this);
+  }
+
+  static get observedAttributes(): string[] {
+    return Dialog.observedAttributes.concat([ConfirmDialog.confirmationTextAttribute]);
   }
 
   get css(){
@@ -331,11 +337,16 @@ export class ConfirmDialog extends Dialog {
   render(root : ShadowRoot) {
     super.render(root);
 
+    this.confirmButton.innerText = this.confirmationText;
     root.appendChild(this.confirmButton);
   }
 
+  get confirmationText() : string{
+    return this.getAttribute(ConfirmDialog.confirmationTextAttribute) || "Yes";
+  }
+
   set confirmationText(value : string){
-    this.confirmButton.innerText = value;
+    this.setAttribute(ConfirmDialog.confirmationTextAttribute, value);
   }
 
   set disabled(value : boolean | string){

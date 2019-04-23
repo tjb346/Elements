@@ -270,6 +270,9 @@ export class ConfirmDialog extends Dialog {
         this.confirmButton.innerText = "Yes";
         this.confirmButton.onclick = this.onConfirmed.bind(this);
     }
+    static get observedAttributes() {
+        return Dialog.observedAttributes.concat([ConfirmDialog.confirmationTextAttribute]);
+    }
     get css() {
         // language=CSS
         return super.css + `
@@ -282,10 +285,14 @@ export class ConfirmDialog extends Dialog {
     }
     render(root) {
         super.render(root);
+        this.confirmButton.innerText = this.confirmationText;
         root.appendChild(this.confirmButton);
     }
+    get confirmationText() {
+        return this.getAttribute(ConfirmDialog.confirmationTextAttribute) || "Yes";
+    }
     set confirmationText(value) {
-        this.confirmButton.innerText = value;
+        this.setAttribute(ConfirmDialog.confirmationTextAttribute, value);
     }
     set disabled(value) {
         this.confirmButton.disabled = Boolean(value);
@@ -302,5 +309,6 @@ export class ConfirmDialog extends Dialog {
  */
 ConfirmDialog.EVENT_CONFIRMED = 'confirmed';
 ConfirmDialog.confirmButtonClass = 'confirm';
+ConfirmDialog.confirmationTextAttribute = 'confirmation-text';
 customElements.define('base-dialog', Dialog);
 customElements.define('confirm-dialog', ConfirmDialog);

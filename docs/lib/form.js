@@ -601,7 +601,7 @@ export class Form extends CustomElement {
             return this.handleResponse(response);
         })
             .catch((error) => {
-            this.onError({}, "Error saving form");
+            this.onError({}, Form.defaultErrorMessage);
         })
             .finally(() => {
             this.classList.remove(Form.loadingClass);
@@ -620,9 +620,7 @@ export class Form extends CustomElement {
     }
     onError(fieldErrors, errorMessage) {
         this.classList.add(Form.errorClass);
-        if (errorMessage) {
-            this.errorMessage.innerText = errorMessage;
-        }
+        this.errorMessage.innerText = errorMessage || Form.defaultErrorMessage;
         for (let child of this.children) {
             if (child instanceof AbstractInput) {
                 let fieldError = fieldErrors[child.name];
@@ -642,6 +640,7 @@ Form.containerClass = 'container';
 Form.loadingClass = 'loading';
 Form.successClass = 'success';
 Form.errorClass = 'error';
+Form.defaultErrorMessage = "Error saving form";
 /**
  * @event
  */

@@ -65,7 +65,9 @@ export declare class ConfirmDialog extends Dialog {
      */
     static EVENT_CONFIRMED: string;
     static confirmButtonClass: string;
+    static confirmationTextAttribute: string;
     constructor();
+    static readonly observedAttributes: string[];
     readonly css: string;
     render(root: ShadowRoot): void;
     confirmationText: string;

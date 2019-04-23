@@ -22,7 +22,6 @@ class ScrollWindowElement extends CustomElement {
   render(shadowRoot : ShadowRoot) {
     super.render(shadowRoot);
 
-    this.view.style.position = 'relative';
     this.view.style.overflowY = 'auto';
     this.view.style.height = 'inherit';
     this.view.style.width = '100%';

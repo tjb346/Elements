@@ -81,6 +81,7 @@ export declare class Form extends CustomElement {
     static loadingClass: string;
     static successClass: string;
     static errorClass: string;
+    static defaultErrorMessage: string;
     /**
      * @event
      */

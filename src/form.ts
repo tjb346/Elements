@@ -557,6 +557,8 @@ export class Form extends CustomElement {
     static successClass = 'success';
     static errorClass = 'error';
 
+    static defaultErrorMessage = "Error saving form";
+
     /**
      * @event
      */
@@ -702,7 +704,7 @@ export class Form extends CustomElement {
               return this.handleResponse(response);
           })
           .catch((error : Error) => {
-              this.onError({}, "Error saving form");
+              this.onError({}, Form.defaultErrorMessage);
           })
           .finally(() => {
               this.classList.remove(Form.loadingClass);
@@ -723,9 +725,7 @@ export class Form extends CustomElement {
 
     onError(fieldErrors : {[field : string]: string}, errorMessage : string){
         this.classList.add(Form.errorClass);
-        if (errorMessage) {
-            this.errorMessage.innerText = errorMessage;
-        }
+        this.errorMessage.innerText = errorMessage || Form.defaultErrorMessage;
 
         for (let child of this.children) {
             if (child instanceof AbstractInput) {

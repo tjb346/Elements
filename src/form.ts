@@ -553,8 +553,14 @@ export class Form extends CustomElement {
     public lastResponse : Response | null = null;
 
     static containerClass = 'container';
+    static loadingClass = 'loading';
     static successClass = 'success';
     static errorClass = 'error';
+
+    /**
+     * @event
+     */
+    static EVENT_SUBMIT = 'submit';
 
     /**
      * @event
@@ -688,12 +694,18 @@ export class Form extends CustomElement {
     }
 
     submit(){
+        this.classList.add(Form.loadingClass);
+        let event = new Event(Form.EVENT_SUBMIT);
+        this.dispatchEvent(event);
         this.getResponse()
           .then((response : Response) => {
               return this.handleResponse(response);
           })
           .catch((error : Error) => {
               this.onError({}, "Error saving form");
+          })
+          .finally(() => {
+              this.classList.remove(Form.loadingClass);
           })
     }
 

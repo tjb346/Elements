@@ -78,8 +78,13 @@ export declare class Form extends CustomElement {
     private readonly errorMessage;
     lastResponse: Response | null;
     static containerClass: string;
+    static loadingClass: string;
     static successClass: string;
     static errorClass: string;
+    /**
+     * @event
+     */
+    static EVENT_SUBMIT: string;
     /**
      * @event
      */

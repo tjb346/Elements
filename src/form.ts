@@ -97,6 +97,11 @@ export class Input extends AbstractInput {
     static valueClass = 'value';
     static typeAttribute = 'type';
 
+    /**
+     * @event
+     */
+    static EVENT_CHANGE= 'change';
+
     constructor(){
         super();
 
@@ -185,6 +190,9 @@ export class Input extends AbstractInput {
         } else {
             this.input.classList.remove(Input.valueClass);
         }
+
+        let event = new Event(Input.EVENT_CHANGE);
+        this.dispatchEvent(event);
     }
 }
 

@@ -21,6 +21,10 @@ export declare class Input extends AbstractInput {
     protected label: HTMLLabelElement;
     static valueClass: string;
     static typeAttribute: string;
+    /**
+     * @event
+     */
+    static EVENT_CHANGE: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

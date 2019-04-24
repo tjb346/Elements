@@ -546,9 +546,8 @@ export class SelectOption extends CustomElement {
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        let parentSelect = this.parentSelect;
-        if (parentSelect){
-            parentSelect.removeChild(this.option);
+        if (this.option.parentElement !== null){
+            this.option.parentElement.removeChild(this.option);
         }
     }
 }

@@ -16,11 +16,11 @@ export class Dialog extends Grabbable {
   private readonly containerElement : HTMLElement;
   private readonly documentClickListener : (event : MouseEvent) => void;
 
-  private readonly deleteButtonClass = 'delete';
-  private readonly expandButtonClass = 'expand';
-  private readonly nameClass = 'name';
-  private readonly headerClass = 'header';
-  private readonly containerClass = 'container';
+  static deleteButtonId = 'delete';
+  static expandButtonId = 'expand';
+  static nameId = 'name';
+  static headerId = 'header';
+  static containerId = 'container';
   protected readonly noPropagate = true; // Don't let clicks effect other dialogs.
 
   private opened = false;
@@ -53,17 +53,17 @@ export class Dialog extends Grabbable {
     // Parent is a dialog instance. This dialog will close when parent closes.
     // It won't close when parent is clicked.
     this.nameElement = document.createElement('span');
-    this.nameElement.className = this.nameClass;
+    this.nameElement.id = Dialog.nameId;
 
     this.headerElement = document.createElement('div');
-    this.headerElement.className = this.headerClass;
+    this.headerElement.id = Dialog.headerId;
 
     this.containerElement = document.createElement('div');
-    this.containerElement.className = this.containerClass;
+    this.containerElement.id = Dialog.containerId;
 
     let expandButton = document.createElement('button');
     expandButton.type = 'button';
-    expandButton.className =  this.expandButtonClass;
+    expandButton.id =  Dialog.expandButtonId;
     expandButton.onmousedown =(event) => {
       // Prevent from moving dialog.
       event.stopPropagation();
@@ -72,11 +72,11 @@ export class Dialog extends Grabbable {
     expandButton.onclick = (event) => {
       event.stopPropagation();
       event.preventDefault();
-      this.expanded = true;
+      this.expanded = !this.expanded;
     };
     let deleteButton = document.createElement('button');
     deleteButton.type = 'button';
-    deleteButton.className = this.deleteButtonClass;
+    deleteButton.id = Dialog.deleteButtonId;
     deleteButton.onmousedown =(event) => {
       // Prevent from moving dialog.
       event.stopPropagation();
@@ -129,7 +129,7 @@ export class Dialog extends Grabbable {
         height: 100%;
       }
       
-      .${this.headerClass} {
+      #${Dialog.headerId} {
         display: flex;
         box-sizing: border-box;
         height: var(--header-height);
@@ -140,7 +140,7 @@ export class Dialog extends Grabbable {
         cursor: move;
       }
       
-      .${this.nameClass} {
+      #${Dialog.nameId} {
         flex: 1;
         line-height: var(--header-height);
         margin-left: 4px;
@@ -148,7 +148,7 @@ export class Dialog extends Grabbable {
         font-size: 14px;
       }
       
-      .${this.headerClass} > button {
+      #${Dialog.headerId} > button {
         float: right;
         cursor: pointer;
         border: none;
@@ -159,26 +159,22 @@ export class Dialog extends Grabbable {
         height: var(--header-height);
       }
       
-      .${this.expandButtonClass}::after {
+      #${Dialog.headerId} > button::after {
         display: inline-block;
         width: 100%;
         height: 100%;
         background-size: 18px 18px;
-        background-image: var(--expand-button);
         background-repeat: no-repeat;
         background-position: center;
         content: "";
       }
       
-      .${this.deleteButtonClass}::after {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        background-size: 18px 18px;
+      #${Dialog.expandButtonId}::after {
+        background-image: var(--expand-button);
+      }
+      
+      #${Dialog.deleteButtonId}::after {
         background-image: var(--delete-button);
-        background-repeat: no-repeat;
-        background-position: center;
-        content: "";
       }
     `;
   }
@@ -305,7 +301,7 @@ export class ConfirmDialog extends Dialog {
    */
   static EVENT_CONFIRMED = 'confirmed';
 
-  static confirmButtonClass = 'confirm';
+  static confirmButtonId = 'confirm';
 
   static confirmationTextAttribute = 'confirmation-text';
 
@@ -313,7 +309,7 @@ export class ConfirmDialog extends Dialog {
     super();
 
     this.confirmButton = document.createElement('button');
-    this.confirmButton.className = ConfirmDialog.confirmButtonClass;
+    this.confirmButton.id = ConfirmDialog.confirmButtonId;
     this.confirmButton.innerText = "Yes";
     this.confirmButton.onclick = this.onConfirmed.bind(this);
   }
@@ -325,7 +321,7 @@ export class ConfirmDialog extends Dialog {
   get css(){
     // language=CSS
     return  super.css + `
-        .${ConfirmDialog.confirmButtonClass} {
+        #${ConfirmDialog.confirmButtonId} {
             float: right;
             margin: 2px;
             cursor: pointer;

@@ -947,7 +947,8 @@ export declare class Table extends Table_base {
     private sortOrder;
     private columnsDialog;
     static readonly HEADER_SLOT_NAME = "header";
-    static headerContainerClass: string;
+    static headerContainerId: string;
+    static bodyId: string;
     static showHiddenClass: string;
     static selectMultipleAttribute: string;
     /**

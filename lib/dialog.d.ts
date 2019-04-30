@@ -13,11 +13,11 @@ export declare class Dialog extends Grabbable {
     private readonly headerElement;
     private readonly containerElement;
     private readonly documentClickListener;
-    private readonly deleteButtonClass;
-    private readonly expandButtonClass;
-    private readonly nameClass;
-    private readonly headerClass;
-    private readonly containerClass;
+    static deleteButtonId: string;
+    static expandButtonId: string;
+    static nameId: string;
+    static headerId: string;
+    static containerId: string;
     protected readonly noPropagate = true;
     private opened;
     onShow: ((dialog: Dialog) => void) | null;
@@ -64,7 +64,7 @@ export declare class ConfirmDialog extends Dialog {
      * @event
      */
     static EVENT_CONFIRMED: string;
-    static confirmButtonClass: string;
+    static confirmButtonId: string;
     static confirmationTextAttribute: string;
     constructor();
     static readonly observedAttributes: string[];

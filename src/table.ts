@@ -454,7 +454,8 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   static readonly HEADER_SLOT_NAME = 'header';
 
-  static headerContainerClass = 'header';
+  static headerContainerId = 'header';
+  static bodyId = 'body';
   static showHiddenClass = 'show-hidden';
   
   static selectMultipleAttribute = 'select-multiple';
@@ -469,6 +470,8 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
     this.columnsDialog = new Dialog();
     this.columnsDialog.name = "Columns";
+
+    this.view.id = Table.bodyId;
 
     // Deselected other rows if selectMultiple is false
     this.onclick = (event) => {
@@ -532,11 +535,11 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             font-weight: bold;
         }
         
-        div {
+        #${Table.bodyId} {
             background-color: var(--table-background-color, white);
         }
         
-        .${Table.headerContainerClass} {
+        #${Table.headerContainerId} {
             width: 100%;
         }
      `;
@@ -638,7 +641,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   render(shadowRoot : ShadowRoot){
     let headerContainer = document.createElement('div');
-    headerContainer.className = Table.headerContainerClass;
+    headerContainer.id = Table.headerContainerId;
     let headerSlot = document.createElement('slot');
     headerSlot.name = Table.HEADER_SLOT_NAME;
     headerContainer.appendChild(headerSlot);

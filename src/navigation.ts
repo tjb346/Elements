@@ -32,6 +32,12 @@ export class Route extends CustomElement {
     constructor() {
         super();
 
+        let container = document.createElement('div');
+        container.id = this.containerId;
+        let slot = document.createElement('slot');
+        container.appendChild(slot);
+        this.shadowDOM.appendChild(container);
+
         window.addEventListener('popstate', (event) => {
             event.preventDefault();
 
@@ -58,7 +64,7 @@ export class Route extends CustomElement {
         return path.split('/');
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {
         this.dispatchEvent(new Event(Route.EVENT_NAME_CHANGE));
     }
 
@@ -100,15 +106,6 @@ export class Route extends CustomElement {
     connectedCallback() {
         super.connectedCallback();
         this.updateState();
-    }
-
-    render(shadowRoot : ShadowRoot){
-        super.render(shadowRoot);
-        let container = document.createElement('div');
-        container.id = this.containerId;
-        let slot = document.createElement('slot');
-        container.appendChild(slot);
-        shadowRoot.appendChild(container);
     }
 
     /**
@@ -154,7 +151,9 @@ export abstract class LazyRoute extends Route {
 
     protected constructor(){
         super();
+
         this.container = document.createElement('div');
+        this.shadowDOM.appendChild(this.container);
     }
 
     static get observedAttributes() {
@@ -163,11 +162,6 @@ export abstract class LazyRoute extends Route {
 
     get loaded(){
         return this.container && this.container.lastChild;
-    }
-
-    render(shadowRoot : ShadowRoot){
-        this.container = document.createElement('div');
-        shadowRoot.appendChild(this.container);
     }
 
     show(){
@@ -225,6 +219,9 @@ export class RouterLink extends CustomElement {
     constructor() {
         super();
 
+        let slot = document.createElement('slot');
+        this.shadowDOM.appendChild(slot);
+
         this.onclick = (event) => {
             let url = new URL(this.route, window.location.href).toString();
             window.history.pushState({}, "", url);
@@ -271,14 +268,7 @@ export class RouterLink extends CustomElement {
         this.setAttribute(RouterLink.routeAttribute, value.trim());
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {}
-
-
-    render(shadowRoot: ShadowRoot) {
-        super.render(shadowRoot);
-        let slot = document.createElement('slot');
-        shadowRoot.appendChild(slot);
-    }
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 }
 
 customElements.define('page-route', Route);

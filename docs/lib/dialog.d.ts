@@ -46,12 +46,11 @@ export declare class Dialog extends Grabbable {
     name: string;
     visible: boolean;
     expanded: boolean;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
-    render(shadowRoot: ShadowRoot): void;
     remove(): void;
     /**
      *  Checks if click is in dialog or one of one of its child dialogs and if not closes.
@@ -69,7 +68,6 @@ export declare class ConfirmDialog extends Dialog {
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
-    render(root: ShadowRoot): void;
     confirmationText: string;
     disabled: boolean | string;
     onConfirmed(event: Event): void;

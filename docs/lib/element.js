@@ -1,12 +1,15 @@
 /**
- * Basic element class with some utilities to help extend HTMLElement.
+ * Basic element class with some utilities to help extend HTMLElement. Add all persitant elements
+ * to the shadowDOM in the constructor. Update state from attributes in updateFromAttributes.
  */
 export class CustomElement extends HTMLElement {
     constructor() {
         super();
-        if (this.shadowRoot === null) {
-            this.attachShadow({ mode: 'open' });
-        }
+        this.styleElement = document.createElement('style');
+        this.styleElement.type = 'text/css';
+        this.htmlElement = null;
+        this.shadowDOM = this.attachShadow({ mode: 'open' });
+        this.shadowDOM.appendChild(this.styleElement);
     }
     static get observedAttributes() {
         return [];
@@ -14,8 +17,8 @@ export class CustomElement extends HTMLElement {
     get css() {
         return "";
     }
-    get template() {
-        return null;
+    get html() {
+        return "";
     }
     connectedCallback() {
         this.refresh();
@@ -31,10 +34,8 @@ export class CustomElement extends HTMLElement {
      * Remove every child element from shadow dom
      */
     removeShadowChildren() {
-        if (this.shadowRoot) {
-            while (this.shadowRoot.firstChild) {
-                this.shadowRoot.removeChild(this.shadowRoot.firstChild);
-            }
+        while (this.shadowDOM.firstChild) {
+            this.shadowDOM.removeChild(this.shadowDOM.firstChild);
         }
     }
     /**
@@ -59,21 +60,17 @@ export class CustomElement extends HTMLElement {
      * Add child to the shadow dom
      */
     appendShadowChild(element) {
-        if (this.shadowRoot) {
-            this.shadowRoot.appendChild(element);
-        }
+        this.shadowDOM.appendChild(element);
     }
     /**
      * Add children in bulk to the shadow dom
      */
     appendShadowChildren(elements) {
-        if (this.shadowRoot) {
-            let frag = document.createDocumentFragment();
-            for (let element of elements) {
-                frag.appendChild(element);
-            }
-            this.shadowRoot.appendChild(frag);
+        let frag = document.createDocumentFragment();
+        for (let element of elements) {
+            frag.appendChild(element);
         }
+        this.shadowDOM.appendChild(frag);
     }
     /**
      * Add children in bulk to this element
@@ -102,40 +99,33 @@ export class CustomElement extends HTMLElement {
         return allChildren(this);
     }
     /**
-     * Re-render the shadow dom.
+     * Gets all current attributes and values and calls render.
      */
     refresh() {
-        this.removeShadowChildren();
         let attributes = {};
         for (let attr of this.constructor.observedAttributes) {
             attributes[attr] = this.getAttribute(attr);
         }
-        this.updateAttributes(attributes);
-        if (this.shadowRoot) {
-            this.render(this.shadowRoot);
-        }
+        this.render(attributes);
     }
     /**
-     * Render the shadow dom. By default adds the string returned by template to shadow dom innerHTML.
-     * @param {ShadowRoot} shadowRoot - The root shadow dom element.
+     * Updates state and renders the shadow dom. By default adds the string returned by template to the innerHTML
+     * of a div in the shadow dom and the css to a style element in the shadow dom.
+     * @param attributes - The current attributes and their values defined on the html element.
      */
-    render(shadowRoot) {
+    render(attributes) {
+        this.updateFromAttributes(attributes);
         let css = this.css;
         if (css !== "") {
-            let styleElement = document.createElement('style');
-            styleElement.type = 'text/css';
-            styleElement.innerHTML = css.toString();
-            shadowRoot.appendChild(styleElement);
+            this.styleElement.textContent = css;
         }
-        let template = this.template;
+        let template = this.html;
         if (template) {
-            if (!(template instanceof HTMLTemplateElement)) {
-                let t = document.createElement('template');
-                t.innerHTML = template.toString();
-                template = t;
+            if (this.htmlElement === null) {
+                this.htmlElement = document.createElement('div');
+                this.shadowDOM.appendChild(this.htmlElement);
             }
-            let clone = document.importNode(template.content, true);
-            shadowRoot.appendChild(clone);
+            this.htmlElement.innerHTML = template;
         }
     }
 }

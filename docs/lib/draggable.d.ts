@@ -35,14 +35,14 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts(): void;
+        readonly styleElement: HTMLStyleElement;
+        htmlElement: HTMLDivElement | null;
+        readonly shadowDOM: ShadowRoot;
         readonly css: string;
-        readonly template: string | HTMLTemplateElement | null;
+        readonly html: string;
         connectedCallback(): void;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        updateAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         removeShadowChildren(): void;
         removeChildren(type?: any): void;
         appendShadowChild(element: Element): void;
@@ -50,7 +50,12 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         appendChildren(elements: Element[] | NodeList): void;
         flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
         refresh(): void;
-        render(shadowRoot: ShadowRoot): void;
+        render(attributes: {
+            [name: string]: string | null;
+        }): void;
+        updateFromAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -320,13 +325,13 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
          * Called when dragend event is fired.
          */
         handleDragEnd(event: DragEvent): void;
+        readonly styleElement: HTMLStyleElement;
+        htmlElement: HTMLDivElement | null;
+        readonly shadowDOM: ShadowRoot;
         readonly css: string;
-        readonly template: string | HTMLTemplateElement | null;
+        readonly html: string;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        updateAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         removeShadowChildren(): void;
         removeChildren(type?: any): void;
         appendShadowChild(element: Element): void;
@@ -334,7 +339,12 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         appendChildren(elements: Element[] | NodeList): void;
         flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
         refresh(): void;
-        render(shadowRoot: ShadowRoot): void;
+        render(attributes: {
+            [name: string]: string | null;
+        }): void;
+        updateFromAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;

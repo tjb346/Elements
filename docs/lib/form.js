@@ -18,6 +18,7 @@ export class AbstractInput extends CustomElement {
         this.errorMessageSpan.id = AbstractInput.errorSpanId;
         this.container.appendChild(this.inputContainer);
         this.container.appendChild(this.errorMessageSpan);
+        this.shadowDOM.appendChild(this.container);
     }
     static get observedAttributes() {
         return [AbstractInput.nameAttribute];
@@ -65,10 +66,6 @@ export class AbstractInput extends CustomElement {
         else {
             this.inputContainer.classList.add(Input.errorClass);
         }
-    }
-    render(shadowRoot) {
-        super.render(shadowRoot);
-        shadowRoot.appendChild(this.container);
     }
 }
 AbstractInput.errorClass = "error";
@@ -145,7 +142,7 @@ export class Input extends AbstractInput {
     set type(value) {
         this.setAttribute(Input.typeAttribute, value);
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         this.input.name = attributes[AbstractInput.nameAttribute] || "";
         this.input.type = attributes[Input.typeAttribute] || "";
     }
@@ -266,7 +263,7 @@ export class BooleanInput extends Input {
         this.input.checked = value;
         this.onValueChange();
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         this.input.name = attributes[AbstractInput.nameAttribute] || "";
     }
 }
@@ -383,7 +380,7 @@ export class SelectInput extends AbstractInput {
             this.label.classList.add(SelectInput.floatClass);
         }
     }
-    updateAttributes(attributes) { }
+    updateFromAttributes(attributes) { }
 }
 SelectInput.multiAttribute = 'multi';
 SelectInput.floatClass = "float";
@@ -454,7 +451,7 @@ export class SelectOption extends CustomElement {
         }
         return name;
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         let value = attributes[SelectOption.valueAttribute];
         if (value !== null) {
             this.option.value = value;
@@ -490,6 +487,7 @@ export class Form extends CustomElement {
         let slot = document.createElement('slot');
         this.container.appendChild(this.errorMessage);
         this.container.appendChild(slot);
+        this.shadowDOM.appendChild(this.container);
         this.onclick = (event) => {
             if (event.target instanceof HTMLButtonElement && event.target.type === "submit") {
                 this.submit();
@@ -546,11 +544,7 @@ export class Form extends CustomElement {
             this.setAttribute('method', value);
         }
     }
-    updateAttributes(attributes) { }
-    render(shadowRoot) {
-        super.render(shadowRoot);
-        shadowRoot.appendChild(this.container);
-    }
+    updateFromAttributes(attributes) { }
     getResponse() {
         return __awaiter(this, void 0, void 0, function* () {
             this.classList.remove(Form.errorClass);

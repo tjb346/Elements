@@ -96,7 +96,10 @@ export class Dialog extends Grabbable {
 
     this.documentClickListener = (event) => {
       this.closeOnOutsideClick(event);
-    }
+    };
+
+    this.shadowDOM.appendChild(this.headerElement);
+    this.shadowDOM.appendChild(this.containerElement);
   }
 
   static get observedAttributes(): string[] {
@@ -215,7 +218,7 @@ export class Dialog extends Grabbable {
     }
   }
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
     let name = attributes[Dialog.nameAttribute];
     let visible = attributes[Dialog.visibleAttribute];
     let expanded = attributes[Dialog.expandedAttribute];
@@ -255,13 +258,6 @@ export class Dialog extends Grabbable {
 
   disconnectedCallback(){
     document.documentElement.removeEventListener('click', this.documentClickListener);
-  }
-
-  render(shadowRoot : ShadowRoot){
-    super.render(shadowRoot);
-
-    shadowRoot.appendChild(this.headerElement);
-    shadowRoot.appendChild(this.containerElement);
   }
 
   remove(){
@@ -312,6 +308,9 @@ export class ConfirmDialog extends Dialog {
     this.confirmButton.id = ConfirmDialog.confirmButtonId;
     this.confirmButton.innerText = "Yes";
     this.confirmButton.onclick = this.onConfirmed.bind(this);
+
+    this.confirmButton.innerText = this.confirmationText;
+    this.shadowDOM.appendChild(this.confirmButton);
   }
 
   static get observedAttributes(): string[] {
@@ -327,14 +326,6 @@ export class ConfirmDialog extends Dialog {
             cursor: pointer;
         }
     `
-  }
-
-
-  render(root : ShadowRoot) {
-    super.render(root);
-
-    this.confirmButton.innerText = this.confirmationText;
-    root.appendChild(this.confirmButton);
   }
 
   get confirmationText() : string{

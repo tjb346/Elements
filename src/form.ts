@@ -29,6 +29,8 @@ export abstract class AbstractInput extends CustomElement {
 
         this.container.appendChild(this.inputContainer);
         this.container.appendChild(this.errorMessageSpan);
+
+        this.shadowDOM.appendChild(this.container);
     }
 
     static get observedAttributes() {
@@ -81,12 +83,6 @@ export abstract class AbstractInput extends CustomElement {
         } else {
             this.inputContainer.classList.add(Input.errorClass);
         }
-    }
-
-    render(shadowRoot: ShadowRoot): void {
-        super.render(shadowRoot);
-
-        shadowRoot.appendChild(this.container);
     }
 }
 
@@ -179,7 +175,7 @@ export class Input extends AbstractInput {
         this.setAttribute(Input.typeAttribute, value);
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {
         this.input.name = attributes[AbstractInput.nameAttribute] || "";
         this.input.type = attributes[Input.typeAttribute] || "";
     }
@@ -306,7 +302,7 @@ export class BooleanInput extends Input {
         this.onValueChange();
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {
         this.input.name = attributes[AbstractInput.nameAttribute] || "";
     }
 }
@@ -438,7 +434,7 @@ export class SelectInput extends AbstractInput {
         }
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {}
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 }
 
 export class SelectOption extends CustomElement {
@@ -525,7 +521,7 @@ export class SelectOption extends CustomElement {
         return name;
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {
         let value = attributes[SelectOption.valueAttribute];
         if (value !== null){
             this.option.value = value;
@@ -590,6 +586,8 @@ export class Form extends CustomElement {
         let slot = document.createElement('slot');
         this.container.appendChild(this.errorMessage);
         this.container.appendChild(slot);
+        this.shadowDOM.appendChild(this.container);
+
         this.onclick = (event : MouseEvent) => {
             if (event.target instanceof HTMLButtonElement && event.target.type === "submit"){
                 this.submit();
@@ -650,13 +648,7 @@ export class Form extends CustomElement {
         }
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {}
-
-    render(shadowRoot: ShadowRoot): void {
-        super.render(shadowRoot);
-
-        shadowRoot.appendChild(this.container);
-    }
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 
     protected async getResponse() : Promise<Response> {
         this.classList.remove(Form.errorClass);

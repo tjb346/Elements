@@ -18,10 +18,9 @@ export declare class Menu extends CustomElement {
     readonly css: string;
     readonly opened: boolean;
     collapseWidth: number;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    render(shadowRoot: ShadowRoot): void;
     toggleOpened(): void;
     open(): void;
     close(): void;

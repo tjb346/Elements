@@ -9,15 +9,12 @@ class ScrollWindowElement extends CustomElement {
         this.view = document.createElement('div');
         let slot = document.createElement('slot');
         this.view.appendChild(slot);
-    }
-    updateAttributes(attributes) { }
-    render(shadowRoot) {
-        super.render(shadowRoot);
         this.view.style.overflowY = 'auto';
         this.view.style.height = 'inherit';
         this.view.style.width = '100%';
-        shadowRoot.appendChild(this.view);
+        this.shadowDOM.appendChild(this.view);
     }
+    updateFromAttributes(attributes) { }
     resetPane() {
         this.view.scrollTop = 0;
     }
@@ -33,11 +30,13 @@ class TableElement extends CustomElement {
         }
         return null;
     }
-    updateAttributes(attributes) { }
+    updateFromAttributes(attributes) { }
 }
 class BaseRow extends TableElement {
     constructor() {
         super();
+        let slot = document.createElement('slot');
+        this.shadowDOM.appendChild(slot);
     }
     get css() {
         // language=CSS
@@ -49,11 +48,6 @@ class BaseRow extends TableElement {
             line-height: var(--table-row-height, 30px);
         }
      `;
-    }
-    get template() {
-        return `
-      <slot></slot>
-    `;
     }
     get hidden() {
         return this.classList.contains(BaseRow.hiddenClass);
@@ -227,6 +221,8 @@ Row.SELECTED_CLASS = "selected";
 export class AbstractTableData extends TableElement {
     constructor() {
         super();
+        let slot = document.createElement('slot');
+        this.shadowDOM.appendChild(slot);
     }
     static get observedAttributes() {
         return [AbstractTableData.widthAttribute];
@@ -247,11 +243,6 @@ export class AbstractTableData extends TableElement {
         :host(.${AbstractTableData.hiddenClass}) {
             display: none;
         }
-    `;
-    }
-    get template() {
-        return `
-      <slot></slot>
     `;
     }
     get width() {
@@ -314,7 +305,7 @@ export class AbstractTableData extends TableElement {
                 break;
         }
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         let width = attributes[AbstractTableData.widthAttribute];
         if (width === null) {
             this.style.flex = null;
@@ -386,9 +377,16 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     constructor() {
         super();
         this.sortOrder = [];
+        this.view.id = Table.bodyId;
         this.columnsDialog = new Dialog();
         this.columnsDialog.name = "Columns";
-        this.view.id = Table.bodyId;
+        let headerContainer = document.createElement('div');
+        headerContainer.id = Table.headerContainerId;
+        let headerSlot = document.createElement('slot');
+        headerSlot.name = Table.HEADER_SLOT_NAME;
+        headerContainer.appendChild(headerSlot);
+        this.shadowDOM.insertBefore(headerContainer, this.view);
+        this.shadowDOM.appendChild(this.columnsDialog);
         // Deselected other rows if selectMultiple is false
         this.onclick = (event) => {
             let element = event.target;
@@ -527,20 +525,10 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             return sortMap;
         }, {});
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         for (let row of this.rows) {
             row.selected = false;
         }
-    }
-    render(shadowRoot) {
-        let headerContainer = document.createElement('div');
-        headerContainer.id = Table.headerContainerId;
-        let headerSlot = document.createElement('slot');
-        headerSlot.name = Table.HEADER_SLOT_NAME;
-        headerContainer.appendChild(headerSlot);
-        shadowRoot.appendChild(headerContainer);
-        shadowRoot.appendChild(this.columnsDialog);
-        super.render(shadowRoot);
     }
     // Internal Events
     /**

@@ -32,6 +32,9 @@ export class Menu extends CustomElement {
             this.toggleOpened();
         };
 
+        this.shadowDOM.appendChild(this.button);
+        this.shadowDOM.appendChild(this.container);
+
         document.documentElement.addEventListener('click', (event : MouseEvent) => {
             this.handleEvent(event);
         });
@@ -120,13 +123,7 @@ export class Menu extends CustomElement {
         this.setAttribute(Menu.collapseWidthAttribute, value.toString());
     }
 
-    updateAttributes(attributes: { [p: string]: string | null }): void {}
-
-    render(shadowRoot: ShadowRoot) {
-        super.render(shadowRoot);
-        shadowRoot.appendChild(this.button);
-        shadowRoot.appendChild(this.container);
-    }
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 
     toggleOpened(){
         // Toggle open and close menu

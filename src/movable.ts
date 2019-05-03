@@ -27,7 +27,7 @@ export class Movable extends CustomElement {
     super();
   }
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
   }
 
   connectedCallback() {
@@ -262,7 +262,7 @@ export class Scrollable extends Movable {
     return [Scrollable.scrollSpeedAttribute];
   }
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
     let scrollSpeed = attributes[Scrollable.scrollSpeedAttribute];
     if (scrollSpeed === null) {
       this.scrollSpeed = Scrollable.defaultScrollSpeed;

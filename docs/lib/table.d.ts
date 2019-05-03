@@ -3,15 +3,14 @@ import { CustomElement } from "./element.js";
 declare class ScrollWindowElement extends CustomElement {
     protected readonly view: HTMLElement;
     constructor();
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    render(shadowRoot: ShadowRoot): void;
     resetPane(): void;
 }
 declare class TableElement extends CustomElement {
     readonly table: Table | null;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
 }
@@ -19,7 +18,6 @@ declare class BaseRow extends TableElement {
     static hiddenClass: string;
     constructor();
     readonly css: string;
-    readonly template: string;
     hidden: boolean;
     readonly allColumns: AbstractTableData<any>[];
     getColumn(columnNumber: number): AbstractTableData<any> | null;
@@ -35,13 +33,13 @@ declare const Row_base: {
         connectedCallback(): void;
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
+        readonly styleElement: HTMLStyleElement;
+        htmlElement: HTMLDivElement | null;
+        readonly shadowDOM: ShadowRoot;
         readonly css: string;
-        readonly template: string | HTMLTemplateElement | null;
+        readonly html: string;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        updateAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         removeShadowChildren(): void;
         removeChildren(type?: any): void;
         appendShadowChild(element: Element): void;
@@ -49,7 +47,12 @@ declare const Row_base: {
         appendChildren(elements: Element[] | NodeList): void;
         flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
         refresh(): void;
-        render(shadowRoot: ShadowRoot): void;
+        render(attributes: {
+            [name: string]: string | null;
+        }): void;
+        updateFromAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -321,14 +324,14 @@ declare const Row_base: {
         handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
+        readonly styleElement: HTMLStyleElement;
+        htmlElement: HTMLDivElement | null;
+        readonly shadowDOM: ShadowRoot;
         readonly css: string;
-        readonly template: string | HTMLTemplateElement | null;
+        readonly html: string;
         connectedCallback(): void;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        updateAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         removeShadowChildren(): void;
         removeChildren(type?: any): void;
         appendShadowChild(element: Element): void;
@@ -336,7 +339,12 @@ declare const Row_base: {
         appendChildren(elements: Element[] | NodeList): void;
         flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
         refresh(): void;
-        render(shadowRoot: ShadowRoot): void;
+        render(attributes: {
+            [name: string]: string | null;
+        }): void;
+        updateFromAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -618,12 +626,11 @@ export declare abstract class AbstractTableData<T> extends TableElement {
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
-    readonly template: string;
     width: number | null;
     hidden: boolean;
     readonly column: number | null;
     sortOrder: SortOrderValues;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     abstract compare(dataElement: AbstractTableData<T>): number;
@@ -656,14 +663,14 @@ declare const Table_base: {
         handleChildrenRemoved(removedChildren: NodeList): void;
         setTimeouts(): void;
         clearTimeOuts(): void;
+        readonly styleElement: HTMLStyleElement;
+        htmlElement: HTMLDivElement | null;
+        readonly shadowDOM: ShadowRoot;
         readonly css: string;
-        readonly template: string | HTMLTemplateElement | null;
+        readonly html: string;
         connectedCallback(): void;
         disconnectedCallback(): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        updateAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         removeShadowChildren(): void;
         removeChildren(type?: any): void;
         appendShadowChild(element: Element): void;
@@ -671,7 +678,12 @@ declare const Table_base: {
         appendChildren(elements: Element[] | NodeList): void;
         flatChildren<T extends Element>(type?: (new () => T) | undefined): T[];
         refresh(): void;
-        render(shadowRoot: ShadowRoot): void;
+        render(attributes: {
+            [name: string]: string | null;
+        }): void;
+        updateFromAttributes(attributes: {
+            [name: string]: string | null;
+        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -971,10 +983,9 @@ export declare class Table extends Table_base {
     readonly sortMap: {
         [columnNumber: number]: SortOrderValues;
     };
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    render(shadowRoot: ShadowRoot): void;
     /**
      * Sort the table by the column with the given columnNumber.
      */

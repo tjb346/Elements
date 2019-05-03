@@ -15,19 +15,15 @@ class ScrollWindowElement extends CustomElement {
 
     let slot = document.createElement('slot');
     this.view.appendChild(slot);
-  }
-
-  updateAttributes(attributes: { [p: string]: string | null }): void {}
-
-  render(shadowRoot : ShadowRoot) {
-    super.render(shadowRoot);
 
     this.view.style.overflowY = 'auto';
     this.view.style.height = 'inherit';
     this.view.style.width = '100%';
 
-    shadowRoot.appendChild(this.view);
+    this.shadowDOM.appendChild(this.view);
   }
+
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 
   resetPane(){
     this.view.scrollTop = 0;
@@ -48,7 +44,7 @@ class TableElement extends CustomElement {
   }
 
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {}
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {}
 }
 
 class BaseRow extends TableElement {
@@ -56,6 +52,9 @@ class BaseRow extends TableElement {
 
   constructor() {
     super();
+
+    let slot = document.createElement('slot');
+    this.shadowDOM.appendChild(slot);
   }
 
   get css(){
@@ -68,12 +67,6 @@ class BaseRow extends TableElement {
             line-height: var(--table-row-height, 30px);
         }
      `;
-  }
-
-  get template(){
-    return `
-      <slot></slot>
-    `;
   }
 
   get hidden() : boolean {
@@ -281,6 +274,9 @@ export abstract class AbstractTableData<T> extends TableElement {
 
   protected constructor(){
     super();
+
+    let slot = document.createElement('slot');
+    this.shadowDOM.appendChild(slot);
   }
 
   static get observedAttributes() {
@@ -303,12 +299,6 @@ export abstract class AbstractTableData<T> extends TableElement {
         :host(.${AbstractTableData.hiddenClass}) {
             display: none;
         }
-    `;
-  }
-
-  get template(){
-    return `
-      <slot></slot>
     `;
   }
 
@@ -375,7 +365,7 @@ export abstract class AbstractTableData<T> extends TableElement {
     }
   }
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
     let width = attributes[AbstractTableData.widthAttribute];
     if (width === null){
       this.style.flex = null;
@@ -468,10 +458,18 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   constructor(){
     super();
 
+    this.view.id = Table.bodyId;
+
     this.columnsDialog = new Dialog();
     this.columnsDialog.name = "Columns";
 
-    this.view.id = Table.bodyId;
+    let headerContainer = document.createElement('div');
+    headerContainer.id = Table.headerContainerId;
+    let headerSlot = document.createElement('slot');
+    headerSlot.name = Table.HEADER_SLOT_NAME;
+    headerContainer.appendChild(headerSlot);
+    this.shadowDOM.insertBefore(headerContainer, this.view);
+    this.shadowDOM.appendChild(this.columnsDialog);
 
     // Deselected other rows if selectMultiple is false
     this.onclick = (event) => {
@@ -633,21 +631,10 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     );
   }
 
-  updateAttributes(attributes: { [p: string]: string | null }): void {
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
     for (let row of this.rows){
       row.selected = false;
     }
-  }
-
-  render(shadowRoot : ShadowRoot){
-    let headerContainer = document.createElement('div');
-    headerContainer.id = Table.headerContainerId;
-    let headerSlot = document.createElement('slot');
-    headerSlot.name = Table.HEADER_SLOT_NAME;
-    headerContainer.appendChild(headerSlot);
-    shadowRoot.appendChild(headerContainer);
-    shadowRoot.appendChild(this.columnsDialog);
-    super.render(shadowRoot);
   }
 
   // Internal Events

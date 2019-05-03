@@ -25,14 +25,13 @@ export declare class Route extends CustomElement {
     constructor();
     static readonly observedAttributes: string[];
     static currentPath(): string[];
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     name: string;
     readonly path: string[];
     readonly isRoot: boolean;
     connectedCallback(): void;
-    render(shadowRoot: ShadowRoot): void;
     /**
      * Shows the route.
      */
@@ -47,7 +46,6 @@ export declare abstract class LazyRoute extends Route {
     protected constructor();
     static readonly observedAttributes: string[];
     readonly loaded: ChildNode | null;
-    render(shadowRoot: ShadowRoot): void;
     show(): void;
     private lazyLoad;
     /**
@@ -66,8 +64,7 @@ export declare class RouterLink extends CustomElement {
     static readonly observedAttributes: string[];
     readonly css: string;
     route: string;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    render(shadowRoot: ShadowRoot): void;
 }

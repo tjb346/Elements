@@ -59,6 +59,8 @@ export class Dialog extends Grabbable {
         this.documentClickListener = (event) => {
             this.closeOnOutsideClick(event);
         };
+        this.shadowDOM.appendChild(this.headerElement);
+        this.shadowDOM.appendChild(this.containerElement);
     }
     static get observedAttributes() {
         return [Dialog.nameAttribute, Dialog.visibleAttribute, Dialog.expandedAttribute];
@@ -170,7 +172,7 @@ export class Dialog extends Grabbable {
             this.removeAttribute(Dialog.expandedAttribute);
         }
     }
-    updateAttributes(attributes) {
+    updateFromAttributes(attributes) {
         let name = attributes[Dialog.nameAttribute];
         let visible = attributes[Dialog.visibleAttribute];
         let expanded = attributes[Dialog.expandedAttribute];
@@ -206,11 +208,6 @@ export class Dialog extends Grabbable {
     }
     disconnectedCallback() {
         document.documentElement.removeEventListener('click', this.documentClickListener);
-    }
-    render(shadowRoot) {
-        super.render(shadowRoot);
-        shadowRoot.appendChild(this.headerElement);
-        shadowRoot.appendChild(this.containerElement);
     }
     remove() {
         if (this.onRemove) {
@@ -265,6 +262,8 @@ export class ConfirmDialog extends Dialog {
         this.confirmButton.id = ConfirmDialog.confirmButtonId;
         this.confirmButton.innerText = "Yes";
         this.confirmButton.onclick = this.onConfirmed.bind(this);
+        this.confirmButton.innerText = this.confirmationText;
+        this.shadowDOM.appendChild(this.confirmButton);
     }
     static get observedAttributes() {
         return Dialog.observedAttributes.concat([ConfirmDialog.confirmationTextAttribute]);
@@ -278,11 +277,6 @@ export class ConfirmDialog extends Dialog {
             cursor: pointer;
         }
     `;
-    }
-    render(root) {
-        super.render(root);
-        this.confirmButton.innerText = this.confirmationText;
-        root.appendChild(this.confirmButton);
     }
     get confirmationText() {
         return this.getAttribute(ConfirmDialog.confirmationTextAttribute) || "Yes";

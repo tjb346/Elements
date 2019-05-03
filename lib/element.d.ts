@@ -1,20 +1,18 @@
 /**
- * Basic element class with some utilities to help extend HTMLElement.
+ * Basic element class with some utilities to help extend HTMLElement. Add all persitant elements
+ * to the shadowDOM in the constructor. Update state from attributes in updateFromAttributes.
  */
 export declare abstract class CustomElement extends HTMLElement {
+    readonly styleElement: HTMLStyleElement;
+    htmlElement: HTMLDivElement | null;
+    readonly shadowDOM: ShadowRoot;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
-    readonly template: string | HTMLTemplateElement | null;
+    readonly html: string;
     connectedCallback(): void;
     disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-    /**
-     * Update the properties on this element from those set on the attributes.
-     */
-    abstract updateAttributes(attributes: {
-        [name: string]: string | null;
-    }): void;
     /**
      * Remove every child element from shadow dom
      */
@@ -40,12 +38,23 @@ export declare abstract class CustomElement extends HTMLElement {
      */
     flatChildren<T extends Element>(type?: new () => T): T[];
     /**
-     * Re-render the shadow dom.
+     * Gets all current attributes and values and calls render.
      */
     refresh(): void;
     /**
-     * Render the shadow dom. By default adds the string returned by template to shadow dom innerHTML.
-     * @param {ShadowRoot} shadowRoot - The root shadow dom element.
+     * Updates state and renders the shadow dom. By default adds the string returned by template to the innerHTML
+     * of a div in the shadow dom and the css to a style element in the shadow dom.
+     * @param attributes - The current attributes and their values defined on the html element.
      */
-    render(shadowRoot: ShadowRoot): void;
+    render(attributes: {
+        [name: string]: string | null;
+    }): void;
+    /**
+     * Updates the state of this element and any DOM updates. Called when any updates are made to the
+     * observed attributes of this element. All important state should be stored via the attributes,
+     * so all updates should be made here.
+     */
+    abstract updateFromAttributes(attributes: {
+        [name: string]: string | null;
+    }): void;
 }

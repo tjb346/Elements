@@ -20,7 +20,7 @@ export declare class Movable extends CustomElement {
      */
     protected timeStep: number;
     constructor();
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     connectedCallback(): void;
@@ -65,7 +65,7 @@ export declare class Scrollable extends Movable {
     static scrollSpeedAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
 }

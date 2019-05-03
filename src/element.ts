@@ -1,14 +1,23 @@
 
 /**
- * Basic element class with some utilities to help extend HTMLElement.
+ * Basic element class with some utilities to help extend HTMLElement. Add all persitant elements
+ * to the shadowDOM in the constructor. Update state from attributes in updateFromAttributes.
  */
 export abstract class CustomElement extends HTMLElement {
+  readonly styleElement : HTMLStyleElement;
+  htmlElement : HTMLDivElement | null;
+  readonly shadowDOM : ShadowRoot;
+
   protected constructor(){
     super();
 
-    if (this.shadowRoot === null){
-      this.attachShadow({mode: 'open'});
-    }
+    this.styleElement = document.createElement('style');
+    this.styleElement.type = 'text/css';
+    this.htmlElement = null;
+
+    this.shadowDOM = this.attachShadow({mode: 'open'});
+
+    this.shadowDOM.appendChild(this.styleElement);
   }
 
   static get observedAttributes(): string[] {
@@ -19,8 +28,8 @@ export abstract class CustomElement extends HTMLElement {
     return "";
   }
 
-  get template(): string | HTMLTemplateElement | null {
-    return null;
+  get html(): string {
+    return "";
   }
 
   connectedCallback(){
@@ -37,18 +46,11 @@ export abstract class CustomElement extends HTMLElement {
   }
 
   /**
-   * Update the properties on this element from those set on the attributes.
-   */
-  abstract updateAttributes(attributes : {[name : string] : string | null}) : void;
-
-  /**
    * Remove every child element from shadow dom
    */
   removeShadowChildren(){
-    if (this.shadowRoot){
-      while (this.shadowRoot.firstChild) {
-        this.shadowRoot.removeChild(this.shadowRoot.firstChild);
-      }
+    while (this.shadowDOM.firstChild) {
+      this.shadowDOM.removeChild(this.shadowDOM.firstChild);
     }
   }
 
@@ -74,22 +76,18 @@ export abstract class CustomElement extends HTMLElement {
    * Add child to the shadow dom
    */
   appendShadowChild(element : Element){
-    if (this.shadowRoot){
-      this.shadowRoot.appendChild(element);
-    }
+    this.shadowDOM.appendChild(element);
   }
 
   /**
    * Add children in bulk to the shadow dom
    */
   appendShadowChildren(elements : Element[] | NodeList){
-    if (this.shadowRoot){
-      let frag = document.createDocumentFragment();
-      for (let element of elements){
-        frag.appendChild(element);
-      }
-      this.shadowRoot.appendChild(frag);
+    let frag = document.createDocumentFragment();
+    for (let element of elements){
+      frag.appendChild(element);
     }
+    this.shadowDOM.appendChild(frag);
   }
 
   /**
@@ -121,44 +119,44 @@ export abstract class CustomElement extends HTMLElement {
   }
 
   /**
-   * Re-render the shadow dom.
+   * Gets all current attributes and values and calls render.
    */
-  refresh(){
-    this.removeShadowChildren();
-
+  refresh() {
     let attributes : {[name : string] : string | null} = {};
     for (let attr of (this.constructor as typeof CustomElement).observedAttributes){
       attributes[attr] = this.getAttribute(attr);
     }
-    this.updateAttributes(attributes);
 
-    if (this.shadowRoot){
-      this.render(this.shadowRoot);
+    this.render(attributes);
+  }
+
+  /**
+   * Updates state and renders the shadow dom. By default adds the string returned by template to the innerHTML
+   * of a div in the shadow dom and the css to a style element in the shadow dom.
+   * @param attributes - The current attributes and their values defined on the html element.
+   */
+  render(attributes : {[name : string] : string | null}){
+    this.updateFromAttributes(attributes);
+
+    let css = this.css;
+    if (css !== "") {
+        this.styleElement.textContent = css;
+    }
+
+    let template = this.html;
+    if (template) {
+      if (this.htmlElement === null){
+        this.htmlElement = document.createElement('div');
+        this.shadowDOM.appendChild(this.htmlElement);
+      }
+      this.htmlElement.innerHTML = template;
     }
   }
 
   /**
-   * Render the shadow dom. By default adds the string returned by template to shadow dom innerHTML.
-   * @param {ShadowRoot} shadowRoot - The root shadow dom element.
+   * Updates the state of this element and any DOM updates. Called when any updates are made to the
+   * observed attributes of this element. All important state should be stored via the attributes,
+   * so all updates should be made here.
    */
-  render(shadowRoot : ShadowRoot){
-    let css = this.css;
-    if (css !== "") {
-        let styleElement = document.createElement('style');
-        styleElement.type = 'text/css';
-        styleElement.innerHTML= css.toString();
-        shadowRoot.appendChild(styleElement);
-    }
-
-    let template = this.template;
-    if (template) {
-      if (!(template instanceof HTMLTemplateElement)){
-        let t = document.createElement('template');
-        t.innerHTML = template.toString();
-        template = t;
-      }
-      let clone = document.importNode(template.content, true);
-      shadowRoot.appendChild(clone);
-    }
-  }
+  abstract updateFromAttributes(attributes : {[name : string] : string | null}) : void;
 }

@@ -14,7 +14,6 @@ export declare abstract class AbstractInput extends CustomElement {
     readonly css: string;
     name: string;
     errorMessage: string;
-    render(shadowRoot: ShadowRoot): void;
 }
 export declare class Input extends AbstractInput {
     protected input: HTMLInputElement;
@@ -30,7 +29,7 @@ export declare class Input extends AbstractInput {
     readonly css: string;
     value: any;
     type: string;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     protected onValueChange(): void;
@@ -41,7 +40,7 @@ export declare class BooleanInput extends Input {
     static readonly observedAttributes: string[];
     readonly css: string;
     value: boolean;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
 }
@@ -56,7 +55,7 @@ export declare class SelectInput extends AbstractInput {
     multi: boolean;
     value: any;
     private moveLabel;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
 }
@@ -71,7 +70,7 @@ export declare class SelectOption extends CustomElement {
     type: string;
     selected: boolean;
     readonly parentSelect: HTMLSelectElement | null;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
     connectedCallback(): void;
@@ -102,10 +101,9 @@ export declare class Form extends CustomElement {
     readonly css: string;
     action: string | null;
     method: string | null;
-    updateAttributes(attributes: {
+    updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    render(shadowRoot: ShadowRoot): void;
     protected getResponse(): Promise<Response>;
     protected handleResponse(response: Response): Promise<void>;
     submit(): void;

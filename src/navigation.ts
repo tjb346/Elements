@@ -229,6 +229,8 @@ export class RouterLink extends CustomElement {
             let url = new URL(this.route, window.location.href).toString();
             window.history.pushState({}, "", url);
 
+            window.scroll(0, 0);
+
             let customEvent = new Event(RouterLink.EVENT_ROUTE_CHANGE);
             document.dispatchEvent(customEvent);
         };

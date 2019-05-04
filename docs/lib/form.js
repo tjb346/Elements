@@ -163,7 +163,7 @@ Input.typeAttribute = 'type';
  * @event
  */
 Input.EVENT_CHANGE = 'change';
-class ArrayInput extends Input {
+export class ArrayInput extends Input {
     get value() {
         return this.input.value.split(',');
     }
@@ -359,8 +359,17 @@ export class SelectInput extends AbstractInput {
         }
     }
     set value(value) {
+        let valueSet = new Set();
+        if (this.multi) {
+            for (let item of value) {
+                valueSet.add(item);
+            }
+        }
+        else {
+            valueSet.add(value);
+        }
         for (let option of this.flatChildren(SelectOption)) {
-            if (option.value === value) {
+            if (valueSet.has(option.value)) {
                 option.selected = true;
                 if (!this.multi) {
                     break;
@@ -373,14 +382,17 @@ export class SelectInput extends AbstractInput {
         this.moveLabel();
     }
     moveLabel() {
-        if (this.value === null) {
-            this.label.classList.remove(SelectInput.floatClass);
-        }
-        else {
+        if (this.multi || this.value !== null) {
             this.label.classList.add(SelectInput.floatClass);
         }
+        else {
+            this.label.classList.remove(SelectInput.floatClass);
+        }
     }
-    updateFromAttributes(attributes) { }
+    updateFromAttributes(attributes) {
+        this.select.multiple = this.multi;
+        this.moveLabel();
+    }
 }
 SelectInput.multiAttribute = 'multi';
 SelectInput.floatClass = "float";

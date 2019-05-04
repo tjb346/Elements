@@ -192,7 +192,7 @@ export class Input extends AbstractInput {
     }
 }
 
-class ArrayInput extends Input {
+export class ArrayInput extends Input {
     get value() : string[] {
         return this.input.value.split(',');
     }
@@ -413,8 +413,17 @@ export class SelectInput extends AbstractInput {
     }
 
     set value(value : any){
+        let valueSet = new Set();
+        if (this.multi){
+            for (let item of value){
+                valueSet.add(item);
+            }
+        } else {
+            valueSet.add(value);
+        }
+
         for (let option of this.flatChildren(SelectOption)){
-            if (option.value === value) {
+            if (valueSet.has(option.value)) {
                 option.selected = true;
                 if (!this.multi){
                     break;
@@ -427,14 +436,17 @@ export class SelectInput extends AbstractInput {
     }
 
     private moveLabel(){
-        if (this.value === null){
-            this.label.classList.remove(SelectInput.floatClass);
-        } else {
+        if (this.multi || this.value !== null) {
             this.label.classList.add(SelectInput.floatClass);
+        } else {
+            this.label.classList.remove(SelectInput.floatClass);
         }
     }
 
-    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {
+        this.select.multiple = this.multi;
+        this.moveLabel();
+    }
 }
 
 export class SelectOption extends CustomElement {

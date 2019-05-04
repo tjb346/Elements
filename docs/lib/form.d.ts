@@ -34,6 +34,9 @@ export declare class Input extends AbstractInput {
     }): void;
     protected onValueChange(): void;
 }
+export declare class ArrayInput extends Input {
+    value: string[];
+}
 export declare class BooleanInput extends Input {
     private checkId;
     constructor();

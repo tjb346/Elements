@@ -142,6 +142,17 @@ export class Grabbable extends Movable {
                 this.startDrag();
             }
         };
+        this.ontouchstart = (event) => {
+            if (this.noPropagate) {
+                event.stopImmediatePropagation();
+            }
+            if (event.target === this || this.includeChildren) {
+                event.preventDefault();
+                this.startPosition = this.position;
+                this.mouseStartPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+                this.startDrag();
+            }
+        };
     }
     startDrag() {
         document.onmousemove = (event) => {
@@ -158,6 +169,19 @@ export class Grabbable extends Movable {
             this.velocity = { x: 0, y: 0 };
         };
         document.onmouseup = this.stopDrag.bind(this);
+        document.ontouchmove = (event) => {
+            if (this.noPropagate) {
+                event.stopImmediatePropagation();
+            }
+            let xMovement = event.touches[0].clientX - this.mouseStartPosition.x;
+            let yMovement = event.touches[0].clientY - this.mouseStartPosition.y;
+            this.position = {
+                x: this.startPosition.x + xMovement,
+                y: this.startPosition.y + yMovement
+            };
+            this.velocity = { x: 0, y: 0 };
+        };
+        document.ontouchend = this.stopDrag.bind(this);
     }
     stopDrag(event) {
         if (this.noPropagate) {
@@ -166,6 +190,8 @@ export class Grabbable extends Movable {
         event.preventDefault();
         document.onmousemove = null;
         document.onmouseup = null;
+        document.ontouchmove = null;
+        document.ontouchend = null;
     }
 }
 /**

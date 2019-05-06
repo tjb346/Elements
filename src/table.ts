@@ -553,7 +553,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get selectedRows() : Row[] {
-    return Array.from(this.querySelectorAll(`.${Row.SELECTED_CLASS}`));
+    return Array.from(this.querySelectorAll(`.${Row.SELECTED_CLASS}`)) as Row[];
   }
 
   set selectedRows(rows : Row[]) {

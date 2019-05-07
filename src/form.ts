@@ -679,7 +679,8 @@ export class Form extends CustomElement {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            credentials: 'same-origin',
         });
     }
 

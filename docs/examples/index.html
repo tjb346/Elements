@@ -200,6 +200,17 @@
                     </select-input>
                     <button type="submit">Create Account</button>
                 </json-form>
+                <pre id="data-container"></pre>
+                <script type="module">
+                    import {Form} from "../lib/form.js";
+
+                    const form = document.getElementById('form');
+                    const dataContainer = document.getElementById('data-container');
+
+                    form.addEventListener(Form.EVENT_SUBMIT, (event) => {
+                      dataContainer.textContent = JSON.stringify(form.data, null, 2);
+                    });
+                </script>
             </page-route>
         </page-route>
     </page-route>

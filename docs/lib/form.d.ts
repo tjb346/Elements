@@ -104,6 +104,9 @@ export declare class Form extends CustomElement {
     readonly css: string;
     action: string | null;
     method: string | null;
+    readonly data: {
+        [name: string]: any;
+    };
     updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;

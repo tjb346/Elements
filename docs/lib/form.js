@@ -556,24 +556,28 @@ export class Form extends CustomElement {
             this.setAttribute('method', value);
         }
     }
+    get data() {
+        let data = {};
+        for (let child of this.children) {
+            if (child instanceof AbstractInput) {
+                data[child.name] = child.value;
+            }
+        }
+        return data;
+    }
     updateFromAttributes(attributes) { }
     getResponse() {
         return __awaiter(this, void 0, void 0, function* () {
             this.classList.remove(Form.errorClass);
             this.classList.remove(Form.successClass);
-            let data = {};
-            for (let child of this.children) {
-                if (child instanceof AbstractInput) {
-                    data[child.name] = child.value;
-                }
-            }
             return yield fetch(this.action || '', {
                 method: this.method || 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(this.data),
+                credentials: 'same-origin',
             });
         });
     }

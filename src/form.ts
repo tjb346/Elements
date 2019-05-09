@@ -660,18 +660,21 @@ export class Form extends CustomElement {
         }
     }
 
-    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
-
-    protected async getResponse() : Promise<Response> {
-        this.classList.remove(Form.errorClass);
-        this.classList.remove(Form.successClass);
-
+    get data() : { [name: string]: any } {
         let data: { [name: string]: any } = {};
         for (let child of this.children) {
             if (child instanceof AbstractInput) {
                 data[child.name] = child.value;
             }
         }
+        return data;
+    }
+
+    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+
+    protected async getResponse() : Promise<Response> {
+        this.classList.remove(Form.errorClass);
+        this.classList.remove(Form.successClass);
 
         return await fetch(this.action || '', {
             method: this.method || 'POST',
@@ -679,7 +682,7 @@ export class Form extends CustomElement {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(this.data),
             credentials: 'same-origin',
         });
     }

@@ -961,7 +961,7 @@ export declare class Table extends Table_base {
     static readonly HEADER_SLOT_NAME = "header";
     static headerContainerId: string;
     static bodyId: string;
-    static showHiddenClass: string;
+    static showHiddenAttribute: string;
     static selectMultipleAttribute: string;
     /**
      * @event

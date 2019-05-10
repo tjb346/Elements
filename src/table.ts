@@ -446,8 +446,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
 
   static headerContainerId = 'header';
   static bodyId = 'body';
-  static showHiddenClass = 'show-hidden';
-  
+  static showHiddenAttribute = 'show-hidden';
   static selectMultipleAttribute = 'select-multiple';
 
   /**
@@ -500,7 +499,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   // getters
 
   static get observedAttributes() {
-    return [Table.selectMultipleAttribute];
+    return [Table.selectMultipleAttribute, Table.showHiddenAttribute];
   }
 
 
@@ -523,7 +522,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             color: var(--table-body-text-color, black);
         }
         
-        :host(:not(.${Table.showHiddenClass})) ::slotted(.${BaseRow.hiddenClass}) {
+        :host(:not([${Table.showHiddenAttribute}])) ::slotted(.${BaseRow.hiddenClass}) {
             display: none;
         }
         
@@ -601,14 +600,14 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get showHidden() : boolean{
-    return this.classList.contains(Table.showHiddenClass);
+    return this.hasAttribute(Table.showHiddenAttribute);
   }
 
   set showHidden(value : boolean){
     if (value) {
-      this.classList.add(Table.showHiddenClass);
+      this.setAttribute(Table.showHiddenAttribute, "");
     } else {
-      this.classList.remove(Table.showHiddenClass);
+      this.removeAttribute(Table.showHiddenAttribute);
     }
   }
 

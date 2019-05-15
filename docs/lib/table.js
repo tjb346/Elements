@@ -10,7 +10,6 @@ class ScrollWindowElement extends CustomElement {
         let slot = document.createElement('slot');
         this.view.appendChild(slot);
         this.view.style.overflowY = 'auto';
-        this.view.style.height = 'inherit';
         this.view.style.width = '100%';
         this.shadowDOM.appendChild(this.view);
     }
@@ -427,7 +426,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             position: relative;
             padding: 0;
             width: 100%;
-            height: 400px;
             border-spacing: 0;
             box-shadow: none;
             color: var(--table-body-text-color, black);
@@ -445,6 +443,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         
         #${Table.bodyId} {
             background-color: var(--table-background-color, white);
+            height: calc(12 * var(--table-row-height, 30px));
         }
         
         #${Table.headerContainerId} {

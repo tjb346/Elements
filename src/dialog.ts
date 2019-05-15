@@ -300,6 +300,7 @@ export class ConfirmDialog extends Dialog {
   static confirmButtonId = 'confirm';
 
   static confirmationTextAttribute = 'confirmation-text';
+  static disabledAttribute = 'disabled';
 
   constructor(){
     super();
@@ -314,7 +315,7 @@ export class ConfirmDialog extends Dialog {
   }
 
   static get observedAttributes(): string[] {
-    return Dialog.observedAttributes.concat([ConfirmDialog.confirmationTextAttribute]);
+    return Dialog.observedAttributes.concat([ConfirmDialog.confirmationTextAttribute, ConfirmDialog.disabledAttribute]);
   }
 
   get css(){
@@ -336,8 +337,23 @@ export class ConfirmDialog extends Dialog {
     this.setAttribute(ConfirmDialog.confirmationTextAttribute, value);
   }
 
-  set disabled(value : boolean | string){
-    this.confirmButton.disabled = Boolean(value);
+  get disabled() : boolean {
+    return this.hasAttribute(ConfirmDialog.disabledAttribute);
+  }
+
+  set disabled(value : boolean){
+    if (value) {
+      this.setAttribute(ConfirmDialog.disabledAttribute, "");
+    } else {
+      this.removeAttribute(ConfirmDialog.disabledAttribute);
+    }
+  }
+
+
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+    super.updateFromAttributes(attributes);
+    this.confirmButton.innerText = this.confirmationText;
+    this.confirmButton.disabled = this.disabled;
   }
 
   onConfirmed(event : Event){

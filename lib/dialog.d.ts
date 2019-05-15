@@ -65,10 +65,14 @@ export declare class ConfirmDialog extends Dialog {
     static EVENT_CONFIRMED: string;
     static confirmButtonId: string;
     static confirmationTextAttribute: string;
+    static disabledAttribute: string;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     confirmationText: string;
-    disabled: boolean | string;
+    disabled: boolean;
+    updateFromAttributes(attributes: {
+        [p: string]: string | null;
+    }): void;
     onConfirmed(event: Event): void;
 }

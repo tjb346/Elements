@@ -436,6 +436,7 @@ export class TimeData extends AbstractTableData<Date> {
  *    --table-selected-item-color
  *    --table-body-text-color
  *    --table-background-color
+ *    --table-body-row-height
  **/
 export class Table extends DroppableMixin(ScrollWindowElement) {
   private sortOrder : SortData[] = [];
@@ -532,7 +533,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         
         #${Table.bodyId} {
             background-color: var(--table-background-color, white);
-            height: calc(12 * var(--table-row-height, 30px));
+            height: calc(var(--table-body-row-height, 12) * var(--table-row-height, 30px));
         }
         
         #${Table.headerContainerId} {

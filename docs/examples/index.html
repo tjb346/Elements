@@ -27,6 +27,10 @@
         router-link {
             line-height: 50px;
         }
+
+        selectable-table {
+            --table-body-row-height: 5;
+        }
     </style>
 </head>
 <body>
@@ -47,11 +51,6 @@
             </page-route>
             <page-route name="table">
                 <h1>Table</h1>
-                <style>
-                    selectable-table {
-                        height: 100px;
-                    }
-                </style>
                 <h3>Single Select Table</h3>
                 <selectable-table id="single">
                     <table-header>

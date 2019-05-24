@@ -310,7 +310,10 @@ export class BooleanInput extends Input {
 
 export class SelectInput extends AbstractInput {
     static multiAttribute = 'multi';
+    static nullableAttribute = 'nullable';
+
     private static readonly floatClass = "float";
+    private emptyOption : HTMLOptionElement | null = null;
     protected select : HTMLSelectElement;
     protected label : HTMLLabelElement;
 
@@ -319,8 +322,7 @@ export class SelectInput extends AbstractInput {
 
         this.select = document.createElement("select");
         this.select.required = true;
-        let emptyOption = document.createElement('option');
-        this.select.appendChild(emptyOption);
+
         this.select.onchange = () => {
             this.moveLabel();
         };
@@ -333,7 +335,7 @@ export class SelectInput extends AbstractInput {
     }
 
     static get observedAttributes() {
-        return AbstractInput.observedAttributes.concat([SelectInput.multiAttribute]);
+        return AbstractInput.observedAttributes.concat([SelectInput.multiAttribute, SelectInput.nullableAttribute]);
     }
 
     get css() {
@@ -393,6 +395,18 @@ export class SelectInput extends AbstractInput {
         }
     }
 
+    get nullable() : boolean {
+        return this.getAttribute(SelectInput.nullableAttribute) !== null;
+    }
+
+    set nullable(value : boolean) {
+        if (value) {
+            this.setAttribute(SelectInput.nullableAttribute, "");
+        } else {
+            this.removeAttribute(SelectInput.nullableAttribute);
+        }
+    }
+
 
     get value(){
         let values = [];
@@ -436,15 +450,27 @@ export class SelectInput extends AbstractInput {
     }
 
     private moveLabel(){
-        if (this.multi || this.value !== null) {
-            this.label.classList.add(SelectInput.floatClass);
-        } else {
+        if (this.select.selectedOptions.length === 1 && this.select.selectedOptions[0] === this.emptyOption) {
             this.label.classList.remove(SelectInput.floatClass);
+        } else {
+            this.label.classList.add(SelectInput.floatClass);
         }
     }
 
     updateFromAttributes(attributes: { [p: string]: string | null }): void {
         this.select.multiple = this.multi;
+        if (this.nullable){
+            if (this.emptyOption === null){
+                this.emptyOption = document.createElement('option');
+            }
+            this.select.insertBefore(this.emptyOption, this.select.firstChild);
+        } else {
+            if (this.emptyOption !== null){
+                this.select.removeChild(this.emptyOption);
+                this.emptyOption = null;
+            }
+        }
+
         this.moveLabel();
     }
 }

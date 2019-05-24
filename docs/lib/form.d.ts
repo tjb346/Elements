@@ -49,13 +49,16 @@ export declare class BooleanInput extends Input {
 }
 export declare class SelectInput extends AbstractInput {
     static multiAttribute: string;
+    static nullableAttribute: string;
     private static readonly floatClass;
+    private emptyOption;
     protected select: HTMLSelectElement;
     protected label: HTMLLabelElement;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     multi: boolean;
+    nullable: boolean;
     value: any;
     private moveLabel;
     updateFromAttributes(attributes: {

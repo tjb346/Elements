@@ -429,7 +429,7 @@ export class SelectOption extends CustomElement {
         observer.observe(this, { characterData: true, childList: true, subtree: true });
     }
     static get observedAttributes() {
-        return [SelectOption.typeAttribute, SelectOption.valueAttribute];
+        return [SelectOption.typeAttribute, SelectOption.valueAttribute, SelectOption.disabledAttribute];
     }
     get css() {
         // language=CSS
@@ -480,6 +480,17 @@ export class SelectOption extends CustomElement {
     set selected(value) {
         this.option.selected = value;
     }
+    get disabled() {
+        return this.hasAttribute(SelectOption.disabledAttribute);
+    }
+    set disabled(value) {
+        if (value) {
+            this.setAttribute(SelectOption.disabledAttribute, "");
+        }
+        else {
+            this.removeAttribute(SelectOption.disabledAttribute);
+        }
+    }
     get parentSelect() {
         if (this.parentElement instanceof SelectInput && this.parentElement.shadowRoot) {
             return this.parentElement.shadowRoot.querySelector('select');
@@ -494,6 +505,7 @@ export class SelectOption extends CustomElement {
         else {
             this.option.value = "";
         }
+        this.option.disabled = this.disabled;
     }
     connectedCallback() {
         super.connectedCallback();
@@ -512,6 +524,7 @@ export class SelectOption extends CustomElement {
 }
 SelectOption.typeAttribute = 'type';
 SelectOption.valueAttribute = 'value';
+SelectOption.disabledAttribute = 'disabled';
 export class Form extends CustomElement {
     constructor() {
         super();

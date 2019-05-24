@@ -68,6 +68,7 @@ export declare class SelectInput extends AbstractInput {
 export declare class SelectOption extends CustomElement {
     static typeAttribute: string;
     static valueAttribute: string;
+    static disabledAttribute: string;
     option: HTMLOptionElement;
     constructor();
     static readonly observedAttributes: string[];
@@ -75,6 +76,7 @@ export declare class SelectOption extends CustomElement {
     value: any;
     type: string;
     selected: boolean;
+    disabled: boolean;
     readonly parentSelect: HTMLSelectElement | null;
     updateFromAttributes(attributes: {
         [p: string]: string | null;

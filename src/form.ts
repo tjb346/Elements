@@ -478,6 +478,8 @@ export class SelectInput extends AbstractInput {
 export class SelectOption extends CustomElement {
     static typeAttribute = 'type';
     static valueAttribute = 'value';
+    static disabledAttribute = 'disabled';
+
     public option : HTMLOptionElement;
 
     constructor(){
@@ -492,7 +494,7 @@ export class SelectOption extends CustomElement {
     }
 
     static get observedAttributes() {
-        return [SelectOption.typeAttribute, SelectOption.valueAttribute];
+        return [SelectOption.typeAttribute, SelectOption.valueAttribute, SelectOption.disabledAttribute];
     }
 
     get css() {
@@ -552,6 +554,18 @@ export class SelectOption extends CustomElement {
         this.option.selected = value;
     }
 
+    get disabled() : boolean {
+        return this.hasAttribute(SelectOption.disabledAttribute);
+    }
+
+    set disabled(value : boolean){
+        if (value){
+            this.setAttribute(SelectOption.disabledAttribute, "");
+        } else {
+            this.removeAttribute(SelectOption.disabledAttribute);
+        }
+    }
+
     get parentSelect() : HTMLSelectElement | null {
         if (this.parentElement instanceof SelectInput && this.parentElement.shadowRoot){
             return this.parentElement.shadowRoot.querySelector('select');
@@ -566,6 +580,8 @@ export class SelectOption extends CustomElement {
         } else {
             this.option.value = "";
         }
+
+        this.option.disabled = this.disabled;
     }
 
     connectedCallback(): void {

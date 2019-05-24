@@ -648,6 +648,11 @@ export declare class TimeData extends AbstractTableData<Date> {
     data: Date;
     compare(dataElement: AbstractTableData<Date>): number;
 }
+export declare class NullableTimeData extends AbstractTableData<Date | null> {
+    private datetime;
+    data: Date | null;
+    compare(dataElement: AbstractTableData<Date | null>): number;
+}
 declare const Table_base: {
     new (...args: any[]): {
         dragOverActions: (() => void)[];

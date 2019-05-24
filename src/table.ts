@@ -424,6 +424,29 @@ export class TimeData extends AbstractTableData<Date> {
   }
 }
 
+export class NullableTimeData extends AbstractTableData<Date | null> {
+  private datetime : Date | null = null;
+
+  get data() : Date | null {
+    return this.datetime;
+  }
+
+  set data(value : Date | null){
+    this.datetime = value;
+    if (this.datetime === null){
+      this.innerText = "";
+    } else {
+      this.innerText = this.datetime.toLocaleString();
+    }
+  }
+
+  compare(dataElement: AbstractTableData<Date | null>): number {
+    let time1 = this.datetime === null ? 0 : this.datetime.getTime();
+    let time2 = dataElement.data === null ? 0 : dataElement.data.getTime();
+    return time1 - time2;
+  }
+}
+
 /**
  * An interactive table element. It's children should be either [[Header]] or [[Row]] elements.
  * [[ Dialog ]] elements can also be added as children and will act as a context menu.
@@ -802,4 +825,5 @@ customElements.define('table-row', Row);
 customElements.define('text-data', TextData);
 customElements.define('number-data', NumberData);
 customElements.define('time-data', TimeData);
+customElements.define('nullable-time-data', NullableTimeData);
 customElements.define('selectable-table', Table);

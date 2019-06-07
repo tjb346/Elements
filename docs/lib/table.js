@@ -13,7 +13,8 @@ class ScrollWindowElement extends CustomElement {
         this.view.style.width = '100%';
         this.shadowDOM.appendChild(this.view);
     }
-    updateFromAttributes(attributes) { }
+    updateFromAttributes(attributes) {
+    }
     resetPane() {
         this.view.scrollTop = 0;
     }
@@ -29,7 +30,8 @@ class TableElement extends CustomElement {
         }
         return null;
     }
-    updateFromAttributes(attributes) { }
+    updateFromAttributes(attributes) {
+    }
 }
 class BaseRow extends TableElement {
     constructor() {
@@ -46,7 +48,7 @@ class BaseRow extends TableElement {
             height: var(--table-row-height, 30px);
             line-height: var(--table-row-height, 30px);
         }
-     `;
+    `;
     }
     get hidden() {
         return this.classList.contains(BaseRow.hiddenClass);
@@ -178,14 +180,6 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
     get selected() {
         return this.classList.contains(Row.SELECTED_CLASS);
     }
-    get data() {
-        let data = [];
-        for (let child of this.allColumns) {
-            data.push(child.data);
-        }
-        return data;
-    }
-    // setters
     set selected(value) {
         if (value) {
             this.classList.add(Row.SELECTED_CLASS);
@@ -195,6 +189,14 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
             this.classList.remove(Row.SELECTED_CLASS);
             this.dispatchEvent(new Event('deselected'));
         }
+    }
+    // setters
+    get data() {
+        let data = [];
+        for (let child of this.allColumns) {
+            data.push(child.data);
+        }
+        return data;
     }
     toggleSelected() {
         this.selected = !this.selected;
@@ -586,35 +588,6 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         this.sort();
         this.updateColumnSortOrders();
     }
-    updateColumnSortOrders() {
-        let sortMap = this.sortMap;
-        for (let row of this.flatChildren(BaseRow)) {
-            let columns = row.allColumns;
-            for (let i = 0; i < columns.length; i++) {
-                let column = columns[i];
-                let sortOrderValue = sortMap[i];
-                if (sortOrderValue === undefined) {
-                    column.sortOrder = 0;
-                }
-                else {
-                    column.sortOrder = sortOrderValue;
-                }
-            }
-        }
-    }
-    sort() {
-        let rows = this.rows;
-        rows = rows.sort((row1, row2) => {
-            for (let sortData of this.sortOrder) {
-                let result = sortData.sortOrder * row1.compare(row2, sortData.columnNumber);
-                if (result !== 0) {
-                    return result;
-                }
-            }
-            return 0;
-        });
-        this.rows = rows;
-    }
     showVisibleColumnsDialog(positionX, positionY) {
         this.columnsDialog.removeChildren();
         let items = [];
@@ -648,11 +621,11 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         this.columnsDialog.velocity = { x: 0, y: 0 };
     }
     /**
-    * Toggles the selection of a row. The argument can either be a row element in
-    * the table or null. If null it will deselect all rows. A selected event is
-    * fired on the row element when a row is first selected and deselect events
-    * are similarly fired when its deselected.
-    */
+     * Toggles the selection of a row. The argument can either be a row element in
+     * the table or null. If null it will deselect all rows. A selected event is
+     * fired on the row element when a row is first selected and deselect events
+     * are similarly fired when its deselected.
+     */
     toggleRowSelection(rowElement, selectMultiple, includeBetween) {
         if (!this.selectMultiple) {
             selectMultiple = false;
@@ -696,6 +669,35 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
             }
         }
         this.selectedRows = Array.from(newRows);
+    }
+    updateColumnSortOrders() {
+        let sortMap = this.sortMap;
+        for (let row of this.flatChildren(BaseRow)) {
+            let columns = row.allColumns;
+            for (let i = 0; i < columns.length; i++) {
+                let column = columns[i];
+                let sortOrderValue = sortMap[i];
+                if (sortOrderValue === undefined) {
+                    column.sortOrder = 0;
+                }
+                else {
+                    column.sortOrder = sortOrderValue;
+                }
+            }
+        }
+    }
+    sort() {
+        let rows = this.rows;
+        rows = rows.sort((row1, row2) => {
+            for (let sortData of this.sortOrder) {
+                let result = sortData.sortOrder * row1.compare(row2, sortData.columnNumber);
+                if (result !== 0) {
+                    return result;
+                }
+            }
+            return 0;
+        });
+        this.rows = rows;
     }
 }
 Table.HEADER_SLOT_NAME = 'header';

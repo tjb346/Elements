@@ -105,7 +105,8 @@ export class Menu extends CustomElement {
     set collapseWidth(value) {
         this.setAttribute(Menu.collapseWidthAttribute, value.toString());
     }
-    updateFromAttributes(attributes) { }
+    updateFromAttributes(attributes) {
+    }
     toggleOpened() {
         // Toggle open and close menu
         if (this.opened) {

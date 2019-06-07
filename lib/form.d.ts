@@ -1,14 +1,14 @@
 import { CustomElement } from "./element.js";
 export declare abstract class AbstractInput extends CustomElement {
-    abstract value: any;
     static readonly errorClass = "error";
     static nameAttribute: string;
+    protected static readonly inputContainerId = "input-container";
     private static readonly containerId;
     private static readonly errorSpanId;
-    protected static readonly inputContainerId = "input-container";
+    abstract value: any;
+    protected readonly inputContainer: HTMLElement;
     private readonly container;
     private readonly errorMessageSpan;
-    protected readonly inputContainer: HTMLElement;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
@@ -16,14 +16,14 @@ export declare abstract class AbstractInput extends CustomElement {
     errorMessage: string;
 }
 export declare class Input extends AbstractInput {
-    protected input: HTMLInputElement;
-    protected label: HTMLLabelElement;
     static valueClass: string;
     static typeAttribute: string;
     /**
      * @event
      */
     static EVENT_CHANGE: string;
+    protected input: HTMLInputElement;
+    protected label: HTMLLabelElement;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
@@ -51,19 +51,19 @@ export declare class SelectInput extends AbstractInput {
     static multiAttribute: string;
     static nullableAttribute: string;
     private static readonly floatClass;
-    private emptyOption;
     protected select: HTMLSelectElement;
     protected label: HTMLLabelElement;
+    private emptyOption;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     multi: boolean;
     nullable: boolean;
     value: any;
-    private moveLabel;
     updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
+    private moveLabel;
 }
 export declare class SelectOption extends CustomElement {
     static typeAttribute: string;
@@ -85,9 +85,6 @@ export declare class SelectOption extends CustomElement {
     disconnectedCallback(): void;
 }
 export declare class Form extends CustomElement {
-    private readonly container;
-    private readonly errorMessage;
-    lastResponse: Response | null;
     static containerClass: string;
     static loadingClass: string;
     static successClass: string;
@@ -105,6 +102,9 @@ export declare class Form extends CustomElement {
      * @event
      */
     static EVENT_ERROR: string;
+    lastResponse: Response | null;
+    private readonly container;
+    private readonly errorMessage;
     constructor();
     readonly css: string;
     action: string | null;
@@ -115,11 +115,11 @@ export declare class Form extends CustomElement {
     updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    protected getResponse(): Promise<Response>;
-    protected handleResponse(response: Response): Promise<void>;
     submit(): void;
     onSuccess(): void;
     onError(fieldErrors: {
         [field: string]: string;
     }, errorMessage: string): void;
+    protected getResponse(): Promise<Response>;
+    protected handleResponse(response: Response): Promise<void>;
 }

@@ -5,241 +5,236 @@ import {CustomElement} from "./element.js";
  * of this element.
  */
 export class Route extends CustomElement {
-    protected containerId = 'container';
+  /**
+   * @event
+   */
+  static EVENT_NAME_CHANGE = 'namechange';
+  /**
+   * @event
+   */
+  static EVENT_TITLE_CHANGE = 'titlechange';
+  /**
+   * @event
+   */
+  static EVENT_SHOWN = 'show';
+  /**
+   * @event
+   */
+  static EVENT_HIDDEN = 'hidden';
+  static nameAttribute = 'name';
+  protected containerId = 'container';
 
-    /**
-     * @event
-     */
-    static EVENT_NAME_CHANGE = 'namechange';
+  constructor() {
+    super();
 
-    /**
-     * @event
-     */
-    static EVENT_TITLE_CHANGE = 'titlechange';
+    let container = document.createElement('div');
+    container.id = this.containerId;
+    let slot = document.createElement('slot');
+    container.appendChild(slot);
+    this.shadowDOM.appendChild(container);
 
-    /**
-     * @event
-     */
-    static EVENT_SHOWN = 'show';
+    window.addEventListener('popstate', (event) => {
+      event.preventDefault();
 
-    /**
-     * @event
-     */
-    static EVENT_HIDDEN = 'hidden';
+      this.updateState();
+    });
 
-    static nameAttribute = 'name';
+    document.addEventListener(RouterLink.EVENT_ROUTE_CHANGE, ((event: Event) => {
+      this.updateState();
+    }));
+  }
 
-    constructor() {
-        super();
+  static get observedAttributes() {
+    return [Route.nameAttribute];
+  }
 
-        let container = document.createElement('div');
-        container.id = this.containerId;
-        let slot = document.createElement('slot');
-        container.appendChild(slot);
-        this.shadowDOM.appendChild(container);
-
-        window.addEventListener('popstate', (event) => {
-            event.preventDefault();
-
-            this.updateState();
-        });
-
-        document.addEventListener(RouterLink.EVENT_ROUTE_CHANGE, ((event : Event)  => {
-            this.updateState();
-        }));
+  get name(): string {
+    let name = this.getAttribute(Route.nameAttribute);
+    if (name === null) {
+      return '';
     }
+    return name.trim();
+  }
 
-    static get observedAttributes() {
-        return [Route.nameAttribute];
-    }
+  set name(value: string) {
+    this.setAttribute(Route.nameAttribute, value.trim());
+  }
 
-    static currentPath() : string[] {
-        let path = window.location.pathname;
-        if (path[path.length - 1] === '/'){
-            path = path.slice(0, path.length - 1);
-        }
-        if (path[0] === "/"){
-            path = path.slice(1);
-        }
-        return path.split('/');
+  get path(): string[] {
+    let parent = this.parentElement;
+    let path = [this.name];
+    while (parent !== null) {
+      if (parent instanceof Route) {
+        return parent.path.concat(path);
+      }
+      parent = parent.parentElement;
     }
+    return path;
+  }
 
-    updateFromAttributes(attributes: { [p: string]: string | null }): void {
-        this.dispatchEvent(new Event(Route.EVENT_NAME_CHANGE));
+  get isRoot(): boolean {
+    let element = this.parentElement;
+    while (element !== null) {
+      if (element instanceof Route) {
+        return false;
+      }
+      element = element.parentElement;
     }
+    return true;
+  }
 
-    get name() : string {
-        let name = this.getAttribute(Route.nameAttribute);
-        if (name === null){
-            return '';
-        }
-        return name.trim();
+  static currentPath(): string[] {
+    let path = window.location.pathname;
+    if (path[path.length - 1] === '/') {
+      path = path.slice(0, path.length - 1);
     }
+    if (path[0] === "/") {
+      path = path.slice(1);
+    }
+    return path.split('/');
+  }
 
-    set name(value : string) {
-        this.setAttribute(Route.nameAttribute, value.trim());
-    }
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+    this.dispatchEvent(new Event(Route.EVENT_NAME_CHANGE));
+  }
 
-    get path() : string[] {
-        let parent = this.parentElement;
-        let path = [this.name];
-        while (parent !== null){
-            if (parent instanceof Route){
-                return parent.path.concat(path);
-            }
-            parent = parent.parentElement;
-        }
-        return path;
-    }
+  connectedCallback() {
+    super.connectedCallback();
+    this.updateState();
+  }
 
-    get isRoot() : boolean{
-        let element = this.parentElement;
-        while (element !== null){
-            if (element instanceof Route){
-                return false;
-            }
-            element = element.parentElement;
-        }
-        return true;
-    }
+  /**
+   * Shows the route.
+   */
+  show() {
+    this.style.display = 'block';
+    this.dispatchEvent(new Event(Route.EVENT_SHOWN));
+  }
 
-    connectedCallback() {
-        super.connectedCallback();
-        this.updateState();
-    }
+  hide() {
+    this.style.display = 'none';
+    this.dispatchEvent(new Event(Route.EVENT_HIDDEN));
+  }
 
-    /**
-     * Shows the route.
-     */
-    show(){
-        this.style.display = 'block';
-        this.dispatchEvent(new Event(Route.EVENT_SHOWN));
+  updateState() {
+    if (this.matchesCurrentLocation()) {
+      this.show();
+    } else {
+      this.hide();
     }
+  }
 
-    hide(){
-        this.style.display = 'none';
-        this.dispatchEvent(new Event(Route.EVENT_HIDDEN));
+  private matchesCurrentLocation() {
+    let routePath = this.path;
+    let currentPath = Route.currentPath();
+    let segmentIndex = 0;
+    while (routePath.length > segmentIndex) {
+      let route = routePath[segmentIndex];
+      let segmentName = currentPath[segmentIndex] || "";
+      if (route !== segmentName && !(route === "" && segmentName === 'index.html')) {
+        return false;
+      }
+      segmentIndex++;
     }
-
-    private matchesCurrentLocation(){
-        let routePath = this.path;
-        let currentPath = Route.currentPath();
-        let segmentIndex = 0;
-        while (routePath.length > segmentIndex){
-            let route = routePath[segmentIndex];
-            let segmentName = currentPath[segmentIndex] || "";
-            if (route !== segmentName && !(route === "" && segmentName === 'index.html')){
-                return false;
-            }
-            segmentIndex ++;
-        }
-        return true;
-    }
-
-    updateState(){
-        if (this.matchesCurrentLocation()){
-            this.show();
-        } else {
-            this.hide();
-        }
-    }
+    return true;
+  }
 }
 
 export abstract class LazyRoute extends Route {
-    private container : HTMLElement;
-    public url : string | null = null;
+  public url: string | null = null;
+  private container: HTMLElement;
 
-    protected constructor(){
-        super();
+  protected constructor() {
+    super();
 
-        this.container = document.createElement('div');
-        this.shadowDOM.appendChild(this.container);
+    this.container = document.createElement('div');
+    this.shadowDOM.appendChild(this.container);
+  }
+
+  static get observedAttributes() {
+    return Route.observedAttributes.concat(['url']);
+  }
+
+  get loaded() {
+    return this.container && this.container.lastChild;
+  }
+
+  show() {
+    super.show();
+
+    if (!this.loaded) {
+      if (document.readyState === "loading") {
+        document.addEventListener('readystatechange', (event: Event) => {
+          this.show();
+        });
+      } else {
+        this.lazyLoad();
+      }
+    }
+  }
+
+  /**
+   * Render the element shadow dom from the data given in the response.
+   * @param response The http response from the url.
+   */
+  abstract renderResponse(response: Response): void;
+
+  private lazyLoad() {
+    let slot = document.createElement('slot');
+    this.container.appendChild(slot);
+
+    let templates = this.querySelectorAll('template');
+    for (let template of templates) {
+      let clone = document.importNode(template.content, true);
+      if (template.parentElement !== null) {
+        template.parentElement.replaceChild(clone, template);
+      }
     }
 
-    static get observedAttributes() {
-        return Route.observedAttributes.concat(['url']);
+    if (this.url) {
+      fetch(this.url)
+        .then((response) => {
+          this.renderResponse(response);
+        })
+        .catch(() => {
+          this.innerText = "Error loading data."
+        })
     }
-
-    get loaded(){
-        return this.container && this.container.lastChild;
-    }
-
-    show(){
-        super.show();
-
-        if (!this.loaded) {
-            if (document.readyState === "loading") {
-                document.addEventListener('readystatechange', (event : Event) => {
-                    this.show();
-                });
-            } else {
-                this.lazyLoad();
-            }
-        }
-    }
-
-    private lazyLoad(){
-        let slot = document.createElement('slot');
-        this.container.appendChild(slot);
-
-        let templates = this.querySelectorAll('template');
-        for (let template of templates){
-            let clone = document.importNode(template.content, true);
-            if (template.parentElement !== null) {
-                template.parentElement.replaceChild(clone, template);
-            }
-        }
-
-        if (this.url){
-            fetch(this.url)
-                .then((response) => {
-                    this.renderResponse(response);
-                })
-                .catch(() => {
-                    this.innerText = "Error loading data."
-                })
-        }
-    }
-
-    /**
-     * Render the element shadow dom from the data given in the response.
-     * @param response The http response from the url.
-     */
-    abstract renderResponse(response : Response) : void;
+  }
 }
 
 export class RouterLink extends CustomElement {
-    /**
-     * @event
-     */
-    static EVENT_ROUTE_CHANGE = 'route-change';
+  /**
+   * @event
+   */
+  static EVENT_ROUTE_CHANGE = 'route-change';
 
-    static routeAttribute = 'route';
+  static routeAttribute = 'route';
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        let slot = document.createElement('slot');
-        this.shadowDOM.appendChild(slot);
+    let slot = document.createElement('slot');
+    this.shadowDOM.appendChild(slot);
 
-        this.onclick = (event) => {
-            let url = new URL(this.route, window.location.href).toString();
-            window.history.pushState({}, "", url);
+    this.onclick = (event) => {
+      let url = new URL(this.route, window.location.href).toString();
+      window.history.pushState({}, "", url);
 
-            window.scroll(0, 0);
+      window.scroll(0, 0);
 
-            let customEvent = new Event(RouterLink.EVENT_ROUTE_CHANGE);
-            document.dispatchEvent(customEvent);
-        };
-    }
+      let customEvent = new Event(RouterLink.EVENT_ROUTE_CHANGE);
+      document.dispatchEvent(customEvent);
+    };
+  }
 
-    static get observedAttributes() {
-        return [RouterLink.routeAttribute];
-    }
+  static get observedAttributes() {
+    return [RouterLink.routeAttribute];
+  }
 
-    get css() {
-        // language=CSS
-        return `
+  get css() {
+    // language=CSS
+    return `
             :host {
                 --link-color: inherit;
                 --link-hover-color: grey;
@@ -254,21 +249,22 @@ export class RouterLink extends CustomElement {
             }
 
         `;
-    }
+  }
 
-    get route() : string {
-        let route = this.getAttribute(RouterLink.routeAttribute);
-        if (route === null){
-            return ""
-        }
-        return route.trim();
+  get route(): string {
+    let route = this.getAttribute(RouterLink.routeAttribute);
+    if (route === null) {
+      return ""
     }
+    return route.trim();
+  }
 
-    set route(value : string) {
-        this.setAttribute(RouterLink.routeAttribute, value.trim());
-    }
+  set route(value: string) {
+    this.setAttribute(RouterLink.routeAttribute, value.trim());
+  }
 
-    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+  }
 }
 
 customElements.define('page-route', Route);

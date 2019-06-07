@@ -6,7 +6,7 @@ import {CustomElement} from "./element.js";
 import {DraggableMixin, DroppableMixin} from "./draggable.js";
 
 class ScrollWindowElement extends CustomElement {
-  protected readonly view : HTMLElement;
+  protected readonly view: HTMLElement;
 
   constructor() {
     super();
@@ -22,18 +22,19 @@ class ScrollWindowElement extends CustomElement {
     this.shadowDOM.appendChild(this.view);
   }
 
-  updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+  }
 
-  resetPane(){
+  resetPane() {
     this.view.scrollTop = 0;
   }
 }
 
 
 class TableElement extends CustomElement {
-  get table(){
+  get table() {
     let element = this.parentElement;
-    while (element){
+    while (element) {
       if (element instanceof Table) {
         return element;
       }
@@ -43,7 +44,8 @@ class TableElement extends CustomElement {
   }
 
 
-  updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+  }
 }
 
 class BaseRow extends TableElement {
@@ -56,7 +58,7 @@ class BaseRow extends TableElement {
     this.shadowDOM.appendChild(slot);
   }
 
-  get css(){
+  get css() {
     // language=CSS
     return `
         :host {
@@ -65,47 +67,47 @@ class BaseRow extends TableElement {
             height: var(--table-row-height, 30px);
             line-height: var(--table-row-height, 30px);
         }
-     `;
+    `;
   }
 
-  get hidden() : boolean {
+  get hidden(): boolean {
     return this.classList.contains(BaseRow.hiddenClass);
   }
 
-  set hidden(value : boolean){
-    if (value){
+  set hidden(value: boolean) {
+    if (value) {
       this.classList.add(BaseRow.hiddenClass);
     } else {
       this.classList.remove(BaseRow.hiddenClass);
     }
   }
 
-  get allColumns() : AbstractTableData<any>[] {
-    return Array.from(this.children).filter((child : Element) => child instanceof AbstractTableData) as AbstractTableData<any>[];
+  get allColumns(): AbstractTableData<any>[] {
+    return Array.from(this.children).filter((child: Element) => child instanceof AbstractTableData) as AbstractTableData<any>[];
   }
 
-  getColumn(columnNumber : number) : AbstractTableData<any> | null {
+  getColumn(columnNumber: number): AbstractTableData<any> | null {
     return this.allColumns[columnNumber] || null;
   }
 }
 
 export class Header extends BaseRow {
-  constructor(){
+  constructor() {
     super();
 
     this.onclick = (event) => {
       let target = event.target;
-      if (target instanceof AbstractTableData){
+      if (target instanceof AbstractTableData) {
         let table = this.table;
         let column = target.column;
-        if (table !== null && column !== null){
+        if (table !== null && column !== null) {
           table.sortColumn(column);
         }
       }
     }
   }
 
-  get css(){
+  get css() {
     // language=CSS
     return super.css + `
         :host {
@@ -157,10 +159,10 @@ type SortData = {
  * An row element for use with [[Table]]. Should be a direct child of [[Table]].
  */
 export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
-  static readonly DATA_TRANSFER_TYPE =  "text/table-rows";
+  static readonly DATA_TRANSFER_TYPE = "text/table-rows";
   static readonly SELECTED_CLASS = "selected";
 
-  constructor(){
+  constructor() {
     super();
 
     this.selected = false;
@@ -168,15 +170,15 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 
     this.onclick = (event) => {
       let table = this.table;
-      if (table !== null){
+      if (table !== null) {
         let includeBetween, selectMultiple;
-        if (event.shiftKey){
+        if (event.shiftKey) {
           includeBetween = true;
           selectMultiple = true;
-        }else if (event.ctrlKey || event.metaKey){
+        } else if (event.ctrlKey || event.metaKey) {
           includeBetween = false;
           selectMultiple = true;
-        }else{
+        } else {
           includeBetween = false;
           selectMultiple = false;
         }
@@ -187,7 +189,7 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
 
   // getters
 
-  get css () {
+  get css() {
     // language=CSS
     return super.css + `
         :host(:hover) {
@@ -215,22 +217,12 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
     `;
   }
 
-  get selected(){
+  get selected() {
     return this.classList.contains(Row.SELECTED_CLASS);
   }
 
-  get data() : string[] {
-    let data = [];
-    for (let child of this.allColumns){
-      data.push(child.data);
-    }
-    return data;
-  }
-
-  // setters
-
-  set selected(value){
-    if (value){
+  set selected(value) {
+    if (value) {
       this.classList.add(Row.SELECTED_CLASS);
       this.dispatchEvent(new Event('selected'));
     } else {
@@ -239,23 +231,33 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
     }
   }
 
-  toggleSelected(){
+  // setters
+
+  get data(): string[] {
+    let data = [];
+    for (let child of this.allColumns) {
+      data.push(child.data);
+    }
+    return data;
+  }
+
+  toggleSelected() {
     this.selected = !this.selected;
   }
 
 
   handleDragStart(event: DragEvent) {
     super.handleDragStart(event);
-    if (event.dataTransfer){
+    if (event.dataTransfer) {
       event.dataTransfer.setData(Row.DATA_TRANSFER_TYPE, JSON.stringify(this.data));
       event.dataTransfer.dropEffect = 'move';
     }
   }
 
-  compare(row : Row, columnNumber : number){
+  compare(row: Row, columnNumber: number) {
     let dataElement1 = this.getColumn(columnNumber);
     let dataElement2 = row.getColumn(columnNumber);
-    if (dataElement1 === null || dataElement2 === null){
+    if (dataElement1 === null || dataElement2 === null) {
       return 0;
     }
     return dataElement1.compare(dataElement2);
@@ -266,12 +268,12 @@ export abstract class AbstractTableData<T> extends TableElement {
   static ascendingSortClass = 'asc';
   static descendingSortClass = 'des';
   static hiddenClass = 'hidden';
-  
+
   static widthAttribute = 'width';
 
-  public abstract data : T;
+  public abstract data: T;
 
-  protected constructor(){
+  protected constructor() {
     super();
 
     let slot = document.createElement('slot');
@@ -282,7 +284,7 @@ export abstract class AbstractTableData<T> extends TableElement {
     return [AbstractTableData.widthAttribute];
   }
 
-  get css(){
+  get css() {
     // language=CSS
     return `
         :host {
@@ -301,54 +303,54 @@ export abstract class AbstractTableData<T> extends TableElement {
     `;
   }
 
-  get width() : number | null {
+  get width(): number | null {
     let stringWidth = this.getAttribute(AbstractTableData.widthAttribute);
-    if (stringWidth === null){
+    if (stringWidth === null) {
       return null;
     } else {
       return Number.parseInt(stringWidth);
     }
   }
 
-  set width(value : number | null){
-    if (value === null){
+  set width(value: number | null) {
+    if (value === null) {
       this.removeAttribute(AbstractTableData.widthAttribute);
     } else {
-      this.setAttribute(AbstractTableData.widthAttribute,  value.toString());
+      this.setAttribute(AbstractTableData.widthAttribute, value.toString());
     }
   }
 
-  get hidden() : boolean {
+  get hidden(): boolean {
     return this.classList.contains(AbstractTableData.hiddenClass);
   }
 
-  set hidden(value : boolean){
-    if (value){
+  set hidden(value: boolean) {
+    if (value) {
       this.classList.add(AbstractTableData.hiddenClass);
     } else {
       this.classList.remove(AbstractTableData.hiddenClass);
     }
   }
 
-  get column() : number | null {
+  get column(): number | null {
     let parent = this.parentElement;
-    if (parent instanceof BaseRow){
+    if (parent instanceof BaseRow) {
       return parent.allColumns.indexOf(this);
     }
     return null;
   }
 
-  get sortOrder() : SortOrderValues {
-    if (this.classList.contains(AbstractTableData.ascendingSortClass)){
+  get sortOrder(): SortOrderValues {
+    if (this.classList.contains(AbstractTableData.ascendingSortClass)) {
       return 1;
-    } else if (this.classList.contains(AbstractTableData.descendingSortClass)){
+    } else if (this.classList.contains(AbstractTableData.descendingSortClass)) {
       return -1;
     }
     return 0;
   }
 
-  set sortOrder(value : SortOrderValues){
-    switch (value){
+  set sortOrder(value: SortOrderValues) {
+    switch (value) {
       case -1:
         this.classList.remove(AbstractTableData.ascendingSortClass);
         this.classList.add(AbstractTableData.descendingSortClass);
@@ -366,25 +368,25 @@ export abstract class AbstractTableData<T> extends TableElement {
 
   updateFromAttributes(attributes: { [p: string]: string | null }): void {
     let width = attributes[AbstractTableData.widthAttribute];
-    if (width === null){
+    if (width === null) {
       this.style.flex = null;
     } else {
       let parsed = Number.parseInt(width);
-      if (!isNaN(parsed)){
+      if (!isNaN(parsed)) {
         this.style.flex = parsed.toString();
       }
     }
   }
 
-  abstract compare(dataElement : AbstractTableData<T>) : number;
+  abstract compare(dataElement: AbstractTableData<T>): number;
 }
 
 export class TextData extends AbstractTableData<string> {
-  get data() : string {
+  get data(): string {
     return this.innerText;
   }
 
-  set data(value : string){
+  set data(value: string) {
     this.innerText = value;
   }
 
@@ -394,11 +396,11 @@ export class TextData extends AbstractTableData<string> {
 }
 
 export class NumberData extends AbstractTableData<number> {
-  get data() : number {
+  get data(): number {
     return Number.parseFloat(this.innerText) || 0;
   }
 
-  set data(value : number){
+  set data(value: number) {
     this.innerText = value.toLocaleString();
   }
 
@@ -408,13 +410,13 @@ export class NumberData extends AbstractTableData<number> {
 }
 
 export class TimeData extends AbstractTableData<Date> {
-  private datetime : Date = new Date();
+  private datetime: Date = new Date();
 
-  get data() : Date {
+  get data(): Date {
     return this.datetime;
   }
 
-  set data(value : Date){
+  set data(value: Date) {
     this.datetime = value;
     this.innerText = this.datetime.toLocaleString();
   }
@@ -425,15 +427,15 @@ export class TimeData extends AbstractTableData<Date> {
 }
 
 export class NullableTimeData extends AbstractTableData<Date | null> {
-  private datetime : Date | null = null;
+  private datetime: Date | null = null;
 
-  get data() : Date | null {
+  get data(): Date | null {
     return this.datetime;
   }
 
-  set data(value : Date | null){
+  set data(value: Date | null) {
     this.datetime = value;
-    if (this.datetime === null){
+    if (this.datetime === null) {
       this.innerText = "";
     } else {
       this.innerText = this.datetime.toLocaleString();
@@ -462,22 +464,19 @@ export class NullableTimeData extends AbstractTableData<Date | null> {
  *    --table-body-row-height
  **/
 export class Table extends DroppableMixin(ScrollWindowElement) {
-  private sortOrder : SortData[] = [];
-  private columnsDialog : Dialog;
-
   static readonly HEADER_SLOT_NAME = 'header';
-
   static headerContainerId = 'header';
   static bodyId = 'body';
   static showHiddenAttribute = 'show-hidden';
   static selectMultipleAttribute = 'select-multiple';
-
   /**
    * @event
    */
   static EVENT_SELECTION_CHANGED = 'selectionchanged';
+  private sortOrder: SortData[] = [];
+  private columnsDialog: Dialog;
 
-  constructor(){
+  constructor() {
     super();
 
     this.view.id = Table.bodyId;
@@ -497,20 +496,20 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     this.onclick = (event) => {
       let element = event.target;
       if (element instanceof Row && !this.selectMultiple) {
-        for (let row of this.selectedRows){
-          if (row !== element){
+        for (let row of this.selectedRows) {
+          if (row !== element) {
             row.selected = false;
           }
         }
       }
     };
 
-    this.oncontextmenu = (event : MouseEvent) => {
+    this.oncontextmenu = (event: MouseEvent) => {
       // allow for adding Dialog elements as children. These will function as context menus.
       let dialogs = this.flatChildren(Dialog);
-      if (dialogs.length > 0){
+      if (dialogs.length > 0) {
         event.preventDefault();
-        for (let dialog of dialogs){
+        for (let dialog of dialogs) {
           dialog.position = {x: event.pageX - window.pageXOffset, y: event.pageY - window.pageYOffset};
           dialog.velocity = {x: 0, y: 0};
           dialog.visible = true;
@@ -530,7 +529,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     return null
   }
 
-  get css(){
+  get css() {
     // language=CSS
     return `      
         :host {       
@@ -565,7 +564,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
      `;
   }
 
-  get selectedData(){
+  get selectedData() {
     // Depends on length of row and data being the same;
     let data = new Set();
     for (let row of this.selectedRows) {
@@ -574,20 +573,20 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     return data;
   }
 
-  get selectedRows() : Row[] {
+  get selectedRows(): Row[] {
     return Array.from(this.querySelectorAll(`.${Row.SELECTED_CLASS}`)) as Row[];
   }
 
-  set selectedRows(rows : Row[]) {
+  set selectedRows(rows: Row[]) {
     let oldRows = new Set(this.selectedRows);
     let newRows = new Set(rows);
     let addedRows = [...newRows].filter(x => !oldRows.has(x));
     let removedRows = [...oldRows].filter(x => !newRows.has(x));
 
-    for (let row of removedRows){
+    for (let row of removedRows) {
       row.selected = false;
     }
-    for (let row of addedRows){
+    for (let row of addedRows) {
       row.selected = true;
     }
 
@@ -595,11 +594,11 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     this.dispatchEvent(event);
   }
 
-  get rows() : Row[] {
+  get rows(): Row[] {
     return this.flatChildren(Row);
   }
 
-  set rows(value : Row[]) {
+  set rows(value: Row[]) {
     this.removeChildren(Row);
     this.appendChildren(value);
     this.resetPane();
@@ -610,23 +609,23 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   /**
    * Whether or not the table will allow for the selection of more than one row at a time.
    */
-  get selectMultiple() : boolean{
+  get selectMultiple(): boolean {
     return this.getAttribute(Table.selectMultipleAttribute) !== null;
   }
 
-  set selectMultiple(value : boolean){
-    if (value){
+  set selectMultiple(value: boolean) {
+    if (value) {
       this.setAttribute(Table.selectMultipleAttribute, "");
     } else {
       this.removeAttribute(Table.selectMultipleAttribute);
     }
   }
 
-  get showHidden() : boolean{
+  get showHidden(): boolean {
     return this.hasAttribute(Table.showHiddenAttribute);
   }
 
-  set showHidden(value : boolean){
+  set showHidden(value: boolean) {
     if (value) {
       this.setAttribute(Table.showHiddenAttribute, "");
     } else {
@@ -634,18 +633,18 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     }
   }
 
-  get mainHeader() : Header | null {
-    for (let child of this.children){
-      if (child instanceof Header){
+  get mainHeader(): Header | null {
+    for (let child of this.children) {
+      if (child instanceof Header) {
         return child;
       }
     }
     return null;
   }
 
-  get sortMap() : {[columnNumber : number] : SortOrderValues}  {
+  get sortMap(): { [columnNumber: number]: SortOrderValues } {
     return this.sortOrder.reduce(
-      (sortMap : {[columnNumber : number] : SortOrderValues}, sortData : SortData) => {
+      (sortMap: { [columnNumber: number]: SortOrderValues }, sortData: SortData) => {
         sortMap[sortData.columnNumber] = sortData.sortOrder;
         return sortMap;
       },
@@ -654,7 +653,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   updateFromAttributes(attributes: { [p: string]: string | null }): void {
-    for (let row of this.rows){
+    for (let row of this.rows) {
       row.selected = false;
     }
   }
@@ -664,16 +663,16 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   /**
    * Sort the table by the column with the given columnNumber.
    */
-  sortColumn(columnNumber : number){
+  sortColumn(columnNumber: number) {
     // Get existing value if it exists
-    let sortOrderValue : SortOrderValues = this.sortMap[columnNumber] || 0;
+    let sortOrderValue: SortOrderValues = this.sortMap[columnNumber] || 0;
 
     // Remove existing from sort order
     this.sortOrder = this.sortOrder.filter((sortData) => {
       return sortData.columnNumber !== columnNumber;
     });
 
-    if (sortOrderValue !== null){
+    if (sortOrderValue !== null) {
       switch (sortOrderValue) {
         case -1:
           sortOrderValue = 0;
@@ -685,7 +684,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
           sortOrderValue = -1;
           break;
       }
-      if (sortOrderValue !== 0){
+      if (sortOrderValue !== 0) {
         this.sortOrder.unshift({
           columnNumber: columnNumber,
           sortOrder: sortOrderValue,
@@ -698,44 +697,12 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     this.updateColumnSortOrders();
   }
 
-  private updateColumnSortOrders(){
-    let sortMap = this.sortMap;
-    for (let row of this.flatChildren(BaseRow)){
-      let columns = row.allColumns;
-      for (let i = 0; i < columns.length; i++) {
-        let column : AbstractTableData<any> = columns[i];
-        let sortOrderValue = sortMap[i];
-        if (sortOrderValue === undefined){
-          column.sortOrder = 0;
-        } else {
-          column.sortOrder = sortOrderValue;
-        }
-      }
-    }
-  }
-
-  private sort(){
-    let rows = this.rows;
-
-    rows = rows.sort((row1, row2) => {
-      for (let sortData of this.sortOrder){
-        let result = sortData.sortOrder * row1.compare(row2, sortData.columnNumber);
-        if (result !== 0) {
-          return result;
-        }
-      }
-      return 0;
-    });
-
-    this.rows = rows;
-  }
-
-  showVisibleColumnsDialog(positionX: number, positionY: number){
+  showVisibleColumnsDialog(positionX: number, positionY: number) {
     this.columnsDialog.removeChildren();
-    let items : HTMLDivElement[] = [];
+    let items: HTMLDivElement[] = [];
 
     let header = this.mainHeader;
-    if (header !== null){
+    if (header !== null) {
       let columns = header.allColumns;
       for (let columnNumber = 0; columnNumber < columns.length; columnNumber++) {
         const headerColumnData = columns[columnNumber];
@@ -746,9 +713,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         columnCheckbox.checked = !headerColumnData.hidden;
         columnLabel.innerText = headerColumnData.data.toString();
         columnCheckbox.onchange = () => {
-          for (let row of this.flatChildren(BaseRow)){
+          for (let row of this.flatChildren(BaseRow)) {
             let columnData = row.getColumn(columnNumber);
-            if (columnData !== null){
+            if (columnData !== null) {
               columnData.hidden = !columnCheckbox.checked;
             }
           }
@@ -766,13 +733,13 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   /**
-  * Toggles the selection of a row. The argument can either be a row element in
-  * the table or null. If null it will deselect all rows. A selected event is
-  * fired on the row element when a row is first selected and deselect events
-  * are similarly fired when its deselected.
-  */
-  toggleRowSelection(rowElement : Row, selectMultiple : boolean, includeBetween : boolean) {
-    if (!this.selectMultiple){
+   * Toggles the selection of a row. The argument can either be a row element in
+   * the table or null. If null it will deselect all rows. A selected event is
+   * fired on the row element when a row is first selected and deselect events
+   * are similarly fired when its deselected.
+   */
+  toggleRowSelection(rowElement: Row, selectMultiple: boolean, includeBetween: boolean) {
+    if (!this.selectMultiple) {
       selectMultiple = false;
       includeBetween = false;
     }
@@ -780,36 +747,36 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     let oldRows = new Set(this.selectedRows);  // Make copy
 
     // Initialize new rows. If selectMultiple is true, we include the old selection.
-    let newRows;
-    if (selectMultiple){
+    let newRows: Set<Row>;
+    if (selectMultiple) {
       newRows = new Set(oldRows);
     } else {
       newRows = new Set();
     }
 
     // If only the toggled rowElement was selected before we remove it. Otherwise we add it.
-    if (!includeBetween && oldRows.has(rowElement)){
+    if (!includeBetween && oldRows.has(rowElement)) {
       newRows.delete(rowElement);
-    }else if (rowElement !== null){
+    } else if (rowElement !== null) {
       newRows.add(rowElement);
     }
 
     // Selects the rows between the previously selected rows and the toggled row if
     // includeBetween and selectMultiple are true.
-    if (selectMultiple && includeBetween && oldRows.size > 0){
+    if (selectMultiple && includeBetween && oldRows.size > 0) {
       let children = this.rows;
       let sliceIndex = children.indexOf(rowElement);
       let sectionIndex = children.indexOf(rowElement);
-      for (let row of oldRows){
+      for (let row of oldRows) {
         let index = children.indexOf(row);
-        if (Math.abs(index - sectionIndex) < Math.abs(sliceIndex - sectionIndex)){
+        if (Math.abs(index - sectionIndex) < Math.abs(sliceIndex - sectionIndex)) {
           sliceIndex = index;
         }
       }
       let start = Math.min(sliceIndex, sectionIndex) + 1;
       let end = Math.max(sliceIndex, sectionIndex);
       let rowsBetween = children.slice(start, end);
-      for (let row of rowsBetween){
+      for (let row of rowsBetween) {
         if (this.showHidden || !row.hidden) {
           newRows.add(row);
         }
@@ -817,6 +784,38 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     }
 
     this.selectedRows = Array.from(newRows);
+  }
+
+  private updateColumnSortOrders() {
+    let sortMap = this.sortMap;
+    for (let row of this.flatChildren(BaseRow)) {
+      let columns = row.allColumns;
+      for (let i = 0; i < columns.length; i++) {
+        let column: AbstractTableData<any> = columns[i];
+        let sortOrderValue = sortMap[i];
+        if (sortOrderValue === undefined) {
+          column.sortOrder = 0;
+        } else {
+          column.sortOrder = sortOrderValue;
+        }
+      }
+    }
+  }
+
+  private sort() {
+    let rows = this.rows;
+
+    rows = rows.sort((row1, row2) => {
+      for (let sortData of this.sortOrder) {
+        let result = sortData.sortOrder * row1.compare(row2, sortData.columnNumber);
+        if (result !== 0) {
+          return result;
+        }
+      }
+      return 0;
+    });
+
+    this.rows = rows;
   }
 }
 

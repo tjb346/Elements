@@ -5,6 +5,7 @@
 export class CustomElement extends HTMLElement {
     constructor() {
         super();
+        this.needsRefresh = true;
         this.styleElement = document.createElement('style');
         this.styleElement.type = 'text/css';
         this.htmlElement = null;
@@ -21,11 +22,14 @@ export class CustomElement extends HTMLElement {
         return "";
     }
     connectedCallback() {
-        this.refresh();
+        if (this.needsRefresh) {
+            this.refresh();
+        }
     }
     disconnectedCallback() {
     }
     attributeChangedCallback(name, oldValue, newValue) {
+        this.needsRefresh = true;
         if (this.isConnected) {
             this.refresh();
         }
@@ -107,6 +111,7 @@ export class CustomElement extends HTMLElement {
             attributes[attr] = this.getAttribute(attr);
         }
         this.render(attributes);
+        this.needsRefresh = false;
     }
     /**
      * Updates state and renders the shadow dom. By default adds the string returned by template to the innerHTML

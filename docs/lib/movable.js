@@ -5,10 +5,6 @@ import { CustomElement } from "./element.js";
 export class Movable extends CustomElement {
     constructor() {
         super();
-        this._position = { x: 0, y: 0 };
-        this._velocity = { x: 0, y: 0 };
-        this.motionTimeout = null;
-        this.lastPositionUpdateTime = null;
         /**
          Affects how fast the element will decelerate when in motion.
          */
@@ -17,14 +13,10 @@ export class Movable extends CustomElement {
          Time in seconds between position updates from velocity vector.
          */
         this.timeStep = .010;
-    }
-    updateFromAttributes(attributes) {
-    }
-    connectedCallback() {
-        super.connectedCallback();
-        this.style.position = 'absolute';
+        this.motionTimeout = null;
         this.lastPositionUpdateTime = null;
-        this.position = { x: 0, y: 0 };
+        this._position = { x: 0, y: 0 };
+        this._velocity = { x: 0, y: 0 };
     }
     /**
      The current location of the upper left corner of the element to its closes relatively positioned ancestor in pixels.
@@ -49,15 +41,6 @@ export class Movable extends CustomElement {
             };
         }
         this.lastPositionUpdateTime = time;
-    }
-    get frictionForce() {
-        let vel = this.velocity;
-        let xDir = Math.sign(vel.x) || 0;
-        let yDir = Math.sign(vel.y) || 0;
-        return {
-            x: -1 * xDir * this.frictionCoef,
-            y: -1 * yDir * this.frictionCoef
-        };
     }
     /**
      The current motion of the element in pixels per second.
@@ -109,9 +92,26 @@ export class Movable extends CustomElement {
             }
         }
     }
+    get frictionForce() {
+        let vel = this.velocity;
+        let xDir = Math.sign(vel.x) || 0;
+        let yDir = Math.sign(vel.y) || 0;
+        return {
+            x: -1 * xDir * this.frictionCoef,
+            y: -1 * yDir * this.frictionCoef
+        };
+    }
     get speed() {
         let velocity = this.velocity;
         return Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    }
+    updateFromAttributes(attributes) {
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.style.position = 'absolute';
+        this.lastPositionUpdateTime = null;
+        this.position = { x: 0, y: 0 };
     }
     center() {
         let rect = this.getBoundingClientRect();
@@ -127,10 +127,10 @@ export class Movable extends CustomElement {
 export class Grabbable extends Movable {
     constructor() {
         super();
-        this.startPosition = { x: 0, y: 0 };
-        this.mouseStartPosition = { x: 0, y: 0 };
         this.includeChildren = false;
         this.noPropagate = false;
+        this.startPosition = { x: 0, y: 0 };
+        this.mouseStartPosition = { x: 0, y: 0 };
         this.onmousedown = (event) => {
             if (this.noPropagate) {
                 event.stopImmediatePropagation();
@@ -200,11 +200,11 @@ export class Grabbable extends Movable {
 export class Scrollable extends Movable {
     constructor() {
         super();
-        this.touchStartPosition = {};
         /**
          A multiplier for the rate the element moves when scrolled. Can be set with "scroll-speed" attribute .
          */
         this.scrollSpeed = Scrollable.defaultScrollSpeed;
+        this.touchStartPosition = {};
         this.onwheel = (event) => {
             let currentPosition = this.position;
             currentPosition.y -= event.deltaY * this.scrollSpeed;
@@ -247,5 +247,5 @@ export class Scrollable extends Movable {
         }
     }
 }
-Scrollable.defaultScrollSpeed = 1;
 Scrollable.scrollSpeedAttribute = 'scroll-speed';
+Scrollable.defaultScrollSpeed = 1;

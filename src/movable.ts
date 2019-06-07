@@ -1,50 +1,41 @@
 import {CustomElement} from "./element.js";
 
 
-interface Vector {x: number; y: number}
+interface Vector {
+  x: number;
+  y: number
+}
 
 
 /**
  An element who's position can be changed.
  */
 export class Movable extends CustomElement {
-  private _position: Vector = {x: 0, y: 0};
-  private _velocity: Vector = {x: 0, y: 0};
-  private motionTimeout: number | null = null;
-  private lastPositionUpdateTime: number | null = null;
-
   /**
    Affects how fast the element will decelerate when in motion.
    */
   protected frictionCoef = 100;
-
   /**
    Time in seconds between position updates from velocity vector.
    */
   protected timeStep = .010;
+  private motionTimeout: number | null = null;
+  private lastPositionUpdateTime: number | null = null;
 
-  constructor(){
+  constructor() {
     super();
   }
 
-  updateFromAttributes(attributes: { [p: string]: string | null }): void {
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.style.position = 'absolute';
-    this.lastPositionUpdateTime = null;
-    this.position = {x: 0, y: 0};
-  }
+  private _position: Vector = {x: 0, y: 0};
 
   /**
    The current location of the upper left corner of the element to its closes relatively positioned ancestor in pixels.
    */
-  get position() : Vector {
+  get position(): Vector {
     return Object.assign({}, this._position); // Make a copy so it doesn't get modified;
   }
 
-  set position(value: Vector){
+  set position(value: Vector) {
     let oldPosition = this._position;
     this._position = {
       x: value.x || 0,
@@ -54,7 +45,7 @@ export class Movable extends CustomElement {
     this.style.top = `${Math.round(this._position.y).toString()}px`;
 
     let time = new Date().getTime();
-    if (this.lastPositionUpdateTime !== null){
+    if (this.lastPositionUpdateTime !== null) {
       let deltaT = (time - this.lastPositionUpdateTime) / 1000;
       this.velocity = {
         x: (this._position.x - oldPosition.x) / deltaT,
@@ -64,20 +55,12 @@ export class Movable extends CustomElement {
     this.lastPositionUpdateTime = time;
   }
 
-  get frictionForce(){
-    let vel = this.velocity;
-    let xDir = Math.sign(vel.x) || 0;
-    let yDir = Math.sign(vel.y) || 0;
-    return {
-      x: -1 * xDir * this.frictionCoef,
-      y: -1 * yDir * this.frictionCoef
-    }
-  }
+  private _velocity: Vector = {x: 0, y: 0};
 
   /**
    The current motion of the element in pixels per second.
    */
-  get velocity(){
+  get velocity() {
     return this._velocity || {
       x: 0,
       y: 0
@@ -85,7 +68,7 @@ export class Movable extends CustomElement {
   }
 
   set velocity(value) {
-    if (this.motionTimeout){
+    if (this.motionTimeout) {
       clearTimeout(this.motionTimeout);
     }
     this.motionTimeout = null;
@@ -131,15 +114,35 @@ export class Movable extends CustomElement {
     }
   }
 
-  get speed(){
+  get frictionForce() {
+    let vel = this.velocity;
+    let xDir = Math.sign(vel.x) || 0;
+    let yDir = Math.sign(vel.y) || 0;
+    return {
+      x: -1 * xDir * this.frictionCoef,
+      y: -1 * yDir * this.frictionCoef
+    }
+  }
+
+  get speed() {
     let velocity = this.velocity;
     return Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
   }
 
-  center(){
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.style.position = 'absolute';
+    this.lastPositionUpdateTime = null;
+    this.position = {x: 0, y: 0};
+  }
+
+  center() {
     let rect = this.getBoundingClientRect();
     let x = window.innerWidth / 2 - rect.width / 2;
-    let y = window.innerHeight / 2 - rect.height / 2 ;
+    let y = window.innerHeight / 2 - rect.height / 2;
     this.position = {x: x, y: y};
     this.velocity = {x: 0, y: 0};
   }
@@ -150,17 +153,17 @@ export class Movable extends CustomElement {
  An element who's position can be changed by clicking and dragging.
  */
 export class Grabbable extends Movable {
-  public onmousedown : (ev: MouseEvent) => any;
-  private startPosition : Vector = {x: 0, y: 0};
-  private mouseStartPosition : Vector = {x: 0, y: 0};
-  protected includeChildren : boolean = false;
-  protected noPropagate : boolean = false;
+  public onmousedown: (ev: MouseEvent) => any;
+  protected includeChildren: boolean = false;
+  protected noPropagate: boolean = false;
+  private startPosition: Vector = {x: 0, y: 0};
+  private mouseStartPosition: Vector = {x: 0, y: 0};
 
-  constructor(){
+  constructor() {
     super();
 
-    this.onmousedown = (event : MouseEvent) => {
-      if (this.noPropagate){
+    this.onmousedown = (event: MouseEvent) => {
+      if (this.noPropagate) {
         event.stopImmediatePropagation();
       }
 
@@ -172,8 +175,8 @@ export class Grabbable extends Movable {
         this.startDrag();
       }
     };
-    this.ontouchstart = (event : TouchEvent) => {
-      if (this.noPropagate){
+    this.ontouchstart = (event: TouchEvent) => {
+      if (this.noPropagate) {
         event.stopImmediatePropagation();
       }
 
@@ -188,9 +191,9 @@ export class Grabbable extends Movable {
   }
 
   private startDrag() {
-    document.onmousemove = (event : MouseEvent) => {
+    document.onmousemove = (event: MouseEvent) => {
       event.preventDefault();
-      if (this.noPropagate){
+      if (this.noPropagate) {
         event.stopImmediatePropagation();
       }
 
@@ -204,8 +207,8 @@ export class Grabbable extends Movable {
     };
     document.onmouseup = this.stopDrag.bind(this);
 
-    document.ontouchmove = (event : TouchEvent) => {
-      if (this.noPropagate){
+    document.ontouchmove = (event: TouchEvent) => {
+      if (this.noPropagate) {
         event.stopImmediatePropagation();
       }
 
@@ -220,8 +223,8 @@ export class Grabbable extends Movable {
     document.ontouchend = this.stopDrag.bind(this);
   }
 
-  private stopDrag(event : MouseEvent | TouchEvent) {
-    if (this.noPropagate){
+  private stopDrag(event: MouseEvent | TouchEvent) {
+    if (this.noPropagate) {
       event.stopImmediatePropagation();
     }
     event.preventDefault();
@@ -244,37 +247,37 @@ interface TouchData {
  An element who's position can be changed using the scroll wheel of the mouse.
  */
 export class Scrollable extends Movable {
-  private touchStartPosition : {[key: string] :  TouchData} = {};
+  static scrollSpeedAttribute = 'scroll-speed';
   private static defaultScrollSpeed = 1;
 
   /**
    A multiplier for the rate the element moves when scrolled. Can be set with "scroll-speed" attribute .
    */
   protected scrollSpeed = Scrollable.defaultScrollSpeed;
-
-  static scrollSpeedAttribute = 'scroll-speed';
+  private touchStartPosition: { [key: string]: TouchData } = {};
 
   constructor() {
     super();
 
-    this.onwheel = (event : WheelEvent) => {
+    this.onwheel = (event: WheelEvent) => {
       let currentPosition = this.position;
       currentPosition.y -= event.deltaY * this.scrollSpeed;
       this.position = currentPosition;
     };
 
-    this.ontouchstart = (event : TouchEvent) => {
-      for (let touch of event.targetTouches){
+    this.ontouchstart = (event: TouchEvent) => {
+      for (let touch of event.targetTouches) {
         this.touchStartPosition[touch.identifier] = {
           coords: {x: touch.clientX, y: touch.clientY},
-          elementPosition: this.position};
+          elementPosition: this.position
+        };
       }
     };
 
-    this.ontouchmove = (event : TouchEvent) => {
-      for (let touch of event.targetTouches){
+    this.ontouchmove = (event: TouchEvent) => {
+      for (let touch of event.targetTouches) {
         let startData = this.touchStartPosition[touch.identifier];
-        if (startData){
+        if (startData) {
           let deltaX = touch.clientX - startData.coords.x;
           let deltaY = touch.clientY - startData.coords.y;
           this.position = {x: startData.elementPosition.x + deltaX, y: startData.elementPosition.y + deltaY};
@@ -282,8 +285,8 @@ export class Scrollable extends Movable {
       }
     };
 
-    this.ontouchend = (event : TouchEvent) => {
-      for (let touch of event.targetTouches){
+    this.ontouchend = (event: TouchEvent) => {
+      for (let touch of event.targetTouches) {
         delete this.touchStartPosition[touch.identifier];
       }
     };

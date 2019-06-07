@@ -4,7 +4,6 @@ import { CustomElement } from "./element.js";
  * of this element.
  */
 export declare class Route extends CustomElement {
-    protected containerId: string;
     /**
      * @event
      */
@@ -22,37 +21,38 @@ export declare class Route extends CustomElement {
      */
     static EVENT_HIDDEN: string;
     static nameAttribute: string;
+    protected containerId: string;
     constructor();
     static readonly observedAttributes: string[];
+    name: string;
+    readonly path: string[];
+    readonly isRoot: boolean;
     static currentPath(): string[];
     updateFromAttributes(attributes: {
         [p: string]: string | null;
     }): void;
-    name: string;
-    readonly path: string[];
-    readonly isRoot: boolean;
     connectedCallback(): void;
     /**
      * Shows the route.
      */
     show(): void;
     hide(): void;
-    private matchesCurrentLocation;
     updateState(): void;
+    private matchesCurrentLocation;
 }
 export declare abstract class LazyRoute extends Route {
-    private container;
     url: string | null;
+    private container;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly loaded: ChildNode | null;
     show(): void;
-    private lazyLoad;
     /**
      * Render the element shadow dom from the data given in the response.
      * @param response The http response from the url.
      */
     abstract renderResponse(response: Response): void;
+    private lazyLoad;
 }
 export declare class RouterLink extends CustomElement {
     /**

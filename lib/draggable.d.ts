@@ -1,5 +1,4 @@
-import { CustomElement } from "./element";
-export declare function DroppableMixin<T extends new (...args: any[]) => CustomElement>(ElementClass: T): {
+export declare function DroppableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
     new (...args: any[]): {
         dragOverActions: (() => void)[];
         dragOverDelay: number;
@@ -35,27 +34,6 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
          * Remove timeouts to call dragover actions.
          */
         clearTimeOuts(): void;
-        readonly styleElement: HTMLStyleElement;
-        htmlElement: HTMLDivElement | null;
-        readonly shadowDOM: ShadowRoot;
-        readonly css: string;
-        readonly html: string;
-        connectedCallback(): void;
-        disconnectedCallback(): void;
-        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        removeShadowChildren(): void;
-        removeChildren(type?: any): void;
-        appendShadowChild(element: Element): void;
-        appendShadowChildren(elements: Element[] | NodeList): void;
-        appendChildren(elements: Element[] | NodeList): void;
-        flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
-        refresh(): void;
-        render(attributes: {
-            [name: string]: string | null;
-        }): void;
-        updateFromAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -73,9 +51,9 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         title: string;
         translate: boolean;
         click(): void;
-        addEventListener<K extends "input" | "progress" | "select" | "fullscreenchange" | "fullscreenerror" | "abort" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "cancel" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadend" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "waiting" | "wheel" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): void;
+        addEventListener<K extends "input" | "progress" | "select" | "abort" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "contextmenu" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "ratechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "volumechange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "dragexit" | "gotpointercapture" | "loadend" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "fullscreenchange" | "fullscreenerror" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined): void;
-        removeEventListener<K extends "input" | "progress" | "select" | "fullscreenchange" | "fullscreenerror" | "abort" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "cancel" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadend" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "waiting" | "wheel" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions | undefined): void;
+        removeEventListener<K extends "input" | "progress" | "select" | "abort" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "contextmenu" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "ratechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "volumechange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "dragexit" | "gotpointercapture" | "loadend" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "fullscreenchange" | "fullscreenerror" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions | undefined): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions | undefined): void;
         readonly assignedSlot: HTMLSlotElement | null;
         readonly attributes: NamedNodeMap;
@@ -86,7 +64,6 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         readonly clientTop: number;
         readonly clientWidth: number;
         id: string;
-        innerHTML: string;
         readonly localName: string;
         readonly namespaceURI: string | null;
         onfullscreenchange: ((this: Element, ev: Event) => any) | null;
@@ -100,20 +77,20 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         readonly shadowRoot: ShadowRoot | null;
         slot: string;
         readonly tagName: string;
-        attachShadow(shadowRootInitDict: ShadowRootInit): ShadowRoot;
-        closest<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selector: K): HTMLElementTagNameMap[K] | null;
-        closest<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selector: K): SVGElementTagNameMap[K] | null;
+        attachShadow(init: ShadowRootInit): ShadowRoot;
+        closest<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selector: K): HTMLElementTagNameMap[K] | null;
+        closest<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selector: K): SVGElementTagNameMap[K] | null;
         closest(selector: string): Element | null;
         getAttribute(qualifiedName: string): string | null;
         getAttributeNS(namespace: string | null, localName: string): string | null;
         getAttributeNames(): string[];
         getAttributeNode(name: string): Attr | null;
         getAttributeNodeNS(namespaceURI: string, localName: string): Attr | null;
-        getBoundingClientRect(): ClientRect | DOMRect;
+        getBoundingClientRect(): DOMRect | ClientRect;
         getClientRects(): ClientRectList | DOMRectList;
         getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
-        getElementsByTagName<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(qualifiedName: K): HTMLCollectionOf<HTMLElementTagNameMap[K]>;
-        getElementsByTagName<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(qualifiedName: K): HTMLCollectionOf<SVGElementTagNameMap[K]>;
+        getElementsByTagName<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(qualifiedName: K): HTMLCollectionOf<HTMLElementTagNameMap[K]>;
+        getElementsByTagName<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(qualifiedName: K): HTMLCollectionOf<SVGElementTagNameMap[K]>;
         getElementsByTagName(qualifiedName: string): HTMLCollectionOf<Element>;
         getElementsByTagNameNS(namespaceURI: "http://www.w3.org/1999/xhtml", localName: string): HTMLCollectionOf<HTMLElement>;
         getElementsByTagNameNS(namespaceURI: "http://www.w3.org/2000/svg", localName: string): HTMLCollectionOf<SVGElement>;
@@ -131,7 +108,8 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         removeAttribute(qualifiedName: string): void;
         removeAttributeNS(namespace: string | null, localName: string): void;
         removeAttributeNode(attr: Attr): Attr;
-        requestFullscreen(): Promise<void>;
+        requestFullscreen(options?: FullscreenOptions | undefined): Promise<void>;
+        requestPointerLock(): void;
         scroll(options?: ScrollToOptions | undefined): void;
         scroll(x: number, y: number): void;
         scrollBy(options?: ScrollToOptions | undefined): void;
@@ -151,7 +129,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         readonly firstChild: ChildNode | null;
         readonly isConnected: boolean;
         readonly lastChild: ChildNode | null;
-        readonly nextSibling: Node | null;
+        readonly nextSibling: ChildNode | null;
         readonly nodeName: string;
         readonly nodeType: number;
         nodeValue: string | null;
@@ -200,11 +178,11 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         readonly lastElementChild: Element | null;
         append(...nodes: (string | Node)[]): void;
         prepend(...nodes: (string | Node)[]): void;
-        querySelector<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): HTMLElementTagNameMap[K] | null;
-        querySelector<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): SVGElementTagNameMap[K] | null;
+        querySelector<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): HTMLElementTagNameMap[K] | null;
+        querySelector<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): SVGElementTagNameMap[K] | null;
         querySelector<E extends Element = Element>(selectors: string): E | null;
-        querySelectorAll<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-        querySelectorAll<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
+        querySelectorAll<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
+        querySelectorAll<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
         querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
         readonly nextElementSibling: Element | null;
         readonly previousElementSibling: Element | null;
@@ -212,14 +190,15 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         before(...nodes: (string | Node)[]): void;
         remove(): void;
         replaceWith(...nodes: (string | Node)[]): void;
-        animate(keyframes: Keyframe[] | PropertyIndexedKeyframes | null, options?: number | KeyframeAnimationOptions | undefined): Animation;
+        innerHTML: string;
+        animate(keyframes: PropertyIndexedKeyframes | Keyframe[] | null, options?: number | KeyframeAnimationOptions | undefined): Animation;
         getAnimations(): Animation[];
         onabort: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
         onanimationcancel: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationend: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationiteration: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationstart: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
-        onauxclick: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onauxclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
         onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
         oncancel: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         oncanplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -241,7 +220,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         ondurationchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onemptied: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onended: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-        onerror: ErrorEventHandler;
+        onerror: OnErrorEventHandler;
         onfocus: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
         ongotpointercapture: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
         oninput: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -277,11 +256,13 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         onratechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onreset: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onresize: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
-        onscroll: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsecuritypolicyviolation: ((this: GlobalEventHandlers, ev: SecurityPolicyViolationEvent) => any) | null;
         onseeked: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onseeking: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-        onselect: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onselect: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectionchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectstart: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onstalled: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsubmit: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsuspend: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -305,7 +286,7 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
         inputMode: string;
         readonly isContentEditable: boolean;
         readonly dataset: DOMStringMap;
-        nonce: string;
+        nonce?: string | undefined;
         tabIndex: number;
         blur(): void;
         focus(options?: FocusOptions | undefined): void;
@@ -314,9 +295,8 @@ export declare function DroppableMixin<T extends new (...args: any[]) => CustomE
     dragOverClass: string;
     pendingActionClass: string;
 } & T;
-export declare function DraggableMixin<T extends new (...args: any[]) => CustomElement>(ElementClass: T): {
+export declare function DraggableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
     new (...args: any[]): {
-        connectedCallback(): void;
         /**
          * Called when dragstart event is fired.
          */
@@ -325,26 +305,6 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
          * Called when dragend event is fired.
          */
         handleDragEnd(event: DragEvent): void;
-        readonly styleElement: HTMLStyleElement;
-        htmlElement: HTMLDivElement | null;
-        readonly shadowDOM: ShadowRoot;
-        readonly css: string;
-        readonly html: string;
-        disconnectedCallback(): void;
-        attributeChangedCallback(name: string, oldValue: string | null, newValue: any): void;
-        removeShadowChildren(): void;
-        removeChildren(type?: any): void;
-        appendShadowChild(element: Element): void;
-        appendShadowChildren(elements: Element[] | NodeList): void;
-        appendChildren(elements: Element[] | NodeList): void;
-        flatChildren<T_1 extends Element>(type?: (new () => T_1) | undefined): T_1[];
-        refresh(): void;
-        render(attributes: {
-            [name: string]: string | null;
-        }): void;
-        updateFromAttributes(attributes: {
-            [name: string]: string | null;
-        }): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;
@@ -362,9 +322,9 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         title: string;
         translate: boolean;
         click(): void;
-        addEventListener<K extends "input" | "progress" | "select" | "fullscreenchange" | "fullscreenerror" | "abort" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "cancel" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadend" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "waiting" | "wheel" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): void;
+        addEventListener<K extends "input" | "progress" | "select" | "abort" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "contextmenu" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "ratechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "volumechange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "dragexit" | "gotpointercapture" | "loadend" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "fullscreenchange" | "fullscreenerror" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined): void;
-        removeEventListener<K extends "input" | "progress" | "select" | "fullscreenchange" | "fullscreenerror" | "abort" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "cancel" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadend" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "waiting" | "wheel" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions | undefined): void;
+        removeEventListener<K extends "input" | "progress" | "select" | "abort" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "contextmenu" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "error" | "focus" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "ratechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "submit" | "suspend" | "timeupdate" | "volumechange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "dragexit" | "gotpointercapture" | "loadend" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "fullscreenchange" | "fullscreenerror" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions | undefined): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions | undefined): void;
         readonly assignedSlot: HTMLSlotElement | null;
         readonly attributes: NamedNodeMap;
@@ -375,7 +335,6 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         readonly clientTop: number;
         readonly clientWidth: number;
         id: string;
-        innerHTML: string;
         readonly localName: string;
         readonly namespaceURI: string | null;
         onfullscreenchange: ((this: Element, ev: Event) => any) | null;
@@ -389,20 +348,20 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         readonly shadowRoot: ShadowRoot | null;
         slot: string;
         readonly tagName: string;
-        attachShadow(shadowRootInitDict: ShadowRootInit): ShadowRoot;
-        closest<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selector: K): HTMLElementTagNameMap[K] | null;
-        closest<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selector: K): SVGElementTagNameMap[K] | null;
+        attachShadow(init: ShadowRootInit): ShadowRoot;
+        closest<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selector: K): HTMLElementTagNameMap[K] | null;
+        closest<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selector: K): SVGElementTagNameMap[K] | null;
         closest(selector: string): Element | null;
         getAttribute(qualifiedName: string): string | null;
         getAttributeNS(namespace: string | null, localName: string): string | null;
         getAttributeNames(): string[];
         getAttributeNode(name: string): Attr | null;
         getAttributeNodeNS(namespaceURI: string, localName: string): Attr | null;
-        getBoundingClientRect(): ClientRect | DOMRect;
+        getBoundingClientRect(): DOMRect | ClientRect;
         getClientRects(): ClientRectList | DOMRectList;
         getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
-        getElementsByTagName<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(qualifiedName: K): HTMLCollectionOf<HTMLElementTagNameMap[K]>;
-        getElementsByTagName<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(qualifiedName: K): HTMLCollectionOf<SVGElementTagNameMap[K]>;
+        getElementsByTagName<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(qualifiedName: K): HTMLCollectionOf<HTMLElementTagNameMap[K]>;
+        getElementsByTagName<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(qualifiedName: K): HTMLCollectionOf<SVGElementTagNameMap[K]>;
         getElementsByTagName(qualifiedName: string): HTMLCollectionOf<Element>;
         getElementsByTagNameNS(namespaceURI: "http://www.w3.org/1999/xhtml", localName: string): HTMLCollectionOf<HTMLElement>;
         getElementsByTagNameNS(namespaceURI: "http://www.w3.org/2000/svg", localName: string): HTMLCollectionOf<SVGElement>;
@@ -420,7 +379,8 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         removeAttribute(qualifiedName: string): void;
         removeAttributeNS(namespace: string | null, localName: string): void;
         removeAttributeNode(attr: Attr): Attr;
-        requestFullscreen(): Promise<void>;
+        requestFullscreen(options?: FullscreenOptions | undefined): Promise<void>;
+        requestPointerLock(): void;
         scroll(options?: ScrollToOptions | undefined): void;
         scroll(x: number, y: number): void;
         scrollBy(options?: ScrollToOptions | undefined): void;
@@ -440,7 +400,7 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         readonly firstChild: ChildNode | null;
         readonly isConnected: boolean;
         readonly lastChild: ChildNode | null;
-        readonly nextSibling: Node | null;
+        readonly nextSibling: ChildNode | null;
         readonly nodeName: string;
         readonly nodeType: number;
         nodeValue: string | null;
@@ -489,11 +449,11 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         readonly lastElementChild: Element | null;
         append(...nodes: (string | Node)[]): void;
         prepend(...nodes: (string | Node)[]): void;
-        querySelector<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): HTMLElementTagNameMap[K] | null;
-        querySelector<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): SVGElementTagNameMap[K] | null;
+        querySelector<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): HTMLElementTagNameMap[K] | null;
+        querySelector<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): SVGElementTagNameMap[K] | null;
         querySelector<E extends Element = Element>(selectors: string): E | null;
-        querySelectorAll<K extends "object" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-        querySelectorAll<K extends "symbol" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
+        querySelectorAll<K extends "object" | "div" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "link" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "progress" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "small" | "source" | "span" | "strong" | "style" | "sub" | "summary" | "sup" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "track" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
+        querySelectorAll<K extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
         querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
         readonly nextElementSibling: Element | null;
         readonly previousElementSibling: Element | null;
@@ -501,14 +461,15 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         before(...nodes: (string | Node)[]): void;
         remove(): void;
         replaceWith(...nodes: (string | Node)[]): void;
-        animate(keyframes: Keyframe[] | PropertyIndexedKeyframes | null, options?: number | KeyframeAnimationOptions | undefined): Animation;
+        innerHTML: string;
+        animate(keyframes: PropertyIndexedKeyframes | Keyframe[] | null, options?: number | KeyframeAnimationOptions | undefined): Animation;
         getAnimations(): Animation[];
         onabort: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
         onanimationcancel: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationend: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationiteration: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
         onanimationstart: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
-        onauxclick: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onauxclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
         onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
         oncancel: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         oncanplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -530,7 +491,7 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         ondurationchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onemptied: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onended: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-        onerror: ErrorEventHandler;
+        onerror: OnErrorEventHandler;
         onfocus: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
         ongotpointercapture: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
         oninput: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -566,11 +527,13 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         onratechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onreset: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onresize: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
-        onscroll: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsecuritypolicyviolation: ((this: GlobalEventHandlers, ev: SecurityPolicyViolationEvent) => any) | null;
         onseeked: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onseeking: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-        onselect: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onselect: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectionchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectstart: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onstalled: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsubmit: ((this: GlobalEventHandlers, ev: Event) => any) | null;
         onsuspend: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -594,7 +557,7 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
         inputMode: string;
         readonly isContentEditable: boolean;
         readonly dataset: DOMStringMap;
-        nonce: string;
+        nonce?: string | undefined;
         tabIndex: number;
         blur(): void;
         focus(options?: FocusOptions | undefined): void;
@@ -603,5 +566,5 @@ export declare function DraggableMixin<T extends new (...args: any[]) => CustomE
     /**
      * The class name of the element when it is being dragged.
      */
-    readonly draggingClass: string;
+    draggingClass: string;
 } & T;

@@ -3,9 +3,10 @@
  * to the shadowDOM in the constructor. Update state from attributes in updateFromAttributes.
  */
 export declare abstract class CustomElement extends HTMLElement {
-    readonly styleElement: HTMLStyleElement;
-    htmlElement: HTMLDivElement | null;
     readonly shadowDOM: ShadowRoot;
+    protected htmlElement: HTMLDivElement | null;
+    protected readonly styleElement: HTMLStyleElement;
+    private needsRefresh;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

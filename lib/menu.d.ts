@@ -8,11 +8,11 @@ import { CustomElement } from "./element.js";
  *    --menu-float
  */
 export declare class Menu extends CustomElement {
-    private readonly button;
-    private readonly container;
-    protected openedClass: string;
     static defaultCollapseWidth: number;
     static collapseWidthAttribute: string;
+    protected openedClass: string;
+    private readonly button;
+    private readonly container;
     constructor();
     static readonly observedAttributes: string[];
     readonly css: string;

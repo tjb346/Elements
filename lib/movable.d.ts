@@ -7,10 +7,6 @@ interface Vector {
  An element who's position can be changed.
  */
 export declare class Movable extends CustomElement {
-    private _position;
-    private _velocity;
-    private motionTimeout;
-    private lastPositionUpdateTime;
     /**
      Affects how fast the element will decelerate when in motion.
      */
@@ -19,24 +15,28 @@ export declare class Movable extends CustomElement {
      Time in seconds between position updates from velocity vector.
      */
     protected timeStep: number;
+    private motionTimeout;
+    private lastPositionUpdateTime;
     constructor();
-    updateFromAttributes(attributes: {
-        [p: string]: string | null;
-    }): void;
-    connectedCallback(): void;
+    private _position;
     /**
      The current location of the upper left corner of the element to its closes relatively positioned ancestor in pixels.
      */
     position: Vector;
-    readonly frictionForce: {
-        x: number;
-        y: number;
-    };
+    private _velocity;
     /**
      The current motion of the element in pixels per second.
      */
     velocity: Vector;
+    readonly frictionForce: {
+        x: number;
+        y: number;
+    };
     readonly speed: number;
+    updateFromAttributes(attributes: {
+        [p: string]: string | null;
+    }): void;
+    connectedCallback(): void;
     center(): void;
 }
 /**
@@ -44,10 +44,10 @@ export declare class Movable extends CustomElement {
  */
 export declare class Grabbable extends Movable {
     onmousedown: (ev: MouseEvent) => any;
-    private startPosition;
-    private mouseStartPosition;
     protected includeChildren: boolean;
     protected noPropagate: boolean;
+    private startPosition;
+    private mouseStartPosition;
     constructor();
     private startDrag;
     private stopDrag;
@@ -56,13 +56,13 @@ export declare class Grabbable extends Movable {
  An element who's position can be changed using the scroll wheel of the mouse.
  */
 export declare class Scrollable extends Movable {
-    private touchStartPosition;
+    static scrollSpeedAttribute: string;
     private static defaultScrollSpeed;
     /**
      A multiplier for the rate the element moves when scrolled. Can be set with "scroll-speed" attribute .
      */
     protected scrollSpeed: number;
-    static scrollSpeedAttribute: string;
+    private touchStartPosition;
     constructor();
     static readonly observedAttributes: string[];
     updateFromAttributes(attributes: {

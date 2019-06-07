@@ -10,46 +10,44 @@ import {CustomElement} from "./element.js";
  *    --menu-float
  */
 export class Menu extends CustomElement {
-    private readonly button : HTMLButtonElement;
-    private readonly container : HTMLDivElement;
+  static defaultCollapseWidth = 600;
+  static collapseWidthAttribute = 'collapse-width';
+  protected openedClass = 'opened';
+  private readonly button: HTMLButtonElement;
+  private readonly container: HTMLDivElement;
 
-    protected openedClass = 'opened';
+  constructor() {
+    super();
 
-    static defaultCollapseWidth = 600;
-    static collapseWidthAttribute = 'collapse-width';
+    this.container = document.createElement('div');
+    let slot = document.createElement('slot');
+    this.container.appendChild(slot);
 
-    constructor() {
-        super();
+    this.button = document.createElement('button');
+    this.button.type = 'button';
+    this.button.innerText = '\u2630';
+    this.button.onclick = (event: MouseEvent) => {
+      this.toggleOpened();
+    };
 
-        this.container = document.createElement('div');
-        let slot = document.createElement('slot');
-        this.container.appendChild(slot);
+    this.shadowDOM.appendChild(this.button);
+    this.shadowDOM.appendChild(this.container);
 
-        this.button = document.createElement('button');
-        this.button.type = 'button';
-        this.button.innerText = '\u2630';
-        this.button.onclick = (event : MouseEvent) => {
-            this.toggleOpened();
-        };
+    document.documentElement.addEventListener('click', (event: MouseEvent) => {
+      this.handleEvent(event);
+    });
+    document.documentElement.addEventListener('touchstart', (event: TouchEvent) => {
+      this.handleEvent(event);
+    });
+  }
 
-        this.shadowDOM.appendChild(this.button);
-        this.shadowDOM.appendChild(this.container);
+  static get observedAttributes() {
+    return [Menu.collapseWidthAttribute];
+  }
 
-        document.documentElement.addEventListener('click', (event : MouseEvent) => {
-            this.handleEvent(event);
-        });
-        document.documentElement.addEventListener('touchstart', (event : TouchEvent) => {
-            this.handleEvent(event);
-        });
-    }
-
-    static get observedAttributes() {
-        return [Menu.collapseWidthAttribute];
-    }
-
-    get css(){
-        // language=CSS
-        return `            
+  get css() {
+    // language=CSS
+    return `            
             :host {
                 --button-size: var(--menu-button-size, 40px);
                 
@@ -104,60 +102,61 @@ export class Menu extends CustomElement {
                 }
             }
         `;
-    }
+  }
 
-    get opened(){
-        return this.container.classList.contains(this.openedClass);
-    }
+  get opened() {
+    return this.container.classList.contains(this.openedClass);
+  }
 
-    get collapseWidth() : number {
-        let attr = this.getAttribute(Menu.collapseWidthAttribute);
-        if (attr === null){
-            return Menu.defaultCollapseWidth;
-        } else {
-            return parseInt(attr) || Menu.defaultCollapseWidth;
-        }
+  get collapseWidth(): number {
+    let attr = this.getAttribute(Menu.collapseWidthAttribute);
+    if (attr === null) {
+      return Menu.defaultCollapseWidth;
+    } else {
+      return parseInt(attr) || Menu.defaultCollapseWidth;
     }
+  }
 
-    set collapseWidth(value : number){
-        this.setAttribute(Menu.collapseWidthAttribute, value.toString());
+  set collapseWidth(value: number) {
+    this.setAttribute(Menu.collapseWidthAttribute, value.toString());
+  }
+
+  updateFromAttributes(attributes: { [p: string]: string | null }): void {
+  }
+
+  toggleOpened() {
+    // Toggle open and close menu
+    if (this.opened) {
+      this.close();
+    } else {
+      this.open();
     }
+  }
 
-    updateFromAttributes(attributes: { [p: string]: string | null }): void {}
+  open() {
+    this.container.classList.add(this.openedClass);
+  }
 
-    toggleOpened(){
-        // Toggle open and close menu
-        if (this.opened){
-            this.close();
-        } else {
-            this.open();
-        }
+  close() {
+    this.container.classList.remove(this.openedClass);
+  }
+
+  isOutsideTarget(event: Event) {
+    let node = event.target;
+    while (node !== null && node instanceof Node) {
+      if (node === this) {
+        return false;
+      }
+      node = node.parentNode;
     }
+    return true;
+  }
 
-    open() {
-        this.container.classList.add(this.openedClass);
+  handleEvent(event: Event) {
+    if (this.opened && this.isOutsideTarget(event)) {
+      this.close();
     }
-
-    close(){
-        this.container.classList.remove(this.openedClass);
-    }
-
-    isOutsideTarget(event : Event) {
-        let node = event.target;
-        while(node !== null && node instanceof Node) {
-            if (node === this){
-                return false;
-            }
-            node = node.parentNode;
-        }
-        return true;
-    }
-
-    handleEvent(event : Event){
-        if (this.opened && this.isOutsideTarget(event)) {
-            this.close();
-        }
-    }
+  }
 }
 
 

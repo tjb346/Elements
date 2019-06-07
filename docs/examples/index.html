@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width">
     <title>Navigation Example</title>
 
-    <script src="../lib/navigation.js" type="module"></script>
+    <script id="nav" src="../lib/navigation.js" type="module"></script>
+    <script id="menu" src="../lib/menu.js" type="module"></script>
     <script src="../lib/table.js" type="module"></script>
     <script src="../lib/dialog.js" type="module"></script>
-    <script src="../lib/menu.js" type="module"></script>
     <script src="../lib/form.js" type="module"></script>
+    <script>
+        // Show body after nav scripts loaded
+        let nav = document.getElementById('nav');
+        let menu = document.getElementById('menu');
+
+        let menuLoaded = false;
+        let navLoaded = false;
+
+        function updateBody(event) {
+          if (event.target.id === 'nav') {
+            navLoaded = true;
+          }
+          if (event.target.id === 'menu') {
+            menuLoaded = true;
+          }
+          if (navLoaded && menuLoaded) {
+            document.body.style.display = 'block';
+          }
+        }
+
+        menu.onload = updateBody;
+        nav.onload = updateBody;
+    </script>
+
     <style>
         nav {
             height: 50px;
@@ -33,7 +57,7 @@
         }
     </style>
 </head>
-<body>
+<body style="display: none">
     <nav>
         <collapse-menu>
             <router-link route="/Elements/examples/">Home</router-link>

@@ -9,20 +9,21 @@ export declare abstract class AbstractInput extends CustomElement {
     protected readonly inputContainer: HTMLElement;
     private readonly container;
     private readonly errorMessageSpan;
+    /**
+     * @event
+     */
+    static EVENT_CHANGE: string;
     protected constructor();
     static readonly observedAttributes: string[];
     readonly css: string;
     name: string;
     errorMessage: string;
+    protected onValueChange(): void;
 }
-export declare class Input extends AbstractInput {
+export declare class TextInput extends AbstractInput {
     static valueClass: string;
     static typeAttribute: string;
-    /**
-     * @event
-     */
-    static EVENT_CHANGE: string;
-    protected input: HTMLInputElement;
+    protected input: HTMLInputElement | HTMLTextAreaElement;
     protected label: HTMLLabelElement;
     constructor();
     static readonly observedAttributes: string[];
@@ -34,10 +35,12 @@ export declare class Input extends AbstractInput {
     }): void;
     protected onValueChange(): void;
 }
-export declare class ArrayInput extends Input {
+export declare class ArrayInput extends TextInput {
     value: string[];
 }
-export declare class BooleanInput extends Input {
+export declare class BooleanInput extends AbstractInput {
+    private readonly input;
+    private readonly label;
     private checkId;
     constructor();
     static readonly observedAttributes: string[];

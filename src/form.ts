@@ -11,6 +11,11 @@ export abstract class AbstractInput extends CustomElement {
   private readonly container: HTMLElement;
   private readonly errorMessageSpan: HTMLElement;
 
+  /**
+   * @event
+   */
+  static EVENT_CHANGE = 'change';
+
   protected constructor() {
     super();
 
@@ -37,8 +42,8 @@ export abstract class AbstractInput extends CustomElement {
     // language=CSS
     return `
            :host {
-             --input-height: 40px;
-             --input-font-size: 20px;
+             --height: var(--input-height, 40px);
+             --font-size: calc(.5 * var(--input-height, 40px));
            }
            
            #${AbstractInput.containerId} {
@@ -46,15 +51,11 @@ export abstract class AbstractInput extends CustomElement {
               padding-bottom: 15px;
            }
            
-           #${AbstractInput.inputContainerId} {
-              height: var(--input-height);
-           }
-           
            #${AbstractInput.errorSpanId} {
               position: absolute;
               bottom: 0;
-              font-size: calc(.5 * var(--input-font-size));
-              line-height: calc(.5 * var(--input-font-size));
+              font-size: calc(.5 * var(--font-size));
+              line-height: calc(.5 * var(--font-size));
               color: red;
            }
         `
@@ -75,21 +76,23 @@ export abstract class AbstractInput extends CustomElement {
   set errorMessage(value: string) {
     this.errorMessageSpan.innerText = value;
     if (value === "") {
-      this.inputContainer.classList.remove(Input.errorClass);
+      this.inputContainer.classList.remove(AbstractInput.errorClass);
     } else {
-      this.inputContainer.classList.add(Input.errorClass);
+      this.inputContainer.classList.add(AbstractInput.errorClass);
     }
+  }
+
+  protected onValueChange() {
+    let event = new Event(AbstractInput.EVENT_CHANGE);
+    this.dispatchEvent(event);
   }
 }
 
-export class Input extends AbstractInput {
+export class TextInput extends AbstractInput {
   static valueClass = 'value';
   static typeAttribute = 'type';
-  /**
-   * @event
-   */
-  static EVENT_CHANGE = 'change';
-  protected input: HTMLInputElement;
+
+  protected input: HTMLInputElement | HTMLTextAreaElement;
   protected label: HTMLLabelElement;
 
   constructor() {
@@ -108,23 +111,27 @@ export class Input extends AbstractInput {
   }
 
   static get observedAttributes() {
-    return AbstractInput.observedAttributes.concat([Input.typeAttribute]);
+    return AbstractInput.observedAttributes.concat([TextInput.typeAttribute]);
   }
 
   get css() {
     // language=CSS
     return super.css + `
-           input {
+           input, textarea {
              width: 100%;
-             height: 100%;
+             height: var(--height);
              box-sizing: border-box;
              border: 2px solid #888;
              border-radius: 1px;
              background-color: #f8f8f8;
-             font-size: var(--input-font-size);
+             font-size: var(--font-size);
            }
            
-           #${AbstractInput.inputContainerId}.${AbstractInput.errorClass} > input {
+           textarea {
+               height: calc(2 * var(--height));
+           }
+           
+           #${AbstractInput.inputContainerId}.${AbstractInput.errorClass} > input, #${AbstractInput.inputContainerId}.${AbstractInput.errorClass} > textarea {
                 border-color: red;
            }
            
@@ -133,21 +140,21 @@ export class Input extends AbstractInput {
                 height: 100%;
                 left: 5px;
                 color: #888;
-                font-size: var(--input-font-size);
+                font-size: var(--font-size);
                 transition: 0.2s ease all; 
                 pointer-events: none;
            }
            
-           input:focus ~ label, input.value ~ label {
+           input:focus ~ label, input.${TextInput.valueClass} ~ label, textarea:focus ~ label, textarea.${TextInput.valueClass} ~ label {
               top: 0;
-              font-size: calc(.75 * var(--input-font-size));
-              line-height: calc(.75 * var(--input-font-size));
+              font-size: calc(.75 * var(--font-size));
+              line-height: calc(.75 * var(--font-size));
               color:#5264AE;
            }
            
            #${AbstractInput.inputContainerId} {
-             line-height: var(--input-height);
-             padding-top: var(--input-font-size);
+             line-height: var(--height);
+             padding-top: var(--font-size);
            }
         `
   }
@@ -162,31 +169,52 @@ export class Input extends AbstractInput {
   }
 
   get type(): string {
-    return this.getAttribute(Input.typeAttribute) || "";
+    return this.getAttribute(TextInput.typeAttribute) || "";
   }
 
   set type(value: string) {
-    this.setAttribute(Input.typeAttribute, value);
+    this.setAttribute(TextInput.typeAttribute, value);
   }
 
   updateFromAttributes(attributes: { [p: string]: string | null }): void {
+    let type = attributes[TextInput.typeAttribute] || "";
+    if (type === 'textarea') {
+      let textArea = document.createElement("textarea") as HTMLTextAreaElement;
+      textArea.value = this.input.value;
+      // Prevent form submission on enter
+      textArea.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          event.stopImmediatePropagation();
+        }
+      });
+      this.inputContainer.replaceChild(textArea, this.input);
+      this.input = textArea;
+    } else {
+      let input = document.createElement("input") as HTMLInputElement;
+      input.type = type;
+      input.value = this.input.value;
+      this.inputContainer.replaceChild(input, this.input);
+      this.input = input;
+    }
+    this.input.oninput = (event) => {
+      this.onValueChange();
+    };
+
     this.input.name = attributes[AbstractInput.nameAttribute] || "";
-    this.input.type = attributes[Input.typeAttribute] || "";
   }
 
   protected onValueChange() {
     if (this.input.value) {
-      this.input.classList.add(Input.valueClass);
+      this.input.classList.add(TextInput.valueClass);
     } else {
-      this.input.classList.remove(Input.valueClass);
+      this.input.classList.remove(TextInput.valueClass);
     }
 
-    let event = new Event(Input.EVENT_CHANGE);
-    this.dispatchEvent(event);
+    super.onValueChange();
   }
 }
 
-export class ArrayInput extends Input {
+export class ArrayInput extends TextInput {
   get value(): string[] {
     return this.input.value.split(',');
   }
@@ -197,13 +225,25 @@ export class ArrayInput extends Input {
   }
 }
 
-export class BooleanInput extends Input {
+export class BooleanInput extends AbstractInput {
+  private readonly input : HTMLInputElement;
+  private readonly label: HTMLLabelElement;
   private checkId = 'check';
 
   constructor() {
     super();
 
+    this.input = document.createElement("input");
     this.input.type = 'checkbox';
+    this.input.oninput = (event) => {
+      this.onValueChange();
+    };
+    this.label = document.createElement('label');
+    let slot = document.createElement('slot');
+    this.label.appendChild(slot);
+
+    this.inputContainer.appendChild(this.input);
+    this.inputContainer.appendChild(this.label);
 
     let span = document.createElement('span');
     span.id = this.checkId;
@@ -218,8 +258,36 @@ export class BooleanInput extends Input {
     // language=CSS
     return super.css + `
            :host {
-             --checkbox-size: calc(.5 * var(--input-height));
-             --input-font-size: 20px;
+             --checkbox-size: calc(.5 * var(--height));
+           }
+           
+          input {
+             width: 100%;
+             height: var(--height);
+             box-sizing: border-box;
+             border: 2px solid #888;
+             border-radius: 1px;
+             background-color: #f8f8f8;
+             font-size: var(--font-size);
+           }
+           
+           #${AbstractInput.inputContainerId}.${AbstractInput.errorClass} > input {
+                border-color: red;
+           }
+           
+           label {
+                position: absolute;
+                height: 100%;
+                left: 5px;
+                color: #888;
+                font-size: var(--font-size);
+                transition: 0.2s ease all; 
+                pointer-events: none;
+           }
+           
+           #${AbstractInput.inputContainerId} {
+             line-height: var(--height);
+             padding-top: var(--font-size);
            }
            
             #${AbstractInput.inputContainerId} {
@@ -229,7 +297,7 @@ export class BooleanInput extends Input {
             
             input, #${this.checkId} {
                 position: absolute;
-                top: calc(.25 * var(--input-height));
+                top: calc(.25 * var(--height));
                 left: 0;
                 width: var(--checkbox-size);
                 height: var(--checkbox-size);
@@ -277,13 +345,12 @@ export class BooleanInput extends Input {
             label {
                 position: static;
                 margin-left: calc(6px + var(--checkbox-size));
-                line-height: var(--input-height);
-           }
-           
-           input:focus ~ label, input:valid ~ label {
-              font-size: var(--input-font-size);
-              line-height: var(--input-height);
-           }
+                line-height: var(--height);
+             }
+             
+             input:focus ~ label {
+                color:#5264AE;
+             }
         `;
   }
 
@@ -338,15 +405,19 @@ export class SelectInput extends AbstractInput {
             select {
                 background-color: #f8f8f8;
                 width: 100%;
-                height: 100%;
+                height: var(--height);
                 box-sizing: border-box;
                 border: 2px solid #888;
                 border-radius: 1px;
             }
             
+            select[multiple] {
+                height: calc(2 * var(--height));
+            }
+            
             option {
                 padding: 2px;
-                font-size: var(--input-font-size);
+                font-size: var(--font-size);
             }
             
             #${AbstractInput.inputContainerId}.${AbstractInput.errorClass} > select {
@@ -358,21 +429,21 @@ export class SelectInput extends AbstractInput {
                 height: 100%;
                 left: 5px;
                 color: #888;
-                font-size: var(--input-font-size);
+                font-size: var(--font-size);
                 transition: 0.2s ease all; 
                 pointer-events: none;
            }
            
            label.${SelectInput.floatClass} {
               top: 0;
-              font-size: calc(.75 * var(--input-font-size));
-              line-height: calc(.75 * var(--input-font-size));
+              font-size: calc(.75 * var(--font-size));
+              line-height: calc(.75 * var(--font-size));
               color:#5264AE;
            }
            
            #${AbstractInput.inputContainerId} {
-             line-height: var(--input-height);
-             padding-top: var(--input-font-size);
+             line-height: var(--height);
+             padding-top: var(--font-size);
            }
         `;
   }
@@ -724,7 +795,7 @@ export class Form extends CustomElement {
     let event = new Event(Form.EVENT_SUCCESS);
     this.errorMessage.innerText = "";
     for (let child of this.children) {
-      if (child instanceof Input) {
+      if (child instanceof AbstractInput) {
         child.errorMessage = "";
       }
     }
@@ -788,7 +859,7 @@ export class Form extends CustomElement {
   }
 }
 
-customElements.define('form-input', Input);
+customElements.define('form-input', TextInput);
 customElements.define('array-input', ArrayInput);
 customElements.define('boolean-input', BooleanInput);
 customElements.define('select-input', SelectInput);

@@ -336,6 +336,7 @@ export class SelectInput extends AbstractInput {
         this.select.required = true;
         this.select.onchange = () => {
             this.moveLabel();
+            this.onValueChange();
         };
         this.label = document.createElement('label');
         let slot = document.createElement('slot');
@@ -455,6 +456,7 @@ export class SelectInput extends AbstractInput {
             }
         }
         this.moveLabel();
+        this.onValueChange();
     }
     updateFromAttributes(attributes) {
         this.select.multiple = this.multi;

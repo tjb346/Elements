@@ -214,6 +214,7 @@ export class TextInput extends AbstractInput {
   }
 }
 
+
 export class ArrayInput extends TextInput {
   get value(): string[] {
     return this.input.value.split(',');
@@ -224,6 +225,7 @@ export class ArrayInput extends TextInput {
     this.onValueChange();
   }
 }
+
 
 export class BooleanInput extends AbstractInput {
   private readonly input : HTMLInputElement;
@@ -385,7 +387,7 @@ export class SelectInput extends AbstractInput {
     this.select.required = true;
 
     this.select.onchange = () => {
-      this.moveLabel();
+      this.onValueChange();
     };
     this.label = document.createElement('label');
     let slot = document.createElement('slot');
@@ -511,7 +513,7 @@ export class SelectInput extends AbstractInput {
         option.selected = false;
       }
     }
-    this.moveLabel();
+    this.onValueChange();
   }
 
   updateFromAttributes(attributes: { [p: string]: string | null }): void {
@@ -537,6 +539,11 @@ export class SelectInput extends AbstractInput {
     } else {
       this.label.classList.add(SelectInput.floatClass);
     }
+  }
+
+  protected onValueChange() {
+    this.moveLabel();
+    super.onValueChange();
   }
 }
 

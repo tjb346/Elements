@@ -67,6 +67,7 @@ export declare class SelectInput extends AbstractInput {
         [p: string]: string | null;
     }): void;
     private moveLabel;
+    protected onValueChange(): void;
 }
 export declare class SelectOption extends CustomElement {
     static typeAttribute: string;

@@ -127,8 +127,6 @@ export class Header extends BaseRow {
 export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
     constructor() {
         super();
-        this.selected = false;
-        this.hidden = false;
         this.onclick = (event) => {
             let table = this.table;
             if (table !== null) {

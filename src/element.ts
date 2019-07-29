@@ -1,8 +1,14 @@
+
+export interface HTMLElementWithCallbacks extends HTMLElement {
+  connectedCallback() : void
+  disconnectedCallback() : void
+}
+
 /**
  * Basic element class with some utilities to help extend HTMLElement. Add all persitant elements
  * to the shadowDOM in the constructor. Update state from attributes in updateFromAttributes.
  */
-export abstract class CustomElement extends HTMLElement {
+export abstract class CustomElement extends HTMLElement implements HTMLElementWithCallbacks {
   readonly shadowDOM: ShadowRoot;
   protected htmlElement: HTMLDivElement | null;
   protected readonly styleElement: HTMLStyleElement;

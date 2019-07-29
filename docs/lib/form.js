@@ -335,7 +335,6 @@ export class SelectInput extends AbstractInput {
         this.select = document.createElement("select");
         this.select.required = true;
         this.select.onchange = () => {
-            this.moveLabel();
             this.onValueChange();
         };
         this.label = document.createElement('label');
@@ -455,7 +454,6 @@ export class SelectInput extends AbstractInput {
                 option.selected = false;
             }
         }
-        this.moveLabel();
         this.onValueChange();
     }
     updateFromAttributes(attributes) {
@@ -481,6 +479,10 @@ export class SelectInput extends AbstractInput {
         else {
             this.label.classList.add(SelectInput.floatClass);
         }
+    }
+    onValueChange() {
+        this.moveLabel();
+        super.onValueChange();
     }
 }
 SelectInput.multiAttribute = 'multi';

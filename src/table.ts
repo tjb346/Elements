@@ -165,9 +165,6 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
   constructor() {
     super();
 
-    this.selected = false;
-    this.hidden = false;
-
     this.onclick = (event) => {
       let table = this.table;
       if (table !== null) {
@@ -184,7 +181,7 @@ export class Row extends DraggableMixin(DroppableMixin(BaseRow)) {
         }
         table.toggleRowSelection(this, selectMultiple, includeBetween);
       }
-    }
+    };
   }
 
   // getters

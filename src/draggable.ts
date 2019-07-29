@@ -1,3 +1,5 @@
+import {HTMLElementWithCallbacks} from "./element.js";
+
 export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(ElementClass: T) {
   return class Droppable extends ElementClass {
     static dragOverClass = 'dragover';
@@ -122,7 +124,7 @@ export function DroppableMixin<T extends new(...args: any[]) => HTMLElement>(Ele
   }
 }
 
-export function DraggableMixin<T extends new(...args: any[]) => HTMLElement>(ElementClass: T) {
+export function DraggableMixin<T extends new(...args: any[]) => HTMLElementWithCallbacks>(ElementClass: T) {
   abstract class Draggable extends ElementClass {
     /**
      * The class name of the element when it is being dragged.
@@ -134,7 +136,10 @@ export function DraggableMixin<T extends new(...args: any[]) => HTMLElement>(Ele
 
       this.addEventListener('dragstart', this.handleDragStart.bind(this));
       this.addEventListener('dragend', this.handleDragEnd.bind(this));
+    }
 
+    connectedCallback(){
+      super.connectedCallback();
       this.draggable = true;
     }
 

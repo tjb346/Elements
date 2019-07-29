@@ -1,3 +1,4 @@
+import { HTMLElementWithCallbacks } from "./element.js";
 export declare function DroppableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
     new (...args: any[]): {
         dragOverActions: (() => void)[];
@@ -295,8 +296,9 @@ export declare function DroppableMixin<T extends new (...args: any[]) => HTMLEle
     dragOverClass: string;
     pendingActionClass: string;
 } & T;
-export declare function DraggableMixin<T extends new (...args: any[]) => HTMLElement>(ElementClass: T): {
+export declare function DraggableMixin<T extends new (...args: any[]) => HTMLElementWithCallbacks>(ElementClass: T): {
     new (...args: any[]): {
+        connectedCallback(): void;
         /**
          * Called when dragstart event is fired.
          */
@@ -305,6 +307,7 @@ export declare function DraggableMixin<T extends new (...args: any[]) => HTMLEle
          * Called when dragend event is fired.
          */
         handleDragEnd(event: DragEvent): void;
+        disconnectedCallback(): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;

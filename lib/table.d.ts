@@ -30,8 +30,10 @@ export declare class Header extends BaseRow {
 declare type SortOrderValues = -1 | 0 | 1;
 declare const Row_base: {
     new (...args: any[]): {
+        connectedCallback(): void;
         handleDragStart(event: DragEvent): void;
         handleDragEnd(event: DragEvent): void;
+        disconnectedCallback(): void;
         accessKey: string;
         readonly accessKeyLabel: string;
         autocapitalize: string;

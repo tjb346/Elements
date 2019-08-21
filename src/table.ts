@@ -571,7 +571,9 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   }
 
   get selectedRows(): Row[] {
-    return Array.from(this.querySelectorAll(`.${Row.SELECTED_CLASS}`)) as Row[];
+    return this.rows.filter((row : Row) => {
+      return row.selected;
+    });
   }
 
   set selectedRows(rows: Row[]) {
@@ -762,17 +764,28 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     // includeBetween and selectMultiple are true.
     if (selectMultiple && includeBetween && oldRows.size > 0) {
       let children = this.rows;
-      let sliceIndex = children.indexOf(rowElement);
-      let sectionIndex = children.indexOf(rowElement);
-      for (let row of oldRows) {
-        let index = children.indexOf(row);
-        if (Math.abs(index - sectionIndex) < Math.abs(sliceIndex - sectionIndex)) {
-          sliceIndex = index;
+      let closestSelected = -1;
+      let toggled = -1;
+      let index = 0;
+      while (closestSelected === -1 || toggled === -1 || Math.abs(closestSelected - toggled) > index - toggled && index < children.length) {
+        const row = children[index];
+        if (row === rowElement) {
+          toggled = index;
         }
+
+        if (row.selected){
+          closestSelected = index;
+        }
+
+        index ++;
       }
-      let start = Math.min(sliceIndex, sectionIndex) + 1;
-      let end = Math.max(sliceIndex, sectionIndex);
-      let rowsBetween = children.slice(start, end);
+
+      let rowsBetween;
+      if (closestSelected >= toggled) {
+        rowsBetween = children.slice(toggled, closestSelected);
+      } else {
+        rowsBetween = children.slice(closestSelected, toggled);
+      }
       for (let row of rowsBetween) {
         if (this.showHidden || !row.hidden) {
           newRows.add(row);

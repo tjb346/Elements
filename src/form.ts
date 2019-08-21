@@ -787,13 +787,12 @@ export class Form extends CustomElement {
     this.dispatchEvent(event);
     this.getResponse()
       .then((response: Response) => {
+        this.classList.remove(Form.loadingClass);
         return this.handleResponse(response);
       })
       .catch((error: Error) => {
-        this.onError({}, Form.defaultErrorMessage);
-      })
-      .finally(() => {
         this.classList.remove(Form.loadingClass);
+        this.onError({}, Form.defaultErrorMessage);
       })
   }
 

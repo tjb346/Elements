@@ -36,8 +36,7 @@ class TableElement extends CustomElement {
 class BaseRow extends TableElement {
     constructor() {
         super();
-        let slot = document.createElement('slot');
-        this.shadowDOM.appendChild(slot);
+        this.scrollObserver = null;
     }
     get css() {
         // language=CSS
@@ -66,6 +65,36 @@ class BaseRow extends TableElement {
     }
     getColumn(columnNumber) {
         return this.allColumns[columnNumber] || null;
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        if (this.isConnected) {
+            this.scrollObserver = new IntersectionObserver((entries) => {
+                let slot = this.shadowDOM.querySelector('slot');
+                if (entries[0].isIntersecting && slot === null) {
+                    let slot = document.createElement('slot');
+                    this.shadowDOM.appendChild(slot);
+                }
+            }, {
+                root: this.parentElement,
+                rootMargin: '0px',
+                threshold: 0
+            });
+            this.scrollObserver.observe(this);
+        }
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        // Disconnect scrollObserver
+        if (this.scrollObserver !== null) {
+            this.scrollObserver.disconnect();
+            this.scrollObserver = null;
+        }
+        // Remove all slots
+        let slots = this.shadowDOM.querySelectorAll('slot');
+        for (let slot of slots) {
+            this.shadowDOM.removeChild(slot);
+        }
     }
 }
 BaseRow.hiddenClass = "hidden";
@@ -508,7 +537,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     set rows(value) {
         this.removeChildren(Row);
         this.appendChildren(value);
-        this.resetPane();
+        // this.resetPane();
     }
     // setters
     /**

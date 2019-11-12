@@ -16,11 +16,14 @@ declare class TableElement extends CustomElement {
 }
 declare class BaseRow extends TableElement {
     static hiddenClass: string;
+    private scrollObserver;
     constructor();
     readonly css: string;
     hidden: boolean;
     readonly allColumns: AbstractTableData<any>[];
     getColumn(columnNumber: number): AbstractTableData<any> | null;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 export declare class Header extends BaseRow {
     constructor();

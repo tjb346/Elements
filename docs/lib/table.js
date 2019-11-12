@@ -69,6 +69,7 @@ class BaseRow extends TableElement {
     connectedCallback() {
         super.connectedCallback();
         if (this.isConnected) {
+            // Add intersection observer to delay adding slot until row is visible to prevent unneeded rendering.
             this.scrollObserver = new IntersectionObserver((entries) => {
                 let slot = this.shadowDOM.querySelector('slot');
                 if (entries[0].isIntersecting && slot === null) {
@@ -537,7 +538,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
     set rows(value) {
         this.removeChildren(Row);
         this.appendChildren(value);
-        // this.resetPane();
+        this.resetPane();
     }
     // setters
     /**

@@ -635,7 +635,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
   set rows(value: Row[]) {
     this.removeChildren(Row);
     this.appendChildren(value);
-    // this.resetPane();
+    this.resetPane();
   }
 
   // setters

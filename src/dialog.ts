@@ -221,9 +221,9 @@ export class Dialog extends Grabbable {
     }
 
     if (name === null) {
-      this.nameElement.innerText = "";
+      this.nameElement.textContent = "";
     } else {
-      this.nameElement.innerText = name;
+      this.nameElement.textContent = name;
     }
 
     if (visible === null) {
@@ -297,10 +297,10 @@ export class ConfirmDialog extends Dialog {
 
     this.confirmButton = document.createElement('button');
     this.confirmButton.id = ConfirmDialog.confirmButtonId;
-    this.confirmButton.innerText = "Yes";
+    this.confirmButton.textContent = "Yes";
     this.confirmButton.onclick = this.onConfirmed.bind(this);
 
-    this.confirmButton.innerText = this.confirmationText;
+    this.confirmButton.textContent = this.confirmationText;
     this.shadowDOM.appendChild(this.confirmButton);
   }
 
@@ -342,7 +342,7 @@ export class ConfirmDialog extends Dialog {
 
   updateFromAttributes(attributes: { [p: string]: string | null }): void {
     super.updateFromAttributes(attributes);
-    this.confirmButton.innerText = this.confirmationText;
+    this.confirmButton.textContent = this.confirmationText;
     this.confirmButton.disabled = this.disabled;
   }
 

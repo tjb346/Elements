@@ -70,11 +70,11 @@ export abstract class AbstractInput extends CustomElement {
   }
 
   get errorMessage(): string {
-    return this.errorMessageSpan.innerText;
+    return this.errorMessageSpan.textContent || "";
   }
 
   set errorMessage(value: string) {
-    this.errorMessageSpan.innerText = value;
+    this.errorMessageSpan.textContent = value;
     if (value === "") {
       this.inputContainer.classList.remove(AbstractInput.errorClass);
     } else {
@@ -560,7 +560,7 @@ export class SelectOption extends CustomElement {
     this.option = document.createElement('option');
 
     let observer = new MutationObserver((mutations) => {
-      this.option.innerText = this.innerText;
+      this.option.textContent = this.textContent;
     });
     observer.observe(this, {characterData: true, childList: true, subtree: true});
   }
@@ -658,7 +658,7 @@ export class SelectOption extends CustomElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.option.innerText = this.innerText;
+    this.option.textContent = this.textContent;
     let parentSelect = this.parentSelect;
     if (parentSelect) {
       parentSelect.appendChild(this.option);
@@ -799,7 +799,7 @@ export class Form extends CustomElement {
   onSuccess() {
     this.classList.add(Form.successClass);
     let event = new Event(Form.EVENT_SUCCESS);
-    this.errorMessage.innerText = "";
+    this.errorMessage.textContent = "";
     for (let child of this.children) {
       if (child instanceof AbstractInput) {
         child.errorMessage = "";
@@ -810,7 +810,7 @@ export class Form extends CustomElement {
 
   onError(fieldErrors: { [field: string]: string }, errorMessage: string) {
     this.classList.add(Form.errorClass);
-    this.errorMessage.innerText = errorMessage || Form.defaultErrorMessage;
+    this.errorMessage.textContent = errorMessage || Form.defaultErrorMessage;
 
     for (let child of this.children) {
       if (child instanceof AbstractInput) {

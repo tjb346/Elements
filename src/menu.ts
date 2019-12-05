@@ -25,7 +25,7 @@ export class Menu extends CustomElement {
 
     this.button = document.createElement('button');
     this.button.type = 'button';
-    this.button.innerText = '\u2630';
+    this.button.textContent = '\u2630';
     this.button.onclick = (event: MouseEvent) => {
       this.toggleOpened();
     };

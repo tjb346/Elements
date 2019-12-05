@@ -197,7 +197,7 @@ export abstract class LazyRoute extends Route {
           this.renderResponse(response);
         })
         .catch(() => {
-          this.innerText = "Error loading data."
+          this.textContent = "Error loading data."
         })
     }
   }

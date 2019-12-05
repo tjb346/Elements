@@ -415,11 +415,11 @@ export abstract class AbstractTableData<T> extends TableElement {
 
 export class TextData extends AbstractTableData<string> {
   get data(): string {
-    return this.innerText;
+    return this.textContent || "";
   }
 
   set data(value: string) {
-    this.innerText = value;
+    this.textContent = value;
   }
 
   compare(dataElement: TextData): number {
@@ -429,11 +429,11 @@ export class TextData extends AbstractTableData<string> {
 
 export class NumberData extends AbstractTableData<number> {
   get data(): number {
-    return Number.parseFloat(this.innerText) || 0;
+    return Number.parseFloat(this.textContent || "0") || 0;
   }
 
   set data(value: number) {
-    this.innerText = value.toLocaleString();
+    this.textContent = value.toLocaleString();
   }
 
   compare(dataElement: NumberData): number {
@@ -450,7 +450,7 @@ export class TimeData extends AbstractTableData<Date> {
 
   set data(value: Date) {
     this.datetime = value;
-    this.innerText = this.datetime.toLocaleString();
+    this.textContent = this.datetime.toLocaleString();
   }
 
   compare(dataElement: AbstractTableData<Date>): number {
@@ -468,9 +468,9 @@ export class NullableTimeData extends AbstractTableData<Date | null> {
   set data(value: Date | null) {
     this.datetime = value;
     if (this.datetime === null) {
-      this.innerText = "";
+      this.textContent = "";
     } else {
-      this.innerText = this.datetime.toLocaleString();
+      this.textContent = this.datetime.toLocaleString();
     }
   }
 
@@ -745,7 +745,7 @@ export class Table extends DroppableMixin(ScrollWindowElement) {
         let columnCheckbox = document.createElement('input');
         columnCheckbox.type = 'checkbox';
         columnCheckbox.checked = !headerColumnData.hidden;
-        columnLabel.innerText = headerColumnData.data.toString();
+        columnLabel.textContent = headerColumnData.data.toString();
         columnCheckbox.onchange = () => {
           for (let row of this.flatChildren(BaseRow)) {
             let columnData = row.getColumn(columnNumber);
